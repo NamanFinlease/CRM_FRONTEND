@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const EmailVerification = ({ open, setOpen }) => {
+  
   const { id } = useParams()
   const [otp, setOtp] = useState(Array(6).fill(''));
   const [timeLeft, setTimeLeft] = useState(30); // 30 seconds countdown for resend
