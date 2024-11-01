@@ -187,7 +187,10 @@ const EditCam = ({ camData, setIsEditing }) => {
         }));
     }, [formData.salaryAmount1, formData.salaryAmount2, formData.salaryAmount3]);
 
+    const calculateRepayment = (amount) => {
+        return Number(amount) ? Number(amount) + (Number(amount) * Number(formData.eligibleTenure) * Number(formData.roi) / 100) : 0
 
+    }
 
 
 
@@ -453,7 +456,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         disabled
                     />
                 </div>
-                
+
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
                         label="Net Disbursal Amount"
@@ -473,7 +476,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         name="ROI"
                         type="string"
                         fullWidth
-                        value={`${formData.roi} %`}
+                        value=" 0.5 %"
                         InputLabelProps={{ shrink: true }}
                         onChange={handleChange}
                         //disabled // Updated from InputProps to slotProps
@@ -491,7 +494,7 @@ const EditCam = ({ camData, setIsEditing }) => {
          disabled // Updated from InputProps to slotProps
         />
       </div> */}
-                
+
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
                         label="Disbursal Date"
@@ -528,7 +531,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                     />
                 </div>
                 {/* Sixth Row (More Fields) */}
-               
+
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
                         label="Admin Fee % Inc. Gst"
@@ -579,7 +582,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         disabled // Updated from InputProps to slotProps
                     />
                 </div>
-                
+
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
                         label="Repayment Amount"
@@ -587,7 +590,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         type="number"
                         fullWidth
                         // value={formData.repaymentAmount}
-                        value={Number(formData.loanRecommended)* Number(formData.eligibleTenure) * Number(formData.roi) }
+                        value={calculateRepayment(formData.loanRecommended)}
                         onChange={handleChange}
                         disabled
                     />
