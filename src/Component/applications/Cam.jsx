@@ -77,7 +77,7 @@ const Cam = () => {
   // Re-run the effect when `isSuccess` or `data` changes
 
   //  Initialize the mutation hook
- 
+
 
   return (
     <>
@@ -133,8 +133,14 @@ const Cam = () => {
                     <TableRow>
                       <TableCell>Obligations (Rs)</TableCell>
                       <TableCell>{formData?.obligations}</TableCell>
-                      <TableCell>Salary To Income Ratio</TableCell>
+                      <TableCell>ROI</TableCell>
+                      <TableCell>{formData?.roi} %</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Initial Salary To Income Ratio</TableCell>
                       <TableCell>  {formData?.salaryToIncomeRatio}</TableCell>
+                      <TableCell>Final Salary To Income Ratio</TableCell>
+                      <TableCell>  {formData?.finalsalaryToIncomeRatioPercentage}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Eligible Loan</TableCell>
@@ -154,9 +160,10 @@ const Cam = () => {
                     </TableRow>
                     <TableRow>
                       <TableCell>Admin Fee Inc. Gst(%)</TableCell>
-                      <TableCell>{formData?.adminFeePercentage}</TableCell>
-                      <TableCell>ROI</TableCell>
-                      <TableCell>{formData?.roi}</TableCell>
+                      <TableCell>{formData?.adminFeePercentage} %</TableCell>
+                      <TableCell>Net Disbursal Amount</TableCell>
+                      <TableCell>{formData?.netDisbursalAmount}</TableCell>
+                      
                     </TableRow>
                     {/* Additional missing fields based on your formData? object */}
                     <TableRow>

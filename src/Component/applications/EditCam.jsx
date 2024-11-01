@@ -74,6 +74,20 @@ const EditCam = ({ camData, setIsEditing }) => {
                     ? loanRecommended + (loanRecommended * roiDecimal * (eligibleTenure + 1))
                     : 0;
             }
+            // if (name === 'salaryToIncomeRatio') {
+
+            //     const eligibleTenure = calculateDaysDifference(prevFormData.disbursalDate, value);
+            //     updatedFormData.eligibleTenure = eligibleTenure + 1 || 0;
+
+            //     // Convert ROI to decimal
+            //     const roiDecimal = 0.005;
+            //     // ro
+            //     // Calculate repaymentAmount using the correct formula
+            //     const loanRecommended = Number(prevFormData.loanRecommended);
+            //     updatedFormData.repaymentAmount = loanRecommended
+            //         ? loanRecommended + (loanRecommended * roiDecimal * (eligibleTenure + 1))
+            //         : 0;
+            // }
             // Return the updated form data
             return updatedFormData;
         });
@@ -165,7 +179,7 @@ const EditCam = ({ camData, setIsEditing }) => {
         }
         setFormData((prevData) => ({
             ...prevData,
-            eligiblesalaryToIncomeRatioPercentage: salaryToIncomeRatioPercentage,
+            salaryToIncomeRatio: salaryToIncomeRatioPercentage,
             eligibleLoan: eligibleLoan,
         }));
     }, [formData.actualNetSalary]);
@@ -417,7 +431,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
                         label="Initial salary To Income Ratio"
-                        name="eligiblesalaryToIncomeRatioPercentage"
+                        name="salaryToIncomeRatio"
                         fullWidth
                         value={calculatesalaryToIncomeRatio(formData.netSalary)}
                         onChange={handleChange}
@@ -539,7 +553,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         type="string"
                         fullWidth
                         InputLabelProps={{ shrink: true }}
-                        value={formData.adminFeePercentage}
+                        value="15 %"
                         onChange={handleChange}
                         disabled
                     />
