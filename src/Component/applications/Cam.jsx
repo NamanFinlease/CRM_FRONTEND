@@ -159,7 +159,7 @@ const Cam = () => {
                     <TableRow>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Admin Fee Inc. Gst(%)</TableCell>
+                      <TableCell>Processing Fee Inc. Gst(%)</TableCell>
                       <TableCell>{formData?.adminFeePercentage} %</TableCell>
                       <TableCell>Net Disbursal Amount</TableCell>
                       <TableCell>{formData?.netDisbursalAmount}</TableCell>
@@ -167,7 +167,7 @@ const Cam = () => {
                     </TableRow>
                     {/* Additional missing fields based on your formData? object */}
                     <TableRow>
-                      <TableCell>Net Admin Fee Amount</TableCell>
+                      <TableCell>Processing Fee Amount</TableCell>
                       <TableCell>{formData?.netAdminFeeAmount}</TableCell>
                       <TableCell>Tenure</TableCell>
                       <TableCell>{formData?.eligibleTenure}</TableCell>

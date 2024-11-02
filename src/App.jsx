@@ -19,7 +19,7 @@ import ForgotPasswordPage from './Component/ForgotPasswordPage';
 import ResetPasswordPage from './Component/ResetPasswordPage';
 import Cookies from 'universal-cookie';
 import UserProfileForm from './Component/UserProfileForm';
-import AddUserForm from './Component/AddUserForm';
+import AddEmployee from './Component/AddEmployee';
 import ViewUsersForm from './Component/ViewUsersForm';
 import ImportCSV from './Component/ImportCSV';
 import AddBankDetails from './Component/AddBankDetails';
@@ -77,7 +77,7 @@ function App() {
                   <Route path='/add-bank-details' element={<AddBankDetails />} />
                   <Route path='/import-csv' element={<ImportCSV />} />
                   <Route path='/view-user' element={<ViewUsersForm />} />
-                  <Route path='/add-users' element={<AddUserForm />} />
+                  <Route path='/add-employee' element={<AddEmployee />} />
                   <Route path='lead-profile/:id' element={<LeadProfile />} />
                   <Route path="/lead-new" element={<LeadNew />} />
                   <Route path='/lead-process' element={<ProcessingLeads />} />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { Button, TextField } from '@mui/material';
+import { Button, InputAdornment, TextField } from '@mui/material';
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { useUpdateCamDetailsMutation } from '../../queries/applicationQueries';
 import Swal from 'sweetalert2';
@@ -36,6 +36,10 @@ const EditCam = ({ camData, setIsEditing }) => {
 
         return daysDiff;
     };
+    const calculateRepayment = (amount) => {
+        return Number(amount) ? Number(amount) + (Number(amount) * Number(formData.eligibleTenure) * Number(0.5) / 100) : 0
+
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -54,10 +58,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     ? (recommendedLoan / prevFormData.actualNetSalary) * 100
                     : 0;
                 // Add calculated fields to updatedFormData
-                updatedFormData.finalsalaryToIncomeRatioPercentage = `${finalsalaryToIncomeRatioPercentage.toFixed(2)}%`;
+                updatedFormData.finalsalaryToIncomeRatioPercentage = `${finalsalaryToIncomeRatioPercentage.toFixed()}%`;
                 updatedFormData.adminFee = recommendedLoan * 0.15;
                 updatedFormData.netAdminFeeAmount = recommendedLoan * 0.15;
                 updatedFormData.netDisbursalAmount = recommendedLoan - recommendedLoan * 0.15;
+                updatedFormData.repaymentAmount = calculateRepayment(recommendedLoan)
             }
             // Handle repayment date change and calculate repayment amount
             if (name === 'repaymentDate') {
@@ -74,20 +79,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                     ? loanRecommended + (loanRecommended * roiDecimal * (eligibleTenure + 1))
                     : 0;
             }
-            // if (name === 'salaryToIncomeRatio') {
-
-            //     const eligibleTenure = calculateDaysDifference(prevFormData.disbursalDate, value);
-            //     updatedFormData.eligibleTenure = eligibleTenure + 1 || 0;
-
-            //     // Convert ROI to decimal
-            //     const roiDecimal = 0.005;
-            //     // ro
-            //     // Calculate repaymentAmount using the correct formula
-            //     const loanRecommended = Number(prevFormData.loanRecommended);
-            //     updatedFormData.repaymentAmount = loanRecommended
-            //         ? loanRecommended + (loanRecommended * roiDecimal * (eligibleTenure + 1))
-            //         : 0;
-            // }
+           
             // Return the updated form data
             return updatedFormData;
         });
@@ -201,10 +193,7 @@ const EditCam = ({ camData, setIsEditing }) => {
         }));
     }, [formData.salaryAmount1, formData.salaryAmount2, formData.salaryAmount3]);
 
-    const calculateRepayment = (amount) => {
-        return Number(amount) ? Number(amount) + (Number(amount) * Number(formData.eligibleTenure) * Number(formData.roi) / 100) : 0
-
-    }
+   
 
 
 
@@ -468,6 +457,9 @@ const EditCam = ({ camData, setIsEditing }) => {
                         value={formData.finalsalaryToIncomeRatioPercentage}
                         onChange={handleChange}
                         disabled
+                        // InputProps={{
+                        //     endAdornment: <InputAdornment position="start">%</InputAdornment>,
+                        // }}
                     />
                 </div>
 
@@ -548,7 +540,7 @@ const EditCam = ({ camData, setIsEditing }) => {
 
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
-                        label="Admin Fee % Inc. Gst"
+                        label="Processing Fee % Inc. Gst"
                         name="adminFee"
                         type="string"
                         fullWidth
@@ -586,7 +578,7 @@ const EditCam = ({ camData, setIsEditing }) => {
       </div> */}
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
-                        label="Total Admin Fee"
+                        label="Processing Fee"
                         name="netAdminFeeAmount"
                         type="number"
                         fullWidth
