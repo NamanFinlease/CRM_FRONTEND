@@ -54,7 +54,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         >
             {/* Heading for the sidebar */}
             <Box sx={{ backgroundColor: '#001f3f', padding: 2, textAlign: 'left' }}>
-                <Typography variant="h6" sx={{ color: '#fff', fontWeight: 'bold', marginTop: '5px', marginLeft: '20px' }}>
+                <Typography component={Link} to="/"  variant="h6" sx={{textDecoration: 'none', color: '#fff', fontWeight: 'bold', marginTop: '5px', marginLeft: '20px' }}>
                     Speedoloan
                 </Typography>
             </Box>
