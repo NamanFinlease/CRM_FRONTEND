@@ -197,6 +197,35 @@ const Dashboard = ({ isSidebarOpen }) => {
         title: 'Applications Rejected',
         no : data?.applications?.rejectedApplications || 0
       },
+    },
+    supervisor:{
+      leadNew: {
+        icon: <NewReleasesIcon className='mt-3'
+        sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+        path: "/lead-new",
+        title: 'New Leads',
+        no : data?.leads?.newLeads || 0
+      },
+      leadProcess: {
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+        path: "/lead-process",
+        title: 'In Process',
+        no : data?.leads?.
+        allocatedLeads || 0
+      },
+      applicationRejected: {
+        icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+        path: "/rejected-applications",
+        title: ' Rejected',
+        no : data?.applications?.rejectedApplications || 0
+      },
+      applicationHold: {
+        icon: <NewReleasesIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+        path: "/applications-held",
+        title: 'Sanctioned',
+        no : data?.applications?.
+        heldApplications || 0
+      },
     }
   };
 

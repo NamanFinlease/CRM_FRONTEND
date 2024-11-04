@@ -43,6 +43,8 @@ import SanctionReject from './Component/sanction/SanctionReject';
 import SanctionSentBack from './Component/sanction/SanctionSentBack';
 import RecommendedApp from './Component/sanction/RecommendedApp';
 import SanctionProfile from './Component/sanction/SanctionProfile';
+import DisbursalProfile from './Component/Disbursal/DisbursalProfile';
+import DisbursalBankProfile from './Component/Disbursal/DisbursalBankProfile';
 
 
 function App() {
@@ -70,7 +72,7 @@ function App() {
 
                 <Routes   >
                   {/* <Route path='/' element={<ProtectedRoute><Dashboard /></ProtectedRoute>}> */}
-                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/" element={<Dashboard />} />                
                   <Route path='/add-holiday-details' element={<AddHolidayDetails />} />
                   <Route path="/user-profile" element={<UserProfileForm />} />
                   <Route path="/employees-list" element={<EmployeeList />} />
@@ -97,6 +99,8 @@ function App() {
                   <Route path="/sanction-profile/:id" element={<SanctionProfile />} />
                   <Route path="/sanction-reject" element={<DynamicTable />} />
                   <Route path="/sanction-sentback" element={<DynamicTable />} />
+                  <Route path="/disbursal" element={<DisbursalProfile />} />
+                  <Route path="/disbursalbank" element={<DisbursalBankProfile />} />
 
                   <Route path="/application-recommendation" element={<DynamicTable
                     header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager"]}

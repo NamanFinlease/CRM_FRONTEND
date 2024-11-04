@@ -38,22 +38,23 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         <Box
             sx={{
                 width: isSidebarOpen ? 250 : 0,
-                height: '100vh',
-                color: '#fff',
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'width 0.3s ease',
-                overflowY: 'auto',
-                boxShadow: isSidebarOpen ? '2px 0 5px rgba(0, 0, 0, 0.1)' : 'none',
-                zIndex: 0,
-                backgroundColor: '#001f3f',
+height: '100vh',
+color: '#fff',
+position: 'fixed',
+top: 0,
+left: 0,
+display: 'flex',
+flexDirection: 'column',
+transition: 'width 0.3s ease',
+overflowY: 'auto',
+boxShadow: isSidebarOpen ? '4px 0 12px rgba(0, 0, 0, 0.3), 6px 0 20px rgba(0, 0, 0, 0.15)' : 'none',
+zIndex: 0,
+backgroundColor: '#173350',
+
             }}
         >
             {/* Heading for the sidebar */}
-            <Box sx={{ backgroundColor: '#001f3f', padding: 2, textAlign: 'left' }}>
+            <Box sx={{ backgroundColor: '#173350', padding: 2, textAlign: 'left' }}>
                 <Typography variant="h6" sx={{ color: '#fff', fontWeight: 'bold', marginTop: '5px', marginLeft: '20px' }}>
                     Speedoloan
                 </Typography>
@@ -189,10 +190,11 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                     position: 'fixed',
                     top: 13,
                     left: isSidebarOpen ? 220 : 10,
+                    marginLeft: -1.5, // Adjust the margin as needed
                     color: '#fff',
                     borderRadius: 1,
-                    transition: 'background-color 0.3s, color 0.3s, left 0.3s',
-                    zIndex: 1001,
+                    transition: 'background-color 0.3s, color 0.3s, left 0.3s, margin-left 0.3s',
+                    zIndex: 1001
                 }}
                 onClick={toggleSidebar}
             >
