@@ -160,7 +160,7 @@ const Cam = () => {
                     </TableRow>
                     <TableRow>
                       <TableCell>Processing Fee Inc. Gst(%)</TableCell>
-                      <TableCell>{formData?.adminFeePercentage} %</TableCell>
+                      <TableCell>{formData?.adminFeePercentage} </TableCell>
                       <TableCell>Net Disbursal Amount</TableCell>
                       <TableCell>{formData?.netDisbursalAmount}</TableCell>
                       

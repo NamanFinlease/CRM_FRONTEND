@@ -64,6 +64,11 @@ const SanctionProfile = () => {
         <>
 
           <div className='p-3'>
+            {data?.isApproved ? 
+            <h1>Sanctioned Application</h1>
+            :
+            <h1>Pending Application</h1>
+            }
             <BarButtons
               barButtonOptions={barButtonOptions}
               currentPage={currentPage}

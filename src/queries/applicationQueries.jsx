@@ -157,25 +157,12 @@ export const applicationApi = createApi({
       }),
       invalidatesTags : ['getCamDetails']
     }),
-    // getLeadDocs: builder.query({
-    //   query: (data) => `/leads/docs/${data.id}/?docType=${data.docType}/?role=${role()}`,
-    // }),
-    // getInternalDedupe: builder.query({
-    //   query: (id) => `/leads/old-history/${id}/?role=${role()}`,
-    // }),
-    // applicationHistory: builder.query({
-    //   query: (id) => `/leads/viewleadlog/${id}/?role=${role()}`,
-    // }),
-    // fetchAllgetApplication: builder.query({
-    //   query: () => `/leads/hold/?role=${role()}`,
-    //   providesTags:["getApplication"]
-    // }),
     getRejectedApplications: builder.query({
       query: () => `/applications/rejected/?role=${role()}`,
       providesTags:["getApplication"]
     }),
     recommendedApplications: builder.query({
-      query: () => `/sanction/recommended/?role=${role()}`,
+      query: ({page,limit}) => `/sanction/recommended/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["recommendedApplicatio"]
     }),
     sanctionProfile: builder.query({
@@ -184,6 +171,10 @@ export const applicationApi = createApi({
     }),
     sanctionPreview: builder.query({
       query: (id) => `/sanction/preview/${id}/?role=${role()}`,
+      // providesTags:["getApplication"]
+    }),
+    sanctioned: builder.query({
+      query: ({page,limit}) => `/sanction/approved/?page=${page}&limit=${limit}&role=${role()}`,
       // providesTags:["getApplication"]
     }),
     
@@ -212,6 +203,7 @@ export const {
     useUpdateCamDetailsMutation,
     useRecommendedApplicationsQuery,
     useSanctionProfileQuery,
+    useSanctionedQuery,
     useLazySanctionPreviewQuery,
 
 } = applicationApi;
