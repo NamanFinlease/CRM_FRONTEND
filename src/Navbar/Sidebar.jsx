@@ -176,6 +176,9 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                         <ListItem component={Link} to="/recommended-application" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
                                             <ListItemText primary="Recommended" sx={{ color: '#fff' }} />
                                         </ListItem>
+                                        <ListItem component={Link} to="/sanctioned" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                            <ListItemText primary="Sanctioned" sx={{ color: '#fff' }} />
+                                        </ListItem>
                                     </List>
                                 </AccordionDetails>
                             </CSSTransition>

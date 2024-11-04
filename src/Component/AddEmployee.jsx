@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useAddEmployeeMutation } from '../Service/Query';
 import { Box, TextField, Typography, Button, MenuItem, FormControl, InputLabel, Select, OutlinedInput } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
+import { useAddEmployeeMutation } from '../Service/Query';
+import Swal from 'sweetalert2';
 
 const roleOptions = [
     { value: "screener", label: "Screener" },
@@ -30,17 +31,25 @@ const AddEmployee = () => {
         empId: ''
     }
     const [error, setError] = useState('');
-
-    const { handleSubmit, control, setValue, } = useForm({
+    
+    const { handleSubmit, control,watch,getValues, setValue, } = useForm({
         defaultValues: defaultValue
     })
+    console.log('formdata',watch(),getValues())
 
 
     const onSubmit = (data) => {
         console.log('submit', data)
+        addEmployee(data)
     }
     useEffect(() => {
-        if (isSuccess) console.log('data', data);
+        if (isSuccess) {
+            Swal.fire({
+                text: "Employee added successfully!",
+                icon: "success"
+            });
+        }
+
     }, [isSuccess]);
 
     return (
