@@ -7,8 +7,8 @@ export const leadsApi = createApi({
   reducerPath: 'leadsApi',
   baseQuery: fetchBaseQuery({
 
-    baseUrl: "https://api.fintechbasket.com/api/",
-    // baseUrl: "http://localhost:3000/api/",
+    // baseUrl: "https://api.fintechbasket.com/api/",
+    baseUrl: "http://localhost:3000/api/",
     // baseUrl: "http://192.168.0.119:3000/api/",
     // 'https://crm-backend-wui1.onrender.com/api/leads'
     // baseUrl: "http://localhost:3000/api/",

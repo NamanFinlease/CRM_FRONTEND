@@ -7,8 +7,8 @@ export const applicationApi = createApi({
   reducerPath: 'applicationApi',
   baseQuery: fetchBaseQuery({
 
-    baseUrl: "https://api.fintechbasket.com/api", 
-    // baseUrl: "http://localhost:3000/api",
+    // baseUrl: "https://api.fintechbasket.com/api", 
+    baseUrl: "http://localhost:3000/api",
     // baseUrl: "http://192.168.0.119:3000/api", 
     // 'https://crm-backend-wui1.onrender.com/api/leads'
 
@@ -117,6 +117,13 @@ export const applicationApi = createApi({
       }),
       invalidatesTags:["getApplication","applicantDetails"]
     }),
+    allocateDisbursal: builder.mutation({
+      query: (id) => ({
+        url: `/disbursals/${id}/?role=${role()}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags:["getApplication"]
+    }),
     fetchAllApplication: builder.query({
       query: ({ page, limit }) => `/applications/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["getApplication"]
@@ -177,6 +184,14 @@ export const applicationApi = createApi({
       query: ({page,limit}) => `/sanction/approved/?page=${page}&limit=${limit}&role=${role()}`,
       // providesTags:["getApplication"]
     }),
+    allDisbursals: builder.query({
+      query: ({page,limit}) => `/disbursals/?page=${page}&limit=${limit}&role=${role()}`,
+      // providesTags:["getApplication"]
+    }),
+    allocatedDisbursals: builder.query({
+      query: ({page,limit}) => `/disbursals/allocated/?page=${page}&limit=${limit}&role=${role()}`,
+      // providesTags:["getApplication"]
+    }),
     
   }),
 });
@@ -205,5 +220,8 @@ export const {
     useSanctionProfileQuery,
     useSanctionedQuery,
     useLazySanctionPreviewQuery,
+    useAllDisbursalsQuery,
+    useAllocateDisbursalMutation,
+    useAllocatedDisbursalsQuery,
 
 } = applicationApi;
