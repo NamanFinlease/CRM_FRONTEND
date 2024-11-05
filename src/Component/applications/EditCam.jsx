@@ -12,14 +12,12 @@ const EditCam = ({ camData, setIsEditing }) => {
     const [formData, setFormData] = useState(camData)
     const [errorMessage, setErrorMessage] = useState("")
 
-    console.log('edit form ', formData)
 
 
 
     const [updateCamDetails, isLoading, isSuccess, isError] = useUpdateCamDetailsMutation();
 
     const calculateDaysDifference = (disbursalDate, repaymentDate) => {
-        console.log("The loan amount is calculateDaysDifference", disbursalDate, repaymentDate)
 
         if (!disbursalDate && !repaymentDate) {
             return 0;
@@ -37,13 +35,18 @@ const EditCam = ({ camData, setIsEditing }) => {
         return daysDiff;
     };
     const calculateRepayment = (amount) => {
-        return Number(amount) ? Number(amount) + (Number(amount) * Number(formData.eligibleTenure) * Number(0.5) / 100) : 0
+        const repayAmount = Number(amount) ? Number(amount) + (Number(amount) * Number(formData.eligibleTenure) * Number(formData?.roi) / 100) : 0
+        return repayAmount
+
+    }
+    const calculatePF = (loanRecommended,pfPercent) => {
+        const processingFee = Number(loanRecommended) ? (Number(loanRecommended) * Number(pfPercent) / 100) : 0
+        return processingFee
 
     }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
         // Update form data with the new value
         setFormData((prevFormData) => {
             const updatedFormData = {
@@ -51,30 +54,34 @@ const EditCam = ({ camData, setIsEditing }) => {
                 [name]: value,   // Update the field that triggered the change event
             };
 
+            if(name === 'adminFeePercentage'){
+                updatedFormData.netAdminFeeAmount = calculatePF(updatedFormData.loanRecommended,updatedFormData.adminFeePercentage);
+                
+            }
+
             // Handle loan recommendation logic
             if (name === 'loanRecommended') {
-                const recommendedLoan = Number(value);
+                const recommendedLoan = Number(updatedFormData?.loanRecommended);
                 const finalsalaryToIncomeRatioPercentage = prevFormData.actualNetSalary
                     ? (recommendedLoan / prevFormData.actualNetSalary) * 100
                     : 0;
                 // Add calculated fields to updatedFormData
-                updatedFormData.finalsalaryToIncomeRatioPercentage = `${finalsalaryToIncomeRatioPercentage.toFixed()}%`;
-                updatedFormData.adminFee = recommendedLoan * 0.15;
-                updatedFormData.netAdminFeeAmount = recommendedLoan * 0.15;
-                updatedFormData.netDisbursalAmount = recommendedLoan - recommendedLoan * 0.15;
+                updatedFormData.finalsalaryToIncomeRatioPercentage = `${finalsalaryToIncomeRatioPercentage.toFixed()}`;
+                updatedFormData.netAdminFeeAmount = calculatePF(updatedFormData.loanRecommended,updatedFormData.adminFeePercentage);
+                updatedFormData.netDisbursalAmount = recommendedLoan - updatedFormData?.netAdminFeeAmount;
                 updatedFormData.repaymentAmount = calculateRepayment(recommendedLoan)
             }
             // Handle repayment date change and calculate repayment amount
-            if (name === 'repaymentDate') {
+            if (name === 'repaymentDate' || name === 'disbursalDate') {
 
-                const eligibleTenure = calculateDaysDifference(prevFormData.disbursalDate, value);
-                updatedFormData.eligibleTenure = eligibleTenure + 1 || 0;
+                const eligibleTenure = calculateDaysDifference(updatedFormData.disbursalDate, updatedFormData.repaymentDate);
+                updatedFormData.eligibleTenure = eligibleTenure + 1  || 0;
 
                 // Convert ROI to decimal
-                const roiDecimal = 0.005;
+                const roiDecimal = Number(updatedFormData?.roi)/100;
                 // ro
                 // Calculate repaymentAmount using the correct formula
-                const loanRecommended = Number(prevFormData.loanRecommended);
+                const loanRecommended = Number(updatedFormData.loanRecommended);
                 updatedFormData.repaymentAmount = loanRecommended
                     ? loanRecommended + (loanRecommended * roiDecimal * (eligibleTenure + 1))
                     : 0;
@@ -84,11 +91,9 @@ const EditCam = ({ camData, setIsEditing }) => {
             return updatedFormData;
         });
     };
-    console.log('form data', formData)
 
     const handleSave = async (e) => {
         e.preventDefault();
-        console.log("The form data is", formData);
 
         // Utility function to validate if the input is a valid date
         const isValidDate = (date) => {
@@ -98,13 +103,11 @@ const EditCam = ({ camData, setIsEditing }) => {
         // Validation checks
         if (formData.actualNetSalary > 0 && isValidDate(formData.disbursalDate) && isValidDate(formData.repaymentDate)) {
             try {
-                console.log("wating here to check")
                 const response = await updateCamDetails({
                     id: id, // ID of the CAM (assuming this is passed as a prop)
                     updates: formData // The updated data from the form
                 }).unwrap();
 
-                console.log("the response is ", response)
 
                 if (response?.success) {
                     Swal.fire({
@@ -121,7 +124,6 @@ const EditCam = ({ camData, setIsEditing }) => {
                 setErrorMessage("An error occurred while updating the data.");
             }
 
-            console.log('Form data saved:', formData);
         } else {
             setErrorMessage("Please fill out all the required fields.");
             console.warn("Validation failed. Required fields missing.");
@@ -138,13 +140,13 @@ const EditCam = ({ camData, setIsEditing }) => {
     // Function to calculate the salaryToIncomeRatio percentage based on the actual net salary
     const calculatesalaryToIncomeRatio = (salary) => {
         if (salary < 25000) {
-            return '0%';
+            return '0';
         } else if (salary >= 25000 && salary < 35000) {
-            return '35%';
+            return '35';
         } else if (salary >= 35000 && salary < 50000) {
-            return '40%';
+            return '40';
         } else {
-            return '45%';
+            return '45';
         }
     };
 
@@ -425,6 +427,45 @@ const EditCam = ({ camData, setIsEditing }) => {
                         value={calculatesalaryToIncomeRatio(formData.netSalary)}
                         onChange={handleChange}
                         disabled // Updated from InputProps to slotProps
+                        slotProps={{
+                            input: {
+                              endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                            },
+                          }}
+                    />
+                </div>
+                <div style={{ flex: '1 1 46%' }}>
+                    <TextField
+                        label="ROI"
+                        name="roi"
+                        type="string"
+                        fullWidth
+                        value={formData.roi}
+                        InputLabelProps={{ shrink: true }}
+                        onChange={handleChange}
+                        slotProps={{
+                            input: {
+                              endAdornment: <InputAdornment position="end" style={{ marginLeft: '-300px' }}>%</InputAdornment>,
+                            },
+                          }}
+                        // disabled
+                    />
+                </div>
+                <div style={{ flex: '1 1 46%' }}>
+                    <TextField
+                        label="Processing Fee % Inc. Gst"
+                        name="adminFeePercentage"
+                        type="string"
+                        fullWidth
+                        InputLabelProps={{ shrink: true }}
+                        value={formData?.adminFeePercentage}
+                        onChange={handleChange}
+                        slotProps={{
+                            input: {
+                              endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                            },
+                          }}
+                        // disabled
                     />
                 </div>
                 <div style={{ flex: '1 1 46%' }}>
@@ -457,9 +498,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                         value={formData.finalsalaryToIncomeRatioPercentage}
                         onChange={handleChange}
                         disabled
-                        // InputProps={{
-                        //     endAdornment: <InputAdornment position="start">%</InputAdornment>,
-                        // }}
+                        slotProps={{
+                            input: {
+                              endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                            },
+                          }}
                     />
                 </div>
 
@@ -476,30 +519,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                     />
                 </div>
                 {/* New Row (Additional Fields) */}
-                <div style={{ flex: '1 1 46%' }}>
-                    <TextField
-                        label="ROI"
-                        name="ROI"
-                        type="string"
-                        fullWidth
-                        value=" 0.5 %"
-                        InputLabelProps={{ shrink: true }}
-                        onChange={handleChange}
-                        //disabled // Updated from InputProps to slotProps
-                        disabled
-                    />
-                </div>
-                {/* <div style={{ flex: '1 1 46%' }}>
-        <TextField
-          label="Eligible Admin Fee"
-          name="eligibleAdminFee"
-          type="string"
-          fullWidth
-          value={formData.eligibleAdminFee}
-          onChange={handleChange}
-         disabled // Updated from InputProps to slotProps
-        />
-      </div> */}
+                
 
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
@@ -538,44 +558,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                 </div>
                 {/* Sixth Row (More Fields) */}
 
-                <div style={{ flex: '1 1 46%' }}>
-                    <TextField
-                        label="Processing Fee % Inc. Gst"
-                        name="adminFee"
-                        type="string"
-                        fullWidth
-                        InputLabelProps={{ shrink: true }}
-                        value="15 %"
-                        onChange={handleChange}
-                        disabled
-                    />
-                </div>
-                {/* <div style={{ flex: '1 1 46%' }}> */}
-                {/* <TextField
-          label="Admin Fee GST"
-          name="adminFeeGst"
-          type="string"
-          fullWidth
-          value="15%"
-          InputLabelProps={{ shrink: true }}
-          onChange={handleChange}
-         disabled  */}
-
-
-                {/* </div> */}
-                {/* Final Row (More Fields and Buttons) */}
-                {/* <div style={{ flex: '1 1 46%' }}>
-        <TextField
-          label="Admin Fee GST Amount"
-          name="adminFeeGstAmount"
-          type="string"
-          fullWidth
-          value={formData.adminFeeGstAmount}
-          InputLabelProps={{ shrink: true }}
-          onChange={handleChange}
-         disabled
-        />
-      </div> */}
+              
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
                         label="Processing Fee"
