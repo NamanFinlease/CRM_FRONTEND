@@ -32,8 +32,8 @@ const Cam = () => {
     loanRecommended: '',       // Loan Recommended
     disbursalDate: '',         // Disbursal Date
     repaymentDate: '',         // Repayment Date
-    adminFeePercentage: '0.15%',    // Admin Fee Inc. GST (%)
-    roi: '0.5',                   // ROI (Rate of Interest)
+    adminFeePercentage: '',    // Admin Fee Inc. GST (%)
+    roi: '',                   // ROI (Rate of Interest)
     netAdminFeeAmount: '',     // Net Admin Fee Amount
     eligibleTenure: '',        // Eligible Tenure
     repaymentAmount: '',       // Repayment Amount
@@ -57,16 +57,16 @@ const Cam = () => {
         customerType: details?.customerType || 'NEW',     // Customer Type
         dedupeCheck: details?.dedupeCheck || 'NO',        // Dedupe Check
         obligations: details?.obligations || 0,         // Obligations (Rs)
-        salaryToIncomeRatio: details?.salaryToIncomeRatio || '0%',  // Salary to Income Ratio
+        salaryToIncomeRatio: details?.salaryToIncomeRatio || '',  // Salary to Income Ratio
         eligibleLoan: details?.eligibleLoan || 0,         // Loan Amount
         netDisbursalAmount: details?.netDisbursalAmount || 0,         // Loan Amount
         loanRecommended: details?.loanRecommended || 0,   // Loan Recommended
         disbursalDate: details?.disbursalDate || '-',     // Disbursal Date
         finalsalaryToIncomeRatioPercentage: details?.finalsalaryToIncomeRatioPercentage || '-',     // Disbursal Date
         repaymentDate: details?.repaymentDate || '-',     // Repayment Date
-        adminFeePercentage: details?.adminFeePercentage || '15%',  // Admin Fee Inc. GST (%)
+        adminFeePercentage: details?.adminFeePercentage || '',  // Admin Fee Inc. GST (%)
         totalAdminFeeAmount: details?.totalAdminFeeAmount || '0',  // Admin Fee Inc. GST (%)
-        roi: details?.roi || '0.5',                        // ROI (Rate of Interest)
+        roi: details?.roi || '',                        // ROI (Rate of Interest)
         netAdminFeeAmount: details?.netAdminFeeAmount || 0,   // Net Admin Fee Amount
         eligibleTenure: details?.eligibleTenure || '-',   // Eligible Tenure
         repaymentAmount: details?.repaymentAmount || 0,   // Repayment Amount
@@ -134,13 +134,13 @@ const Cam = () => {
                       <TableCell>Obligations (Rs)</TableCell>
                       <TableCell>{formData?.obligations}</TableCell>
                       <TableCell>ROI</TableCell>
-                      <TableCell>{formData?.roi} %</TableCell>
+                      <TableCell>{formData?.roi}%</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Initial Salary To Income Ratio</TableCell>
-                      <TableCell>  {formData?.salaryToIncomeRatio}</TableCell>
+                      <TableCell>  {formData?.salaryToIncomeRatio}%</TableCell>
                       <TableCell>Final Salary To Income Ratio</TableCell>
-                      <TableCell>  {formData?.finalsalaryToIncomeRatioPercentage}</TableCell>
+                      <TableCell>  {formData?.finalsalaryToIncomeRatioPercentage}%</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>Eligible Loan</TableCell>
@@ -159,15 +159,15 @@ const Cam = () => {
                     <TableRow>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Admin Fee Inc. Gst(%)</TableCell>
-                      <TableCell>{formData?.adminFeePercentage} %</TableCell>
+                      <TableCell>Processing Fee Inc. Gst(%)</TableCell>
+                      <TableCell>{formData?.adminFeePercentage}%</TableCell>
                       <TableCell>Net Disbursal Amount</TableCell>
                       <TableCell>{formData?.netDisbursalAmount}</TableCell>
                       
                     </TableRow>
                     {/* Additional missing fields based on your formData? object */}
                     <TableRow>
-                      <TableCell>Net Admin Fee Amount</TableCell>
+                      <TableCell>Processing Fee Amount</TableCell>
                       <TableCell>{formData?.netAdminFeeAmount}</TableCell>
                       <TableCell>Tenure</TableCell>
                       <TableCell>{formData?.eligibleTenure}</TableCell>

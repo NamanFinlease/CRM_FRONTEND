@@ -43,7 +43,6 @@ const LoanSanctionPreview = ({
     console.log('Loan Approved');
     // setForceRender(pre => pre+1)
     approveApplication(id)
-    handleClose();
   };
 
   const modalStyle = {
@@ -66,6 +65,8 @@ const LoanSanctionPreview = ({
         text: "Sanction send to User!",
         icon: "success"
       });
+      handleClose();
+
       navigate("/recommended-application")
 
     }

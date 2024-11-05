@@ -26,11 +26,9 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    console.log('sidebar expand',expanded)
 
     // Function to handle accordion toggle
     const handleAccordionToggle = (panel) => (event, isExpanded) => {
-        console.log('expand',panel,isExpanded)
         setExpanded(isExpanded ? panel : false);
     };
 
@@ -54,8 +52,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         >
             {/* Heading for the sidebar */}
             <Box sx={{ backgroundColor: '#001f3f', padding: 2, textAlign: 'left' }}>
-                
-                <Typography variant="h6" sx={{ color: '#fff', fontWeight: 'bold', marginTop: '5px', marginLeft: '20px' }}>
+                <Typography component={Link} to="/"  variant="h6" sx={{textDecoration: 'none', color: '#fff', fontWeight: 'bold', marginTop: '5px', marginLeft: '20px' }}>
                     Speedoloan
                 </Typography>
             </Box>
@@ -176,6 +173,40 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                     <List>
                                         <ListItem component={Link} to="/recommended-application" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
                                             <ListItemText primary="Recommended" sx={{ color: '#fff' }} />
+                                        </ListItem>
+                                        <ListItem component={Link} to="/sanctioned" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                            <ListItemText primary="Sanctioned" sx={{ color: '#fff' }} />
+                                        </ListItem>
+                                    </List>
+                                </AccordionDetails>
+                            </CSSTransition>
+                        </Accordion>
+                    )}
+                    {(activeRole === "disbursalManager" || activeRole === "disbursalHead") && (
+                        <Accordion expanded={expanded === 'disbursal'} onChange={handleAccordionToggle('disbursal')}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ backgroundColor: 'transparent', color: '#fff' }}>
+                                <Typography variant="subtitle1">
+                                    <i className="bi bi-check" style={{ marginRight: '8px' }}></i> Disbursal
+                                </Typography>
+                            </AccordionSummary>
+                            <CSSTransition
+                                in={expanded === 'disbursal'}
+                                timeout={300}
+                                classNames={{
+                                    enter: 'accordion-enter',
+                                    enterActive: 'accordion-enter-active',
+                                    exit: 'accordion-exit',
+                                    exitActive: 'accordion-exit-active',
+                                }}
+                                unmountOnExit
+                            >
+                                <AccordionDetails sx={{ backgroundColor: 'transparent', padding: 0 }}>
+                                    <List>
+                                        <ListItem component={Link} to="/disbursal-new" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                            <ListItemText primary="New" sx={{ color: '#fff' }} />
+                                        </ListItem>
+                                        <ListItem component={Link} to="/disbursal-process" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                            <ListItemText primary="Processing" sx={{ color: '#fff' }} />
                                         </ListItem>
                                     </List>
                                 </AccordionDetails>

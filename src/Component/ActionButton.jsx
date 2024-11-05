@@ -250,7 +250,7 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                 }
 
                 {/* Render buttons if no action is selected */}
-                {(!actionType) && (
+                {(!actionType && !applicationProfile?.isApproved) && (
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 2 }}>
                         {activeRole === "sanctionHead" && <Button
                             variant="contained"
@@ -391,8 +391,8 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                                                 <MenuItem value="" disabled>
                                                     Select recipient to send back
                                                 </MenuItem>
-                                                <MenuItem value="screener">Screener</MenuItem>
-                                                <MenuItem value="creditManager">Credit Manager</MenuItem>
+                                                {activeRole === "creditManager" && <MenuItem value="screener">Screener</MenuItem>}
+                                                {activeRole === "sanctionHead" &&<MenuItem value="creditManager">Credit Manager</MenuItem>}
                                             </Select>
                                         </FormControl>
                                     </>

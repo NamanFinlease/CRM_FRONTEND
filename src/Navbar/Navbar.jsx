@@ -87,7 +87,7 @@ const handleRoleChange = (e) => {
 
   const sidebarLinks = [
     { text: 'User Profile', path: '/user-profile' },
-    { text: 'Add Employee', path: '/add-users' },
+    { text: 'Add Employee', path: '/add-employee' },
     { text: 'View Employees', path: '/employees-list' },
     { text: 'Import CSV', path: '/import-csv' },
     { text: 'Add Bank Details', path: '/add-bank-details' },

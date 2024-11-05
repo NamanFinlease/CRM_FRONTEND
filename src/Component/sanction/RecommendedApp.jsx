@@ -7,12 +7,9 @@ const RecommendedApp = () => {
   const [applications, setApplications] = useState([]); 
   const [totalApplications, setTotalApplications] = useState(0); 
   const [page, setPage] = useState(1); 
-  const [selectedApplication, setSelectedApplication] = useState(null);
-//   const apiUrl = import.meta.env.VITE_API_URL;
-  // const [allocateApplication, { data: updateApplication, isSuccess }] = useAllocateApplicationMutation();
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
   const navigate = useNavigate()
 
@@ -29,16 +26,6 @@ const RecommendedApp = () => {
   }, [page,allApplication,applicationSuccess]);
 
   
-  
-  const handleAllocate = async () => {
-    // Perform action based on selected leads
-    allocateApplication(selectedApplication);
-    
-  };
-
-  const handleCheckboxChange = (id) => {
-    setSelectedApplication(selectedApplication === id ? null : id);
-  }
 
   const handlePageChange = (newPaginationModel) => {
     // Fetch new data based on the new page
