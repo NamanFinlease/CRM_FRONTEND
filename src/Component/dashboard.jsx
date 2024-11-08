@@ -16,20 +16,25 @@ import { tokens } from '../theme';
 import useAuthStore from './store/authStore';
 import useStore from '../Store';
 import Header from "./Header";
-import { useGetLeadTotalRecordsQuery } from '../Service/Query';
+import { useGetLeadTotalRecordsQuery , useGetTotalRecordsForSupervisorQuery} from '../Service/Query';
 const Dashboard = ({ isSidebarOpen }) => {
   const { login, setEmployeeDetails } = useStore();
   const { empInfo,activeRole } = useAuthStore();
   const navigate = useNavigate(); // React Router hook for navigation
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
-  
   const { data: employeeDetails, isSuccess: empDetailsSuccess, refetch } = useGetEmployeesQuery();
-  
   const { data}  = useGetLeadTotalRecordsQuery();
+  const { data: supData, isSuccess: supSuccess } = useGetTotalRecordsForSupervisorQuery();
 
+  console.log("The active log is ",activeRole);
+  if( activeRole === 'supervisor'){
+    const  data = useGetTotalRecordsForSupervisorQuery();
+    console.log("The data is ",data)
+    if( data.isSuccess){
 
+    }
+  }
    // Define Employee roles with icons and paths
    const Employee = {
     admin: {
@@ -209,7 +214,36 @@ const Dashboard = ({ isSidebarOpen }) => {
         title: 'Sanctioned',
         no : data?.sanction?.sanctioned || 0
       },
-    }
+    },
+    supervisor :{
+      
+        leadNew: {
+          icon: <NewReleasesIcon className='mt-3'
+          sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+          path: "/lead-new",
+          title: 'Todays Leads',
+          no : supData?.leadsGeneratedToday
+        },
+        leadProcess: {
+          icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/lead-process",
+          title: 'Leads Process',
+          no : supData?.inProcessTodayCount
+        },
+        leadHold: {
+          icon: <PauseIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/lead-hold",
+          title: 'Leads Sanctioned',
+          no : supData?.sanctionedTodayCount
+        },
+        leadRejected: {
+          icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/rejected-leads",
+          title: 'Leads Rejected',
+          no : 10
+        },
+      }
+    
   };
 
   // Fetch and set employee details on component load
