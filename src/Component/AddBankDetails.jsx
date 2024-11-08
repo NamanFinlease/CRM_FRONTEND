@@ -64,21 +64,7 @@ const AddBankDetails = () => {
         }
     };
 
-    // Call API once a valid IFSC code is entered
-    useEffect(() => {
-        if (ifsc.length === 11) {
-            fetchBankDetails(ifsc);
-        }
-    }, [ifsc]);
 
-    useEffect(() => {
-        if ((isSuccess, data)) {
-            Swal.fire({
-                text: "new message",
-                icon: "success",
-            });
-        }
-    }, [isSuccess, data]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -91,6 +77,22 @@ const AddBankDetails = () => {
             accountNumber,
         });
     };
+
+        // Call API once a valid IFSC code is entered
+        useEffect(() => {
+            if (ifsc.length === 11) {
+                fetchBankDetails(ifsc);
+            }
+        }, [ifsc]);
+    
+        useEffect(() => {
+            if ((isSuccess, data)) {
+                Swal.fire({
+                    text: data?.message,
+                    icon: "success",
+                });
+            }
+        }, [isSuccess, data]);
 
     return (
         <Box

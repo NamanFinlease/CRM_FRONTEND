@@ -7,8 +7,8 @@ export const applicationApi = createApi({
   reducerPath: 'applicationApi',
   baseQuery: fetchBaseQuery({
 
-    baseUrl: "https://api.fintechbasket.com/api", 
-    // baseUrl: "http://localhost:3000/api",
+    // baseUrl: "https://api.fintechbasket.com/api", 
+    baseUrl: "http://localhost:3000/api",
     // baseUrl: "http://192.168.0.119:3000/api", 
     // 'https://crm-backend-wui1.onrender.com/api/leads'
 
@@ -132,6 +132,14 @@ export const applicationApi = createApi({
       }),
       invalidatesTags:["getDisbursals"]
     }),
+    disburseLoan: builder.mutation({
+      query: ({id,data}) => ({
+        url: `/disbursals/approve/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:data
+      }),
+      invalidatesTags:["getDisbursals"]
+    }),
     fetchAllApplication: builder.query({
       query: ({ page, limit }) => `/applications/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["getApplication"]
@@ -225,6 +233,7 @@ export const {
     useApproveApplicationMutation,
     useUpdatePersonalDetailsMutation,
     useRecommendLoanMutation,
+    useDisburseLoanMutation,
     useGetBankDetailsQuery,
     useFetchAllocatedApplicationQuery,
     useFetchSingleApplicationQuery,

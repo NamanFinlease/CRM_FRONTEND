@@ -24,14 +24,13 @@ import dayjs from 'dayjs';
 
 
 const LeadDetails = ({ leadData, setLeadEdit }) => {
-  console.log('lead data', leadData)
   const { id } = useParams();
   const [updateLead, { data, isSuccess, isError, error }] = useUpdateLeadMutation();
 
   const { handleSubmit, control, setValue } = useForm({
     resolver: yupResolver(leadUpdateSchema),
     defaultValues: leadData,
-    mode: 'onBlur', // Validate on change (real-time validation)
+    mode: 'onBlur',
     reValidateMode: 'onChange',
   });
 
@@ -44,7 +43,6 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
   }, [leadData, setValue]);
 
   const onSubmit = (formData) => {
-    console.log('form Data',typeof formData.dob)
     setLeadEdit(false);
     updateLead({ id, formData });
   };

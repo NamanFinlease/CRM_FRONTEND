@@ -38,7 +38,6 @@ const BankDetails = ({ id }) => {
 
     // Handle form submission
     const onSubmit = (data) => {
-        console.log('data',data)
         addBank({ id, data });
 
     };

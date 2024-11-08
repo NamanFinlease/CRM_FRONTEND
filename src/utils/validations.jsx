@@ -109,6 +109,20 @@ export const leadUpdateSchema = Yup.object().shape({
   city: Yup.string().required('City is required'),
 });
 
+export const disburseSchema = Yup.object().shape({
+  payableAccount: Yup.string().required('Payable Account is required'),
+  amount: Yup
+    .string()
+    .matches(/^\d+$/, 'Amount must be a numeric string')
+    .required('Amount is required'),
+  paymentMode: Yup.string().required('Payment Mode is required'),
+  channel: Yup.string().required('Channel is required'),
+  disbursalDate: Yup.date()
+    .typeError('Disbursal Date is required')
+    .required('Disbursal Date is required'),
+  remarks: Yup.string().required('Remarks are required'),
+});
+
   
 
   
