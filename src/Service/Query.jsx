@@ -211,7 +211,12 @@ export const leadsApi = createApi({
     getLeadTotalRecords: builder.query({
       query: () => `leads/totalRecords/?role=${role()}`
     }),
-
+    // get the totalRecordsForSupervisor
+    getTotalRecordsForSupervisor :  builder.query(
+      {
+        query : () => `leads/totalRecordsForSupervisor/`
+      }
+    ),
   }),
 });
 
@@ -247,5 +252,6 @@ export const {
   useRejectLeadMutation,
   useLazyFetchCibilScoreQuery,
   useFetchAllRejectedLeadsQuery,
-  useGetLeadTotalRecordsQuery
+  useGetLeadTotalRecordsQuery,
+  useGetTotalRecordsForSupervisorQuery
 } = leadsApi;
