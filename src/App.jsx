@@ -13,11 +13,9 @@ import ExportForm from './Component/ExportForm';
 import Navbar from './Navbar/Navbar';
 import Sidebar from './Navbar/Sidebar';
 import { useEffect, useState } from 'react';
-import useStore from './Store';
 import MISReport from './Component/MisReort';
 import ForgotPasswordPage from './Component/ForgotPasswordPage';
 import ResetPasswordPage from './Component/ResetPasswordPage';
-import Cookies from 'universal-cookie';
 import UserProfileForm from './Component/UserProfileForm';
 import AddEmployee from './Component/AddEmployee';
 import ViewUsersForm from './Component/ViewUsersForm';
@@ -39,11 +37,13 @@ import AadhaarOtpVerification from './Component/leads/AadhaarOtpVerification';
 import CompareUserDetails from './Component/leads/PanCompare';
 import HoldApplication from './Component/applications/HoldApplication';
 import RejectedApplication from './Component/applications/RejectedApplication';
-import SanctionReject from './Component/sanction/SanctionReject';
-import SanctionSentBack from './Component/sanction/SanctionSentBack';
 import RecommendedApp from './Component/sanction/RecommendedApp';
 import SanctionProfile from './Component/sanction/SanctionProfile';
 import Sanctioned from './Component/sanction/sanctioned';
+import DisburseNew from './Component/disbursal/DisburseNew';
+import DisbursalProcess from './Component/disbursal/DisburseProcessing';
+import DisbursalProfile from './Component/disbursal/DisbursalProfile';
+import DisbursePending from './Component/disbursal/DisbursePending';
 
 
 function App() {
@@ -99,6 +99,10 @@ function App() {
                   <Route path="/sanction-reject" element={<DynamicTable />} />
                   <Route path="/sanction-sentback" element={<DynamicTable />} />
                   <Route path="/sanctioned" element={<Sanctioned />} />
+                  <Route path="/disbursal-new" element={<DisburseNew />} />
+                  <Route path="/disbursal-process" element={<DisbursalProcess />} />
+                  <Route path="/disbursal-profile/:id" element={<DisbursalProfile />} />
+                  <Route path="/disbursal-pending/" element={<DisbursePending />} />
 
                   <Route path="/application-recommendation" element={<DynamicTable
                     header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager"]}
@@ -109,14 +113,7 @@ function App() {
                       ["604", "Recommend", "2024-09-06", "Online", "Sophia Wilson", "Florida", "Orlando", "Branch P", "555-6666", "STU901234P", "Business", "Completed", "Manager 4"]
                     ]} />} />
                   
-                  <Route path="/disbursal-new" element={<DynamicTable
-                    header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager", "Sanction-On", "Sanction-Amount"]}
-                    rows={[
-                      ["901", "Disbursed", "2024-09-09", "Online", "Liam Jackson", "California", "Los Angeles", "Branch Y", "555-5555", "STU123456N", "Individual", "Active", "Manager 1", "2024-09-10", "$10000"],
-                      ["902", "Disbursed", "2024-09-08", "Offline", "Emma Wilson", "New York", "Brooklyn", "Branch Z", "555-6666", "VWX789012O", "Business", "Pending", "Manager 2", "2024-09-12", "$12000"],
-                      ["903", "Disbursed", "2024-09-07", "Referral", "Noah Johnson", "Texas", "Dallas", "Branch AA", "555-7777", "YZA345678P", "Individual", "Completed", "Manager 3", "2024-09-11", "$9500"],
-                      ["904", "Disbursed", "2024-09-06", "Online", "Olivia Martinez", "Florida", "Orlando", "Branch BB", "555-8888", "BCD901234Q", "Business", "Active", "Manager 4", "2024-09-14", "$11000"]
-                    ]} />} />
+                  
                   <Route path="/disbursal-inprocess" element={<DynamicTable
                     header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager", "Sanction-On", "Sanction-Amount", "Disbursal Manager"]}
                     rows={[

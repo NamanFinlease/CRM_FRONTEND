@@ -35,11 +35,9 @@ const AddEmployee = () => {
     const { handleSubmit, control,watch,getValues, setValue, } = useForm({
         defaultValues: defaultValue
     })
-    console.log('formdata',watch(),getValues())
 
 
     const onSubmit = (data) => {
-        console.log('submit', data)
         addEmployee(data)
     }
     useEffect(() => {
@@ -138,6 +136,7 @@ const AddEmployee = () => {
                                     fullWidth
                                     label="Email"
                                     variant="outlined"
+                                    InputLabelProps={{shrink:true}}
                                     error={!!fieldState.error}
                                     helperText={fieldState.error ? fieldState.error.message : ''}
                                 />
@@ -150,7 +149,6 @@ const AddEmployee = () => {
                             name="password"
                             control={control}
                             render={({ field, fieldState }) => {
-                                console.log('password field', field)
                                 return (
                                     <TextField
                                         {...field}
@@ -159,6 +157,7 @@ const AddEmployee = () => {
                                         label="Password"
                                         type='password'
                                         variant="outlined"
+                                        InputLabelProps={{shrink:true}}
                                         error={!!fieldState.error}
                                         helperText={fieldState.error ? fieldState.error.message : ''}
                                     />
@@ -208,7 +207,6 @@ const AddEmployee = () => {
                             name="empId"
                             control={control}
                             render={({ field, fieldState }) => {
-                                console.log('field', field)
                                 return (
                                     <TextField
                                         {...field}
@@ -241,7 +239,6 @@ const AddEmployee = () => {
                                     input={<OutlinedInput id="emp-role" label="Employee Role" />}
                                     renderValue={(selected) =>
                                         selected.map((value) => {
-                                            console.log('value',value)
                                             const selectedRole = roles.find(role => role.value === value);
                                             return selectedRole ? selectedRole.label : value;
                                         }).join(', ')

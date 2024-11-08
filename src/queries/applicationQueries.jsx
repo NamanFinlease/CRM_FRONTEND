@@ -18,7 +18,7 @@ export const applicationApi = createApi({
     },
 
   }),
-  tagTypes: ["getApplication","getProfile","bankDetails","applicantDetails","getCamDetails","recommendedApplication"],
+  tagTypes: ["getApplication","getProfile","bankDetails","applicantDetails",'getDisbursals',"getCamDetails","recommendedApplication"],
   endpoints: (builder) => ({
     // GET request to fetch a Pokemon by name
     holdApplication: builder.mutation({
@@ -117,6 +117,21 @@ export const applicationApi = createApi({
       }),
       invalidatesTags:["getApplication","applicantDetails"]
     }),
+    allocateDisbursal: builder.mutation({
+      query: (id) => ({
+        url: `/disbursals/${id}/?role=${role()}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags:["getApplication"]
+    }),
+    recommendLoan: builder.mutation({
+      query: ({id,remarks}) => ({
+        url: `/disbursals/recommend/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{remarks}
+      }),
+      invalidatesTags:["getDisbursals"]
+    }),
     fetchAllApplication: builder.query({
       query: ({ page, limit }) => `/applications/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["getApplication"]
@@ -177,6 +192,22 @@ export const applicationApi = createApi({
       query: ({page,limit}) => `/sanction/approved/?page=${page}&limit=${limit}&role=${role()}`,
       // providesTags:["getApplication"]
     }),
+    allDisbursals: builder.query({
+      query: ({page,limit}) => `/disbursals/?page=${page}&limit=${limit}&role=${role()}`,
+      // providesTags:["getApplication"]
+    }),
+    allocatedDisbursals: builder.query({
+      query: ({page,limit}) => `/disbursals/allocated/?page=${page}&limit=${limit}&role=${role()}`,
+      providesTags:["getDisbursals"]
+    }),
+    disbursalProfile: builder.query({
+      query: (id) => `/disbursals/${id}/?role=${role()}`,
+      // providesTags:["getApplication"]
+    }),
+    pendingDisbursal: builder.query({
+      query: (id) => `/disbursals/pending/?role=${role()}`,
+      // providesTags:["getApplication"]
+    }),
     
   }),
 });
@@ -193,6 +224,7 @@ export const {
     useSanctionSendBackMutation,
     useApproveApplicationMutation,
     useUpdatePersonalDetailsMutation,
+    useRecommendLoanMutation,
     useGetBankDetailsQuery,
     useFetchAllocatedApplicationQuery,
     useFetchSingleApplicationQuery,
@@ -205,5 +237,10 @@ export const {
     useSanctionProfileQuery,
     useSanctionedQuery,
     useLazySanctionPreviewQuery,
+    useAllDisbursalsQuery,
+    useAllocateDisbursalMutation,
+    useAllocatedDisbursalsQuery,
+    useDisbursalProfileQuery,
+    usePendingDisbursalQuery,
 
 } = applicationApi;
