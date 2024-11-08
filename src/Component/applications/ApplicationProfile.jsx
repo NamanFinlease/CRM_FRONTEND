@@ -38,6 +38,7 @@ const ApplicationProfile = () => {
       setUploadedDocs(applicationData?.lead?.document.map(doc => doc.type));
     }
   }, [applicationSuccess, applicationData]);
+  console.log("id",applicationData)
 
   return (
     <div className="crm-container" style={{ padding: '10px' }}>
@@ -101,7 +102,7 @@ const ApplicationProfile = () => {
                   />
                 }
 
-                {currentPage === "cam" && <Cam />}
+                {currentPage === "cam" && applicationData._id && <Cam id={applicationData._id} />}
               </>
 
             }

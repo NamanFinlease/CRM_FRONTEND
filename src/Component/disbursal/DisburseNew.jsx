@@ -87,6 +87,8 @@ const DisburseNew = () => {
 
   }));
 
+  console.log('rows',rows)
+
   useEffect(() => {
     if (isSuccess) {
       navigate("/disbursal-process")
@@ -94,7 +96,7 @@ const DisburseNew = () => {
   }, [isSuccess, allApplication])
 
   useEffect(() => {
-    refetch()
+    // refetch()
   }, [page, allApplication])
 
   useEffect(() => {

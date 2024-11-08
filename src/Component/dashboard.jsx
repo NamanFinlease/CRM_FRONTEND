@@ -197,6 +197,18 @@ const Dashboard = ({ isSidebarOpen }) => {
         title: 'Applications Rejected',
         no : data?.applications?.rejectedApplications || 0
       },
+      sanctionPending: {
+        icon: <NewReleasesIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+        path: "/recommended-application",
+        title: 'Pending Sanction',
+        no : data?.sanction?.newSanctions || 0
+      },
+      sanctioned: {
+        icon: <NewReleasesIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+        path: "/sanctioned",
+        title: 'Sanctioned',
+        no : data?.sanction?.sanctioned || 0
+      },
     }
   };
 

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
-import { useAllocatedDisbursalsQuery } from '../../queries/applicationQueries';
+import { Alert } from '@mui/material';
 import useAuthStore from '../store/authStore';
+import { usePendingDisbursalQuery } from '../../queries/applicationQueries';
 
 
 
-const DisbursalProcess = () => {
+const DisbursePending = () => {
     const [disbursals, setDisbursals] = useState()
     const [totalDisbursals, setTotalDisbursals] = useState()
     const [id, setId] = useState(null)
@@ -17,7 +18,7 @@ const DisbursalProcess = () => {
         pageSize: 5,
     });
 
-    const { data, isSuccess, refetch } = useAllocatedDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+    const { data, isSuccess,isError,error, refetch } = usePendingDisbursalQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     // const {data:applicationData,isSuccess:applicationSuccess} = useFetchSingleApplicationQuery(id,{skip:id===null})
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
@@ -129,9 +130,15 @@ const DisbursalProcess = () => {
                 />
             </div>}
 
+            {(isError) &&
+          <Alert severity="error" style={{ marginTop: "10px" }}>
+            {error?.data?.message}
+          </Alert>
+        }
+
         </>
     )
 }
 
-export default DisbursalProcess
+export default DisbursePending
 

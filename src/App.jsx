@@ -43,6 +43,7 @@ import Sanctioned from './Component/sanction/sanctioned';
 import DisburseNew from './Component/disbursal/DisburseNew';
 import DisbursalProcess from './Component/disbursal/DisburseProcessing';
 import DisbursalProfile from './Component/disbursal/DisbursalProfile';
+import DisbursePending from './Component/disbursal/DisbursePending';
 
 
 function App() {
@@ -101,6 +102,7 @@ function App() {
                   <Route path="/disbursal-new" element={<DisburseNew />} />
                   <Route path="/disbursal-process" element={<DisbursalProcess />} />
                   <Route path="/disbursal-profile/:id" element={<DisbursalProfile />} />
+                  <Route path="/disbursal-pending/" element={<DisbursePending />} />
 
                   <Route path="/application-recommendation" element={<DynamicTable
                     header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager"]}

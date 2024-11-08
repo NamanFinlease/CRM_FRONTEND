@@ -115,7 +115,7 @@ const SanctionProfile = () => {
 
                 {currentPage === "documents" && <UploadDocuments leadData={data?.lead} setUploadedDocs={setUploadedDocs} uploadedDocs={uploadedDocs} />}
 
-                {currentPage === "cam" && <Cam />}
+                {currentPage === "cam" && <Cam id={data._id} />}
               </>
 
             }
