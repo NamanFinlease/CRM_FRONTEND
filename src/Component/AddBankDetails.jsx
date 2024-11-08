@@ -1,144 +1,281 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+    Box,
+    Card,
+    CardContent,
+    Typography,
+    TextField,
+    Button,
+    Grid,
+    InputAdornment,
+    Icon,
+    Divider,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { useAdminBankMutation } from "../Service/Query";
 
 const AddBankDetails = () => {
-  const [ifscCode, setIfscCode] = useState('');
-  const [bankDetails, setBankDetails] = useState({
-    ifsc: '',
-    bankName: '',
-    branch: '',
-    state: '',
-    district: '',
-    city: '',
-    address: ''
-  });
+    const [ifsc, setIfsc] = useState("");
+    const [bankName, setBankName] = useState("");
+    const [branchName, setBranchName] = useState("");
+    const [accountHolder, setAccountHolder] = useState("");
+    const [accountNumber, setAccountNumber] = useState("");
+    const [adminBank, { data, isError, isSuccess, error: bankError }] =
+        useAdminBankMutation();
+    const [error, setError] = useState("");
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setBankDetails({
-      ...bankDetails,
-      [name]: value
-    });
-  };
+    // Validate IFSC on each key press
+    const handleIfscChange = (e) => {
+        const input = e.target.value.toUpperCase(); // Convert input to uppercase
 
-  const handleIfscSearch = () => {
-    console.log('Searching for IFSC code:', ifscCode);
-  };
+        let formattedInput = input;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Bank details submitted:', bankDetails);
-  };
+        // Validation rules:
+        if (/^[A-Z]{0,4}$/.test(input)) {
+            // Allow up to 4 letters at the start
+            setError("");
+        } else if (/^[A-Z]{4}\d{0,7}$/.test(input)) {
+            // After 4 letters, allow only up to 7 numbers
+            setError("");
+        } else {
+            // If input does not match the format, prevent further input
+            formattedInput = ifsc;
+            setError("Format should be 4 letters followed by 7 digits.");
+        }
 
-  return (
-    <div className="container mt-5" style={{ maxWidth: '600rem', margin: '0 auto' }}>
-      <form onSubmit={handleSubmit} className="p-4 shadow rounded bg-light" style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h2 className="text-center mb-5" style={{color:'black'}}>Add Bank Details</h2>
+        setIfsc(formattedInput);
+    };
 
-        <div className="form-group mb-4">
-          <label htmlFor="ifscCode">Search by IFSC Code</label>
-          <div className="d-flex">
-            <input
-              type="text"
-              className="form-control"
-              id="ifscCode"
-              value={ifscCode}
-              onChange={(e) => setIfscCode(e.target.value)}
-              placeholder="Enter IFSC Code"
-            />
-            <button type="button" className="btn btn-primary ms-2" onClick={handleIfscSearch}>
-              Search
-            </button>
-          </div>
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="ifsc">Bank IFSC</label>
-          <input
-            type="text"
-            className="form-control"
-            id="ifsc"
-            name="ifsc"
-            value={bankDetails.ifsc}
-            onChange={handleInputChange}
-            placeholder="Enter Bank IFSC"
-          />
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="bankName">Bank Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="bankName"
-            name="bankName"
-            value={bankDetails.bankName}
-            onChange={handleInputChange}
-            placeholder="Enter Bank Name"
-          />
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="branch">Bank Branch</label>
-          <input
-            type="text"
-            className="form-control"
-            id="branch"
-            name="branch"
-            value={bankDetails.branch}
-            onChange={handleInputChange}
-            placeholder="Enter Bank Branch"
-          />
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="state">Bank State</label>
-          <input
-            type="text"
-            className="form-control"
-            id="state"
-            name="state"
-            value={bankDetails.state}
-            onChange={handleInputChange}
-            placeholder="Enter Bank State"
-          />
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="district">Bank District</label>
-          <input
-            type="text"
-            className="form-control"
-            id="district"
-            name="district"
-            value={bankDetails.district}
-            onChange={handleInputChange}
-            placeholder="Enter Bank District"
-          />
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="city">Bank City</label>
-          <input
-            type="text"
-            className="form-control"
-            id="city"
-            name="city"
-            value={bankDetails.city}
-            onChange={handleInputChange}
-            placeholder="Enter Bank City"
-          />
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="address">Bank Address</label>
-          <input
-            type="text"
-            className="form-control"
-            id="address"
-            name="address"
-            value={bankDetails.address}
-            onChange={handleInputChange}
-            placeholder="Enter Bank Address"
-          />
-        </div>
-        <div className="d-flex justify-content-center">
-          <button type="submit" className="btn btn-success w-50">Add Bank Detail</button>
-        </div>      </form>
-    </div>
-  );
+    // Fetch bank details using the Razorpay IFSC API
+    const fetchBankDetails = async (ifscCode) => {
+        try {
+            const response = await axios.get(
+                `https://ifsc.razorpay.com/${ifscCode}`
+            );
+            setBankName(response.data.BANK);
+            setBranchName(response.data.BRANCH);
+        } catch (error) {
+            console.error("Failed to fetch bank details:", error);
+            setBankName("");
+            setBranchName("");
+        }
+    };
+
+    // Call API once a valid IFSC code is entered
+    useEffect(() => {
+        if (ifsc.length === 11) {
+            fetchBankDetails(ifsc);
+        }
+    }, [ifsc]);
+
+    useEffect(() => {
+        if ((isSuccess, data)) {
+            Swal.fire({
+                text: "new message",
+                icon: "success",
+            });
+        }
+    }, [isSuccess, data]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        await adminBank({
+            ifsc,
+            bankName,
+            branchName,
+            accountHolder,
+            accountNumber,
+        });
+    };
+
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "40px",
+                backgroundColor: "#f3f4f6", // Light gray background
+                minHeight: "100vh",
+            }}
+        >
+            <Card
+                sx={{
+                    maxWidth: 600,
+                    width: "100%",
+                    padding: "24px 32px",
+                    borderRadius: "12px",
+                    boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.1)",
+                    backgroundColor: "#fff",
+                    "&:hover": {
+                        boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.15)",
+                    },
+                }}
+            >
+                <form onSubmit={handleSubmit}>
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            fontWeight: "700",
+                            color: "#333", // Dark gray for the header
+                            textAlign: "center",
+                            marginBottom: "24px",
+                            borderBottom: "3px solid #42a5f5",
+                            paddingBottom: "6px",
+                            letterSpacing: "0.5px",
+                        }}
+                    >
+                        Add Bank Details
+                    </Typography>
+
+                    <CardContent>
+                        <Grid container spacing={2}>
+                            {[
+                                {
+                                    label: "IFSC",
+                                    placeholder: "Enter IFSC Code",
+                                    value: ifsc,
+                                    onChange: handleIfscChange,
+                                    error: Boolean(error),
+                                    helperText: error,
+                                    disabled: false,
+                                    InputProps: {
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <SearchIcon
+                                                    sx={{
+                                                        backgroundColor:
+                                                            "#9e9e9e", // Matches placeholder color
+                                                        borderRadius: "50%",
+                                                        padding: "4px",
+                                                        color: "#fff", // Icon color if you want it to stand out on background
+                                                    }}
+                                                />
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                },
+                                {
+                                    label: "Bank Name",
+                                    placeholder: "Enter Bank Name",
+                                    value: bankName,
+                                    onChange: (e) =>
+                                        setBankName(e.target.value),
+                                    disabled: true,
+                                },
+                                {
+                                    label: "Branch Name",
+                                    placeholder: "Enter Branch Name",
+                                    value: branchName,
+                                    onChange: (e) =>
+                                        setBranchName(e.target.value),
+                                    disabled: true,
+                                },
+                                {
+                                    label: "Account Holder",
+                                    placeholder: "Enter Account Holder Name",
+                                    value: accountHolder,
+                                    onChange: (e) =>
+                                        setAccountHolder(e.target.value),
+                                    disabled: false,
+                                },
+                                {
+                                    label: "Account Number",
+                                    placeholder: "Enter Account Number",
+                                    value: accountNumber,
+                                    onChange: (e) =>
+                                        setAccountNumber(e.target.value),
+                                    disabled: false,
+                                },
+                            ].map((field, index) => (
+                                <Grid item xs={12} sm={6} key={index}>
+                                    <Box
+                                        sx={{
+                                            padding: "8px",
+                                            borderRadius: "8px",
+                                            backgroundColor: "#f9f9f9",
+                                            boxShadow:
+                                                "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                                            "&:hover": {
+                                                boxShadow:
+                                                    "0px 8px 15px rgba(0, 0, 0, 0.2)",
+                                            },
+                                        }}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "500",
+                                                color: "#42a5f5",
+                                                mb: 1,
+                                            }}
+                                        >
+                                            {field.label}
+                                        </Typography>
+                                        <TextField
+                                            variant="outlined"
+                                            placeholder={field.placeholder}
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            error={field.error}
+                                            helperText={field.helperText}
+                                            fullWidth
+                                            disabled={field.disabled} // Conditionally disable
+                                            InputProps={field.InputProps || {}}
+                                            sx={{
+                                                "& .MuiOutlinedInput-root": {
+                                                    backgroundColor: "#fff",
+                                                    "& fieldset": {
+                                                        borderColor: "#42a5f5",
+                                                    },
+                                                    "&:hover fieldset": {
+                                                        borderColor: "#1e88e5",
+                                                    },
+                                                    "& input": {
+                                                        color: "#000",
+                                                        "&:disabled": {
+                                                            color: "#000", // Ensure black font color when disabled
+                                                            WebkitTextFillColor:
+                                                                "#000", // Override text fill color
+                                                        },
+                                                    }, // Set input text color to black
+                                                },
+                                            }}
+                                        />
+                                    </Box>
+                                </Grid>
+                            ))}
+                        </Grid>
+
+                        <Box sx={{ textAlign: "center", mt: 4 }}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                    fontWeight: "600",
+                                    textTransform: "none",
+                                    padding: "8px 20px",
+                                    borderRadius: "10px",
+                                    backgroundColor: "#42a5f5",
+                                    boxShadow:
+                                        "0px 4px 10px rgba(66, 165, 245, 0.3)",
+                                    "&:hover": {
+                                        backgroundColor: "#1e88e5",
+                                    },
+                                }}
+                            >
+                                Submit
+                            </Button>
+                        </Box>
+                    </CardContent>
+                </form>
+            </Card>
+        </Box>
+    );
 };
 
 export default AddBankDetails;
