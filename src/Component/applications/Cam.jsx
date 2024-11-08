@@ -4,10 +4,14 @@ import { useGetCamDetailsQuery, useUpdateCamDetailsMutation } from '../../querie
 import { useParams } from 'react-router-dom';
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import EditCam from './EditCam';
+import useAuthStore from '../store/authStore';
+import { formatDate } from '../../utils/helper';
 
 
 const Cam = ({id}) => {
   const { data, isLoading: camGetloading, isError: camGetError, isSuccess: getCamSuccess } = useGetCamDetailsQuery(id, { skip: id === null });
+  const {activeRole} = useAuthStore()
+  
   // const updatData = useUpdateCamDetailsMutation();
   const [isEditing, setIsEditing] = useState(false);
   // const response = useGetCamDetailsQuery(id, { skip: id === null });  // Fetch data
@@ -60,9 +64,9 @@ const Cam = ({id}) => {
         eligibleLoan: details?.eligibleLoan || 0,         // Loan Amount
         netDisbursalAmount: details?.netDisbursalAmount || 0,         // Loan Amount
         loanRecommended: details?.loanRecommended || 0,   // Loan Recommended
-        disbursalDate: details?.disbursalDate || '-',     // Disbursal Date
+        disbursalDate: details?.disbursalDate && formatDate(details?.disbursalDate) || '-',     // Disbursal Date
         finalsalaryToIncomeRatioPercentage: details?.finalsalaryToIncomeRatioPercentage || '-',     // Disbursal Date
-        repaymentDate: details?.repaymentDate || '-',     // Repayment Date
+        repaymentDate: details?.repaymentDate && formatDate(details?.repaymentDate) || '-',     // Repayment Date
         adminFeePercentage: details?.adminFeePercentage || '',  // Admin Fee Inc. GST (%)
         totalAdminFeeAmount: details?.totalAdminFeeAmount || '0',  // Admin Fee Inc. GST (%)
         roi: details?.roi || '',                        // ROI (Rate of Interest)
@@ -182,9 +186,9 @@ const Cam = ({id}) => {
 
 
               {/* Edit CAM Button */}
-              <Button variant="contained" onClick={() => setIsEditing(true)} style={{ marginTop: '20px' }}>
+              {activeRole === "creditManager" && <Button variant="contained" onClick={() => setIsEditing(true)} style={{ marginTop: '20px' }}>
                 Edit CAM
-              </Button>
+              </Button>}
             </div>
           ) : (
             // <form>

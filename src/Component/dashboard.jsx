@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Navbar/Sidebar';
 import Navbar from '../Navbar/Navbar';
 import GlobalBox from './GlobalBox';
-import { useGetEmployeesQuery } from '../Service/Query';
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -16,7 +15,7 @@ import { tokens } from '../theme';
 import useAuthStore from './store/authStore';
 import useStore from '../Store';
 import Header from "./Header";
-import { useGetLeadTotalRecordsQuery , useGetTotalRecordsForSupervisorQuery} from '../Service/Query';
+import {useGetEmployeesQuery, useGetLeadTotalRecordsQuery , useGetTotalRecordsForSupervisorQuery} from '../Service/Query';
 const Dashboard = ({ isSidebarOpen }) => {
   const { login, setEmployeeDetails } = useStore();
   const { empInfo,activeRole } = useAuthStore();

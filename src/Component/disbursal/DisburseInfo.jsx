@@ -71,7 +71,7 @@ const DisburseInfo = ({ disburse }) => {
       <DisbursalProfile disburse={disburse} />
 
       {/* Clickable Header for Disbursal Bank with Background */}
-      {activeRole === "disbursalHead" &&
+      {(activeRole === "disbursalHead" && !applicationProfile.isDisbursed) &&
         <>
           <Box
             onClick={handleToggleForm}

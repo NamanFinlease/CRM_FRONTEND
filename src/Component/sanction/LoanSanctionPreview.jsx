@@ -160,7 +160,7 @@ const LoanSanctionPreview = ({
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
                       ROI
                     </TableCell>
-                    <TableCell>{roi}</TableCell>
+                    <TableCell>{roi}%</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>

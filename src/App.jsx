@@ -44,6 +44,7 @@ import DisburseNew from './Component/disbursal/DisburseNew';
 import DisbursalProcess from './Component/disbursal/DisburseProcessing';
 import DisbursalProfile from './Component/disbursal/DisbursalProfile';
 import DisbursePending from './Component/disbursal/DisbursePending';
+import Disbursed from './Component/disbursal/Disbursed';
 
 
 function App() {
@@ -91,6 +92,7 @@ function App() {
                   <Route path="/compare" element={<CompareUserDetails />} />
                   <Route path="/application-process" element={<ProcessingApplication />} />
                   <Route path="/application-hold" element={<HoldApplication />} />
+                  <Route path="/disbursed" element={<Disbursed />} />
 
                   <Route path="/rejected-Applications" element={<RejectedApplication />} />
                   <Route path="/sanction" element={<DynamicTable />} />

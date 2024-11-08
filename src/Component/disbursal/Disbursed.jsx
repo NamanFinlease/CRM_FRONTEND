@@ -3,11 +3,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import { Alert } from '@mui/material';
 import useAuthStore from '../store/authStore';
-import { usePendingDisbursalQuery } from '../../queries/applicationQueries';
+import { useDisbursedQuery, usePendingDisbursalQuery } from '../../queries/applicationQueries';
 
 
 
-const DisbursePending = () => {
+const Disbursed = () => {
     const [disbursals, setDisbursals] = useState()
     const [totalDisbursals, setTotalDisbursals] = useState()
     const [id, setId] = useState(null)
@@ -18,7 +18,7 @@ const DisbursePending = () => {
         pageSize: 5,
     });
 
-    const { data, isSuccess,isError,error, refetch } = usePendingDisbursalQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+    const { data, isSuccess,isError,error, refetch } = useDisbursedQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     // const {data:applicationData,isSuccess:applicationSuccess} = useFetchSingleApplicationQuery(id,{skip:id===null})
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel)
@@ -42,9 +42,11 @@ const DisbursePending = () => {
         { field: 'salary', headerName: 'Salary', width: 150 },
         { field: 'source', headerName: 'Source', width: 150 },
         ...(activeRole === "disbursalHead" || activeRole === "admin"
-            ? [{ field: 'disbursalManagerId', headerName: 'Disbursal Manager', width: 150 }]
+            ? [{ field: 'disbursalHead', headerName: 'Disbursed By', width: 150 }]
             : [])
     ];
+
+    console.log('disbursal',disbursals)
 
     const rows = disbursals?.map(disbursal => ({
         id: disbursal?._id,
@@ -58,7 +60,7 @@ const DisbursePending = () => {
         salary: disbursal?.application?.lead?.salary,
         source: disbursal?.application?.lead?.source,
         ...((activeRole === "disbursalHead" || activeRole === "admin") &&
-            { disbursalManagerId: `${disbursal?.disbursalManagerId?.fName}${disbursal?.creditManagerId?.mName ? ` ${disbursal?.creditManagerId?.mName}` : ``} ${disbursal?.creditManagerId?.lName}`, })
+            { disbursalHead: `${disbursal?.disbursedBy?.fName}${disbursal?.disbursedBy?.mName ? ` ${disbursal?.disbursedBy?.mName}` : ``} ${disbursal?.disbursedBy?.lName}`, })
 
     }));
 
@@ -140,5 +142,5 @@ const DisbursePending = () => {
     )
 }
 
-export default DisbursePending
+export default Disbursed
 

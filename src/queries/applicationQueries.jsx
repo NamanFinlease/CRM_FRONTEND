@@ -9,8 +9,6 @@ export const applicationApi = createApi({
 
     // baseUrl: "https://api.fintechbasket.com/api", 
     baseUrl: "http://localhost:3000/api",
-    // baseUrl: "http://192.168.0.119:3000/api", 
-    // 'https://crm-backend-wui1.onrender.com/api/leads'
 
     credentials:"include",
     prepareHeaders: (headers, { getState }) => {
@@ -216,6 +214,10 @@ export const applicationApi = createApi({
       query: (id) => `/disbursals/pending/?role=${role()}`,
       // providesTags:["getApplication"]
     }),
+    disbursed: builder.query({
+      query: (id) => `/disbursals/disbursed/?role=${role()}`,
+      // providesTags:["getApplication"]
+    }),
     
   }),
 });
@@ -251,5 +253,6 @@ export const {
     useAllocatedDisbursalsQuery,
     useDisbursalProfileQuery,
     usePendingDisbursalQuery,
+    useDisbursedQuery,
 
 } = applicationApi;

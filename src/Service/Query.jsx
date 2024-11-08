@@ -4,21 +4,15 @@ import useAuthStore from '../Component/store/authStore';
 const role = () => JSON.parse(localStorage.getItem("auth-storage")).state.activeRole
 // Define a service using a base URL and expected endpoints
 export const leadsApi = createApi({
-  reducerPath: 'leadsApi',
+  reducerPath: "leadsApi",
   baseQuery: fetchBaseQuery({
+    // baseUrl: "https://api.fintechbasket.com/api/",
+    baseUrl: "http://localhost:3000/api/",
 
-    baseUrl: "https://api.fintechbasket.com/api/",
-    // baseUrl: "http://localhost:3000/api/",
-    // baseUrl: "http://192.168.0.119:3000/api/",
-    // 'https://crm-backend-wui1.onrender.com/api/leads'
-    // baseUrl: "http://localhost:3000/api/",
-
-    credentials:"include",
-    prepareHeaders: (headers, { getState }) => {   
-
+    credentials: "include",
+    prepareHeaders: (headers, { getState }) => {
       return headers;
     },
-
   }),
   tagTypes: ["leadProfile", "rejectedLeads", "holdLeads", "logs"],
   endpoints: (builder) => ({
@@ -29,171 +23,167 @@ export const leadsApi = createApi({
     //
     allocateLead: builder.mutation({
       query: (id) => ({
-
         url: `leads/${id}/?role=${role()}`,
-        method: 'PATCH',
+        method: "PATCH",
       }),
     }),
     uploadDocuments: builder.mutation({
       query: ({ id, docsData }) => ({
-
         url: `leads/docs/${id}/?role=${role()}`,
-        method: 'PATCH',
-        body: docsData
+        method: "PATCH",
+        body: docsData,
       }),
-      invalidatesTags: ["leadProfile"]
+      invalidatesTags: ["leadProfile"],
     }),
 
     // POST request to send data (this should use builder.mutation)
     loginUser: builder.mutation({
       query: (data) => ({
         url: `employees/login`,
-        method: 'POST',
+        method: "POST",
         body: data,
       }),
     }),
     logout: builder.mutation({
       query: () => ({
         url: `employees/logout/?role=${role()}`,
-        method: 'POST',
+        method: "POST",
+      }),
+    }),
+    adminBank: builder.mutation({
+      query: (bankDetails) => ({
+        url: `employees/admin/banks?role=${role()}`,
+        method: "POST",
+        body: bankDetails,
       }),
     }),
     bulkUpload: builder.mutation({
       query: (data) => ({
-
         url: `leads/bulk-upload/?role=${role()}`,
-        method: 'POST',
+        method: "POST",
         body: data,
       }),
     }),
     holdLead: builder.mutation({
       query: ({ id, reason }) => ({
-
         url: `leads/hold/${id}/?role=${role()}`,
-        method: 'PATCH',
-        body: { reason }
+        method: "PATCH",
+        body: { reason },
       }),
-      invalidatesTags: ["leadProfile", 'logs']
+      invalidatesTags: ["leadProfile", "logs"],
     }),
     rejectLead: builder.mutation({
       query: ({ id, reason }) => ({
-
         url: `leads/reject/${id}/?role=${role()}`,
-        method: 'PATCH',
-        body: { reason }
+        method: "PATCH",
+        body: { reason },
       }),
-      invalidatesTags: ["leadProfile", 'logs']
+      invalidatesTags: ["leadProfile", "logs"],
     }),
     unholdLead: builder.mutation({
       query: ({ id, reason }) => ({
-
         url: `leads/unhold/${id}/?role=${role()}`,
-        method: 'PATCH',
-        body: { reason }
+        method: "PATCH",
+        body: { reason },
       }),
-      invalidatesTags: ["leadProfile", "logs"]
+      invalidatesTags: ["leadProfile", "logs"],
     }),
     recommendLead: builder.mutation({
       query: (id) => ({
-
         url: `leads/recommend/${id}/?role=${role()}`,
-        method: 'PATCH',
+        method: "PATCH",
       }),
     }),
 
     addEmployee: builder.mutation({
       query: (data) => ({
-
         url: `employees/register/?role=${role()}`,
-        method: 'POST',
+        method: "POST",
         body: data,
       }),
     }),
     updateLead: builder.mutation({
       query: ({ id, formData }) => ({
-
         url: `leads/update/${id}/?role=${role()}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: formData,
       }),
-      invalidatesTags: ["leadProfile"]
+      invalidatesTags: ["leadProfile"],
     }),
     getEmailOtp: builder.mutation({
       query: (id) => ({
-
         url: `verify/email/${id}/?role=${role()}`,
-        method: 'PATCH',
+        method: "PATCH",
       }),
-      invalidatesTags: ["leadProfile"]
+      invalidatesTags: ["leadProfile"],
     }),
     verifyEmailOtp: builder.mutation({
       query: ({ id, data }) => ({
-
         url: `verify/email-otp/${id}/?role=${role()}`,
-        method: 'PATCH',
-        body: { otp: data }
+        method: "PATCH",
+        body: { otp: data },
       }),
-      invalidatesTags: ["leadProfile"]
+      invalidatesTags: ["leadProfile"],
     }),
     verifyAadhaarOtp: builder.mutation({
       query: ({ id, trx_id, otp }) => ({
-
         url: `verify/aadhaar-otp/?id=${id}&trx_id=${trx_id}&role=${role()}`,
-        method: 'POST',
-        body: { otp }
+        method: "POST",
+        body: { otp },
       }),
-      invalidatesTags: ["leadProfile"]
+      invalidatesTags: ["leadProfile"],
     }),
     verifyAadhaar: builder.mutation({
       query: ({ id, details }) => ({
-
         url: `verify/aadhaar/${id}/?role=${role()}`,
-        method: 'POST',
-        body: { details }
+        method: "POST",
+        body: { details },
       }),
-      invalidatesTags: ["leadProfile"]
+      invalidatesTags: ["leadProfile"],
     }),
     verifyPan: builder.mutation({
       query: ({ id, data }) => ({
-
         url: `verify/pan/${id}/?role=${role()}`,
-        method: 'POST',
-        body: { data }
+        method: "POST",
+        body: { data },
       }),
-      invalidatesTags: ["leadProfile"]
+      invalidatesTags: ["leadProfile"],
     }),
 
     fetchAllEmployee: builder.query({
-      query: () => 'employees',
+      query: () => "employees",
     }),
     fetchAllocatedLeads: builder.query({
-      query: ({ page, limit }) => `/leads/allocated/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ({ page, limit }) =>
+        `/leads/allocated/?page=${page}&limit=${limit}&role=${role()}`,
     }),
     fetchAllLeads: builder.query({
-      query: ({ page, limit }) => `/leads/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ({ page, limit }) =>
+        `/leads/?page=${page}&limit=${limit}&role=${role()}`,
     }),
     fetchSingleLead: builder.query({
       query: (id) => `/leads/${id}/?role=${role()}`,
-      providesTags: ["leadProfile"]
+      providesTags: ["leadProfile"],
     }),
     getLeadDocs: builder.query({
-      query: ({ id, docId, docType }) => `/leads/docs/${id}/?docType=${docType}&docId=${docId}&role=${role()}`,
+      query: ({ id, docId, docType }) =>
+        `/leads/docs/${id}/?docType=${docType}&docId=${docId}&role=${role()}`,
     }),
     getInternalDedupe: builder.query({
       query: (id) => `/leads/old-history/${id}/?role=${role()}`,
-      providesTags: ['holdLeads', 'rejectedLeads']
+      providesTags: ["holdLeads", "rejectedLeads"],
     }),
     applicationLogs: builder.query({
       query: (id) => `/leads/viewlogs/${id}/?role=${role()}`,
-      providesTags: ["logs"]
+      providesTags: ["logs"],
     }),
     fetchAllHoldLeads: builder.query({
       query: () => `/leads/hold/?role=${role()}`,
-      providesTags: ["holdLeads"]
+      providesTags: ["holdLeads"],
     }),
     fetchAllRejectedLeads: builder.query({
       query: () => `/leads/reject/?role=${role()}`,
-      providesTags: ["rejectedLeads"]
+      providesTags: ["rejectedLeads"],
     }),
     fetchCibilScore: builder.query({
       query: (id) => `verify/equifax/${id}/?role=${role()}`,
@@ -209,12 +199,12 @@ export const leadsApi = createApi({
     }),
     // get the lead numbers
     getLeadTotalRecords: builder.query({
-      query: () => `leads/totalRecords/?role=${role()}`
+      query: () => `leads/totalRecords/?role=${role()}`,
     }),
     // get the totalRecordsForSupervisor
-    getTotalRecordsForSupervisor :  builder.query(
+    getTotalRecordsForSupervisor: builder.query(
       {
-        query : () => `leads/totalRecordsForSupervisor/`
+        query: () => `leads/totalRecordsForSupervisor/`
       }
     ),
   }),
@@ -225,6 +215,7 @@ export const leadsApi = createApi({
 export const {
   useLoginUserMutation,
   useLogoutMutation,
+  useAdminBankMutation,
   useGetEmployeesQuery,
   useAllocateLeadMutation,
   useAddEmployeeMutation,
@@ -253,5 +244,5 @@ export const {
   useLazyFetchCibilScoreQuery,
   useFetchAllRejectedLeadsQuery,
   useGetLeadTotalRecordsQuery,
-  useGetTotalRecordsForSupervisorQuery
+  useGetTotalRecordsForSupervisorQuery,
 } = leadsApi;

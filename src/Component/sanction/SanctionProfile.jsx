@@ -34,6 +34,7 @@ const SanctionProfile = () => {
 
 
 
+
   useEffect(() => {
     if (isSuccess) {
       setApplicationProfile(data);
@@ -86,6 +87,11 @@ const SanctionProfile = () => {
                     <ApplicationLogHistory id={data?.lead?._id} />
 
                     {/* Action Buttons */}
+                    {(isPreviewError || isError) &&
+                  <Alert severity="error" style={{ marginTop: "10px" }}>
+                    {error?.data?.message}  {previewError?.data?.message}
+                  </Alert>
+                }
 
                     {!data.isRejected && <Box display="flex" justifyContent="center" sx={{ marginTop: '20px' }}>
                       <ActionButton
@@ -100,11 +106,7 @@ const SanctionProfile = () => {
                     </Box>}
                   </>
                 }
-                {(isPreviewError || isError) &&
-                  <Alert severity="error" style={{ marginTop: "10px" }}>
-                    {error?.data?.message} || {previewError?.data?.message}
-                  </Alert>
-                }
+                
               </>
             }
             {data && Object.keys(data).length > 0 &&

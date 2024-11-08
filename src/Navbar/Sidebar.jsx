@@ -109,9 +109,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             </CSSTransition>
                         </Accordion>
                     )}
-                    {console.log('credit manager role',activeRole)}
 
-                    {(activeRole === "creditManager" || activeRole === "sanctionHead") && (
+                    {(activeRole === "creditManager" || activeRole === "sanctionHead" || activeRole === "admin") && (
                         <Accordion expanded={expanded === 'application'} onChange={handleAccordionToggle('application')}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ backgroundColor: 'transparent', color: '#fff' }}>
                                 <Typography variant="subtitle1">Application</Typography>
@@ -141,7 +140,6 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                                 to={item.link}
                                                 sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}
                                             >
-                                                {console.log('item',item)}
                                                 <ListItemText primary={item.text} sx={{ color: '#fff' }} />
                                             </ListItem>
                                         ))}
@@ -151,7 +149,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                         </Accordion>
                     )}
 
-                    {activeRole === "sanctionHead" && (
+                    {(activeRole === "sanctionHead" || activeRole === "admin") && (
                         <Accordion expanded={expanded === 'sanction'} onChange={handleAccordionToggle('sanction')}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ backgroundColor: 'transparent', color: '#fff' }}>
                                 <Typography variant="subtitle1">
@@ -182,7 +180,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             </CSSTransition>
                         </Accordion>
                     )}
-                    {(activeRole === "disbursalManager" || activeRole === "disbursalHead") && (
+                    {(activeRole === "disbursalManager" || activeRole === "disbursalHead" || activeRole === "admin") && (
                         <Accordion expanded={expanded === 'disbursal'} onChange={handleAccordionToggle('disbursal')}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ backgroundColor: 'transparent', color: '#fff' }}>
                                 <Typography variant="subtitle1">
@@ -208,9 +206,16 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                         <ListItem component={Link} to="/disbursal-process" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
                                             <ListItemText primary="Processing" sx={{ color: '#fff' }} />
                                         </ListItem>
-                                        {activeRole === "disbursalHead" &&  <ListItem component={Link} to="/disbursal-pending" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                        {(activeRole === "disbursalHead" || activeRole === "admin") &&  
+                                        <>
+                                        <ListItem component={Link} to="/disbursal-pending" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
                                             <ListItemText primary="Disburse Pending" sx={{ color: '#fff' }} />
-                                        </ListItem>}
+                                        </ListItem>
+                                        <ListItem component={Link} to="/disbursed" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                            <ListItemText primary="Disbursed" sx={{ color: '#fff' }} />
+                                        </ListItem>
+                                        </>
+                                        }
                                     </List>
                                 </AccordionDetails>
                             </CSSTransition>

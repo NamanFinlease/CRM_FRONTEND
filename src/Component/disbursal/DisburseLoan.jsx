@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Box, Typography, TextField } from '@mui/material';
+import { Button, Box, Typography, TextField, Alert } from '@mui/material';
 import useStore from '../../Store';
 import { formatDate } from '../../utils/helper';
 import useAuthStore from '../store/authStore';
@@ -12,14 +12,14 @@ const DisbursalProfile = ({ disburse }) => {
   const { applicationProfile } = useStore()
   const { activeRole } = useAuthStore()
   const [remarks, setRemarks] = useState(null);
-  const [openRemark , setOpenRemark] = useState(false)
+  const [openRemark, setOpenRemark] = useState(false)
   const navigate = useNavigate()
 
   const { fName, mName, lName } = applicationProfile?.application?.lead
   const { application } = applicationProfile
   const { cam, lead } = application
 
-  const [recommendLoan,{data,isSuccess,isError,error}] = useRecommendLoanMutation()
+  const [recommendLoan, { data, isSuccess, isError, error }] = useRecommendLoanMutation()
 
   const handleCancel = () => {
     // Reset all states to go back to initial state
@@ -28,14 +28,14 @@ const DisbursalProfile = ({ disburse }) => {
   };
 
   const handleSubmit = () => {
-    if(!remarks) {
+    if (!remarks) {
       Swal.fire({
         text: "Add some remarks!",
         icon: 'warning'
-    });
-    return
-    } 
-    recommendLoan({id:applicationProfile._id,remarks})
+      });
+      return
+    }
+    recommendLoan({ id: applicationProfile._id, remarks })
   }
 
   const info = [
@@ -47,19 +47,29 @@ const DisbursalProfile = ({ disburse }) => {
     { label: "Sanctioned On", value: formatDate(application?.sanctionDate) },
     { label: "Loan Approved (Rs.)", value: cam?.details?.loanRecommended },
     { label: "ROI % (p.d.) Approved", value: cam?.details?.roi },
-    { label: "Net Admin Fee (Rs.) Approved", value: cam?.details?.netAdminFeeAmount },
+    { label: "Processing Fee", value: cam?.details?.netAdminFeeAmount },
     { label: "Tenure", value: cam?.details?.eligibleTenure },
     { label: "Sanctioned Email Sent On", value: formatDate(application?.sanctionDate) },
     { label: "Sanctioned Email Sent To", value: lead?.personalEmail },
     { label: "Sanctioned Email Response Status", value: "ACCEPTED" },
-    { label: "Acceptance Email", value: lead?.personalEmail }
+    { label: "Acceptance Email", value: lead?.personalEmail },
+    ...(applicationProfile.isDisbursed ? [
+      { label: "Disbursed From", value: applicationProfile?.payableAccount },
+      { label: "Disbursed On", value: applicationProfile?.disbursedBy && formatDate(applicationProfile?.disbursedAt) },
+      { label: "Disbursed By", value: `${applicationProfile?.disbursedBy?.fName}${applicationProfile?.disbursedBy?.mName ? ` ${applicationProfile?.disbursedBy?.mName}` : ``} ${applicationProfile?.disbursedBy?.lName}` },
+      { label: "Disbursed Amount", value: applicationProfile?.amount },
+    ] : [])
   ];
 
-    useEffect(() => {
-      if(isSuccess && data){
-        navigate("/disbursal-process")
-      }
-    },[isSuccess,data])
+  useEffect(() => {
+    if (isSuccess && data) {
+      Swal.fire({
+        text: "Loan disbursement approved!",
+        icon: 'success'
+      });
+      navigate("/disbursal-process")
+    }
+  }, [isSuccess, data])
   return (
     <>
       <Box
@@ -90,12 +100,12 @@ const DisbursalProfile = ({ disburse }) => {
               sx={{ display: 'flex', alignItems: 'center', borderBottom: '1px solid #ccc', padding: '10px' }}
             >
               <label style={{ fontWeight: 'bold', width: '50%' }}>{field.label}</label>
-              <span>{field.value}</span>
+              <span>{field.value} {field.label === "ROI % (p.d.) Approved" && "%" }</span>
             </Box>
           ))}
         </Box>
       </Box>
-      { openRemark && 
+      {openRemark &&
         <>
           <Box
             sx={{
@@ -136,6 +146,11 @@ const DisbursalProfile = ({ disburse }) => {
               }}
             />
           </Box>
+          {isError &&
+              <Alert severity="error" style={{ marginTop: "10px" }}>
+                {error?.data?.message}
+              </Alert>
+            }
 
           <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 3 }}>
             <Button
