@@ -7,6 +7,7 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  Alert,
   Box,
   TableHead,
   Divider,
@@ -26,7 +27,7 @@ const PersonalDetails = ({ id }) => {
   const [employmentData, setEmploymentData] = useState({});
   const [reference, setReference] = useState({});
 
-  const { data: applicantData, isSuccess: applicantSuccess } = useApplicantPersonalDetailsQuery(
+  const { data: applicantData, isSuccess: applicantSuccess, isError, error } = useApplicantPersonalDetailsQuery(
     id,
     { skip: id === null }
   );
@@ -75,6 +76,11 @@ const PersonalDetails = ({ id }) => {
           <Employment employmentData={employmentData} />
           <Reference reference={reference} />
         </>
+      }
+      {(isError) &&
+        <Alert severity="error" style={{ marginTop: "10px" }}>
+          {error?.data?.message}
+        </Alert>
       }
     </>
   );

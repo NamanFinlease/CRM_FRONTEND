@@ -208,6 +208,9 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                         <ListItem component={Link} to="/disbursal-process" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
                                             <ListItemText primary="Processing" sx={{ color: '#fff' }} />
                                         </ListItem>
+                                        {activeRole === "disbursalHead" &&  <ListItem component={Link} to="/disbursal-pending" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                            <ListItemText primary="Disburse Pending" sx={{ color: '#fff' }} />
+                                        </ListItem>}
                                     </List>
                                 </AccordionDetails>
                             </CSSTransition>

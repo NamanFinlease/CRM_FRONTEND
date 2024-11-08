@@ -6,8 +6,7 @@ import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import EditCam from './EditCam';
 
 
-const Cam = () => {
-  const { id } = useParams();
+const Cam = ({id}) => {
   const { data, isLoading: camGetloading, isError: camGetError, isSuccess: getCamSuccess } = useGetCamDetailsQuery(id, { skip: id === null });
   // const updatData = useUpdateCamDetailsMutation();
   const [isEditing, setIsEditing] = useState(false);
