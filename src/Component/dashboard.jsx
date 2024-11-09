@@ -214,6 +214,54 @@ const Dashboard = ({ isSidebarOpen }) => {
         no : data?.sanction?.sanctioned || 0
       },
     },
+    disbursalManager: {
+      leadNew: {
+        icon: <NewReleasesIcon className='mt-3'
+        sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+        path: "/disbursal-new",
+        title: 'New ',
+        no : data?.disbursal?.newDisbursals || 0
+      },
+      leadProcess: {
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+        path: "/disbursal-process",
+        title: 'Processing',
+        no : data?.disbursal?.allocatedDisbursals || 0
+      },
+    
+     
+    },
+    disbursalHead: {
+      newDisbursal: {
+        icon: <NewReleasesIcon className='mt-3'
+        sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+        path: "/disbursal-new",
+        title: 'New Disburse ',
+        no : data?.disbursal?.newDisbursals || 0
+      },
+      disbursalProcess: {
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+        path: "/disbursal-process",
+        title: 'Disburse Processing',
+        no : data?.disbursal?.allocatedDisbursals || 0
+      },
+      // disbursePending: {
+      //   icon: <NewReleasesIcon className='mt-3'
+      //   sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+      //   path: "/disbursal-pending",
+      //   title: 'Disburse Pending',
+      //   no : data?.disbursal?.newLeads || 0
+      // },
+      disbursed: {
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+        path: "/disbursed",
+        title: 'Disbursed',
+        no : data?.disbursal?.totalDisbursals || 0
+      },
+    
+     
+    },
+   
     supervisor :{
       
         leadNew: {
