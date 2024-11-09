@@ -83,7 +83,7 @@ const DisburseNew = () => {
     salary: disbursal?.application?.lead?.salary,
     source: disbursal?.application?.lead?.source,
     ...((activeRole === "disbursalHead" || activeRole === "admin") &&
-      { recommendedBy: `${disbursal?.application?.lead?.recommendedBy?.fName}${disbursal?.application?.lead?.recommendedBy?.mName ? ` ${application?.lead?.recommendedBy?.mName}` : ``} ${application?.lead?.recommendedBy?.lName}`, })
+      { recommendedBy: `${disbursal?.application?.lead?.recommendedBy?.fName}${disbursal?.application?.lead?.recommendedBy?.mName ? ` ${disbursal?.application?.lead?.recommendedBy?.mName}` : ``} ${disbursal?.application?.lead?.recommendedBy?.lName}`, })
 
   }));
 
