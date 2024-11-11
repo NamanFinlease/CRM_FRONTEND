@@ -10,7 +10,7 @@ const DisbursalBankProfile = () => {
   const [paymentMode, setPaymentMode] = useState('');
   const [channel, setChannel] = useState('');
   const [disbursalDate, setDisbursalDate] = useState('2024-11-01'); // Default date
-  const [remarks, setRemarks] = useState('')
+  const [remarks, setRemarks] = useState('');
 
   const handleToggleForm = () => {
     setShowForm((prevShowForm) => !prevShowForm); // Toggle form visibility
