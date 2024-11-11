@@ -45,6 +45,8 @@ import RecommendedApp from './Component/sanction/RecommendedApp';
 import SanctionProfile from './Component/sanction/SanctionProfile';
 import DisbursalProfile from './Component/Disbursal/DisbursalProfile';
 import DisbursalBankProfile from './Component/Disbursal/DisbursalBankProfile';
+import UserProfile from './Component/Disbursal/UserProfile.jsx';
+import BankDetailForm from './Component/Disbursal/BankDetail.jsx';
 
 
 function App() {
@@ -101,6 +103,8 @@ function App() {
                   <Route path="/sanction-sentback" element={<DynamicTable />} />
                   <Route path="/disbursal" element={<DisbursalProfile />} />
                   <Route path="/disbursalbank" element={<DisbursalBankProfile />} />
+                  <Route path="/profile" element={<UserProfile />} />
+                  <Route path="/bank" element={<BankDetailForm />} />
 
                   <Route path="/application-recommendation" element={<DynamicTable
                     header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager"]}
