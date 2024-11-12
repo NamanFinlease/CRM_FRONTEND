@@ -39,8 +39,8 @@ const SanctionProfile = () => {
     if (isSuccess) {
       setApplicationProfile(data);
     }
-    if (isSuccess && data?.lead?.document?.length) {
-      setUploadedDocs(data?.lead?.document.map(doc => doc.type));
+    if (isSuccess && data?.application?.lead?.document?.length) {
+      setUploadedDocs(data?.application?.lead?.document.map(doc => doc.type));
     }
   }, [isSuccess, data]);
 
@@ -79,12 +79,12 @@ const SanctionProfile = () => {
             {currentPage === "application" &&
               <>
                 <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
-                  <ApplicantProfileData leadData={data?.lead} />
+                  <ApplicantProfileData leadData={data?.application?.lead} />
                 </Paper>
-                {data?.lead?._id &&
+                {data?.application?.lead?._id &&
                   <>
-                    <InternalDedupe id={data?.lead?._id} />
-                    <ApplicationLogHistory id={data?.lead?._id} />
+                    <InternalDedupe id={data?.application?.lead?._id} />
+                    <ApplicationLogHistory id={data?.application?.lead?._id} />
 
                     {/* Action Buttons */}
                     {(isPreviewError || isError) &&
@@ -111,13 +111,13 @@ const SanctionProfile = () => {
             }
             {data && Object.keys(data).length > 0 &&
               <>
-                {currentPage === "personal" && <PersonalDetails id={data.applicant} />}
+                {currentPage === "personal" && <PersonalDetails id={data?.application?.applicant} />}
                 {currentPage === "banking" &&
-                  <BankDetails id={data?.applicant} />}
+                  <BankDetails id={data?.application?.applicant} />}
 
-                {currentPage === "documents" && <UploadDocuments leadData={data?.lead} setUploadedDocs={setUploadedDocs} uploadedDocs={uploadedDocs} />}
+                {currentPage === "documents" && <UploadDocuments leadData={data?.application?.lead} setUploadedDocs={setUploadedDocs} uploadedDocs={uploadedDocs} />}
 
-                {currentPage === "cam" && <Cam id={data._id} />}
+                {currentPage === "cam" && <Cam id={data?.application?._id} />}
               </>
 
             }

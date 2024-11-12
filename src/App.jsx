@@ -46,6 +46,7 @@ import DisbursalProfile from './Component/disbursal/DisbursalProfile';
 import DisbursePending from './Component/disbursal/DisbursePending';
 import Disbursed from './Component/disbursal/Disbursed';
 import DisbursalHold from './Component/disbursal/DisbursalHold';
+import RejectedDisbursal from './Component/disbursal/RejectedDisbursal';
 
 
 function App() {
@@ -107,6 +108,7 @@ function App() {
                   <Route path="/disbursal-profile/:id" element={<DisbursalProfile />} />
                   <Route path="/disbursal-pending" element={<DisbursePending />} />
                   <Route path="/disbursal-hold" element={<DisbursalHold />} />
+                  <Route path="/rejected-disbursal" element={<RejectedDisbursal />} />
                   <Route path="/disbursed" element={<Disbursed />} />
 
                   <Route path="/application-recommendation" element={<DynamicTable

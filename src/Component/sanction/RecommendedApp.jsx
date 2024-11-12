@@ -19,7 +19,7 @@ const RecommendedApp = () => {
   useEffect(() => {
     if(applicationSuccess){
 
-        setApplications(allApplication);
+        setApplications(allApplication?.sanctions);
         setTotalApplications(allApplication?.totalApplications)
     }
 
@@ -61,19 +61,23 @@ const handleLeadClick = (lead) => {
     { field: 'source', headerName: 'Source', width: 150 },
   ];
 
-  const rows = applications?.applications?.map(application => ({
-    id: application?._id, // Unique ID for each lead
-    name: `${application?.lead?.fName} ${application?.lead?.mName} ${application?.lead?.lName}`,
-    mobile: application?.lead?.mobile,
-    aadhaar: application?.lead?.aadhaar,
-    pan: application?.lead?.pan,
-    city: application?.lead?.city,
-    state: application?.lead?.state,
-    loanAmount: application?.lead?.loanAmount,
-    salary: application?.lead?.salary,
-    recommendedBy: application?.recommendedBy,
-    source: application?.lead?.source,
-  }));
+  const rows = applications?.map(sanction => {
+    console.log('updated sanction',sanction)
+    return ({
+    id: sanction?._id, // Unique ID for each lead
+    name: `${sanction?.application?.lead?.fName} ${sanction?.application?.lead?.mName} ${sanction?.application?.lead?.lName}`,
+    mobile: sanction?.application?.lead?.mobile,
+    aadhaar: sanction?.application?.lead?.aadhaar,
+    pan: sanction?.application?.lead?.pan,
+    city: sanction?.application?.lead?.city,
+    state: sanction?.application?.lead?.state,
+    loanAmount: sanction?.application?.lead?.loanAmount,
+    salary: sanction?.application?.lead?.salary,
+    recommendedBy: sanction?.application?.recommendedBy,
+    source: sanction?.application?.lead?.source,
+  })});
+
+  console.log('sanction',applications)
 
   return (
     <div>
