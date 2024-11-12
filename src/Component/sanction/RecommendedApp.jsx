@@ -20,7 +20,7 @@ const RecommendedApp = () => {
     if(applicationSuccess){
 
         setApplications(allApplication?.sanctions);
-        setTotalApplications(allApplication?.totalApplications)
+        setTotalApplications(allApplication?.totalSanctions)
     }
 
   }, [page,allApplication,applicationSuccess]);

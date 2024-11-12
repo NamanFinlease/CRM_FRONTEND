@@ -47,6 +47,7 @@ import DisbursePending from './Component/disbursal/DisbursePending';
 import Disbursed from './Component/disbursal/Disbursed';
 import DisbursalHold from './Component/disbursal/DisbursalHold';
 import RejectedDisbursal from './Component/disbursal/RejectedDisbursal';
+import RecommendedApplication from './Component/applications/RecommendedApplication';
 
 
 function App() {
@@ -103,6 +104,7 @@ function App() {
                   <Route path="/sanction-reject" element={<DynamicTable />} />
                   <Route path="/sanction-sentback" element={<DynamicTable />} />
                   <Route path="/sanctioned" element={<Sanctioned />} />
+                  <Route path="/recommended-applications" element={<RecommendedApplication />} />
                   <Route path="/disbursal-new" element={<DisburseNew />} />
                   <Route path="/disbursal-process" element={<DisbursalProcess />} />
                   <Route path="/disbursal-profile/:id" element={<DisbursalProfile />} />
