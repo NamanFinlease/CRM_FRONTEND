@@ -17,8 +17,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CSSTransition } from 'react-transition-group';
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
-    const { empInfo,activeRole } = useAuthStore();
-    
+    const { empInfo, activeRole } = useAuthStore();
+
     // State to control the expanded accordions
     const [expanded, setExpanded] = useState(null);
 
@@ -52,7 +52,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         >
             {/* Heading for the sidebar */}
             <Box sx={{ backgroundColor: '#001f3f', padding: 2, textAlign: 'left' }}>
-                <Typography component={Link} to="/"  variant="h6" sx={{textDecoration: 'none', color: '#fff', fontWeight: 'bold', marginTop: '5px', marginLeft: '20px' }}>
+                <Typography component={Link} to="/" variant="h6" sx={{ textDecoration: 'none', color: '#fff', fontWeight: 'bold', marginTop: '5px', marginLeft: '20px' }}>
                     Speedoloan
                 </Typography>
             </Box>
@@ -60,8 +60,8 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
             <Box sx={{ marginTop: '0px', padding: isSidebarOpen ? 2 : 0 }}>
                 <List sx={{ padding: 0, margin: 0 }}>
                     {(activeRole === "screener" || activeRole === "admin" || activeRole === "sanctionHead") && (
-                        <Accordion 
-                            expanded={expanded === 'lead'} 
+                        <Accordion
+                            expanded={expanded === 'lead'}
                             onChange={handleAccordionToggle('lead')}
                             sx={{
                                 '&:before': {
@@ -206,15 +206,21 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                         <ListItem component={Link} to="/disbursal-process" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
                                             <ListItemText primary="Processing" sx={{ color: '#fff' }} />
                                         </ListItem>
-                                        {(activeRole === "disbursalHead" || activeRole === "admin") &&  
-                                        <>
-                                        <ListItem component={Link} to="/disbursal-pending" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
-                                            <ListItemText primary="Disburse Pending" sx={{ color: '#fff' }} />
+                                        <ListItem component={Link} to="/disbursal-hold" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                            <ListItemText primary="Hold" sx={{ color: '#fff' }} />
                                         </ListItem>
-                                        <ListItem component={Link} to="/disbursed" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
-                                            <ListItemText primary="Disbursed" sx={{ color: '#fff' }} />
+                                        <ListItem component={Link} to="/disbursal-reject" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                            <ListItemText primary="Rejected" sx={{ color: '#fff' }} />
                                         </ListItem>
-                                        </>
+                                        {(activeRole === "disbursalHead" || activeRole === "admin") &&
+                                            <>
+                                                <ListItem component={Link} to="/disbursal-pending" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                                    <ListItemText primary="Disburse Pending" sx={{ color: '#fff' }} />
+                                                </ListItem>
+                                                <ListItem component={Link} to="/disbursed" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                                    <ListItemText primary="Disbursed" sx={{ color: '#fff' }} />
+                                                </ListItem>
+                                            </>
                                         }
                                     </List>
                                 </AccordionDetails>

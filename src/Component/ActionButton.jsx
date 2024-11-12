@@ -5,7 +5,7 @@ import { useHoldLeadMutation, useRecommendLeadMutation, useRejectLeadMutation, u
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from './store/authStore';
-import { useHoldApplicationMutation, useRecommendApplicationMutation, useRejectApplicationMutation, useSanctionSendBackMutation, useSendBackMutation, useUnholdApplicationMutation } from '../queries/applicationQueries';
+import { useHoldApplicationMutation, useHoldDisbursalMutation, useRecommendApplicationMutation, useRecommendLoanMutation, useRejectApplicationMutation, useSanctionSendBackMutation, useSendBackMutation, useUnholdApplicationMutation } from '../queries/applicationQueries';
 import useStore from '../Store';
 import RejectedLeads from './leads/RejectedLeads';
 
@@ -28,10 +28,10 @@ const loanRejectReasons = [
     // { label: "Unclear Purpose of Loan", value: "unclear_loan_purpose" }
 ];
 
-const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRender }) => {
+const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
 
     const navigate = useNavigate()
-    const { empInfo,activeRole } = useAuthStore()
+    const { empInfo, activeRole } = useAuthStore()
     const { applicationProfile } = useStore()
 
     const [actionType, setActionType] = useState(''); // To track which action is selected: 'hold', 'reject', 'approve'
@@ -45,6 +45,12 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
     const [unholdApplication, { data: unholdApplicationData, isSuccess: unholdApplicationSuccess, isError: isApplicationUnHoldError, error: unHoldApplicationError }] = useUnholdApplicationMutation();
     const [recommendApplication, { data: recommendApplicationData, isSuccess: recommendApplicationSuccess, isError: isApplicationRecommendError, error: recommendApplicationError }] = useRecommendApplicationMutation();
     const [rejectApplication, { data: rejectApplicationData, isSuccess: rejectApplicationSuccess, isError: isApplicationRejectError, error: rejectApplicationError }] = useRejectApplicationMutation();
+
+    // Disbursal Action component API-----------
+    const [holdDisbursal, { data: holdDisbursalData, isSuccess: IsholdDisbursalSuccess, isError: isDisbursalHoldError, error: disbursalHoldError }] = useHoldDisbursalMutation();
+    // const [unholdApplication, { data: unholdApplicationData, isSuccess: unholdApplicationSuccess, isError: isApplicationUnHoldError, error: unHoldApplicationError }] = useUnholdApplicationMutation();
+    const [recommendLoan, { data: RecommendLoan, isSuccess: isLoanRecommend, isError: isRecommendError, error: recommendLoanError }] = useRecommendLoanMutation()
+    // const [rejectApplication, { data: rejectApplicationData, isSuccess: rejectApplicationSuccess, isError: isApplicationRejectError, error: rejectApplicationError }] = useRejectApplicationMutation();
 
     // Lead Action component API ----------------------
     const [holdLead, { data: holdLeadData, isSuccess: holdLeadSuccess, isError: isHoldError, error: leadHoldError }] = useHoldLeadMutation();
@@ -63,6 +69,8 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
             recommendLead(id)
         } else if (activeRole === "creditManager") {
             recommendApplication(id)
+        } else if (activeRole === "disbursalManager") {
+            recommendLoan({ id: applicationProfile._id, remarks })
         }
     }
     const handleActionClick = (type) => {
@@ -95,6 +103,11 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                 holdLead({ id, reason: remarks })
             } else if (activeRole === "creditManager") {
                 holdApplication({ id, reason: remarks })
+            } else if (activeRole === "disbursalManager") {
+                // console.log('disbursal hold',{ id:applicationProfile._id, reason: remarks })
+                holdDisbursal({ id: applicationProfile._id, reason: remarks })
+            } else if (activeRole === "disbursalHead") {
+                holdApplication({ id, reason: remarks })
             }
 
         } else if (actionType === 'reject') {
@@ -121,6 +134,13 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                 sendBack({ id: applicationProfile.lead._id, reason: remarks, sendTo: selectedRecipient })
             }
 
+        } else if (actionType === "recommend") {
+            if (activeRole === "disbursalManager") {
+                console.log('submit', applicationProfile._id, remarks)
+                // recommendLoan({ id: applicationProfile._id, remarks })
+
+            }
+
         }
 
         // Reset state after submission
@@ -130,8 +150,8 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
     };
 
     const handlePreview = () => {
-      sanctionPreview(id)
-      setForceRender(true)
+        sanctionPreview(id)
+        setForceRender(true)
     };
     const handleCancel = () => {
         // Reset all states to go back to initial state
@@ -147,6 +167,13 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                 icon: "success"
             });
             navigate("/lead-hold")
+        }
+        if (IsholdDisbursalSuccess && holdDisbursalData) {
+            Swal.fire({
+                text: "Disbursal on hold!",
+                icon: "success"
+            });
+            navigate("/disbursal-process")
         }
         if (unholdLeadSuccess && unholdLeadData) {
             Swal.fire({
@@ -170,7 +197,7 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
             navigate("/lead-process")
         }
 
-    }, [holdLeadData, unholdLeadData, rejectLeadData, recommendLeadData])
+    }, [holdLeadData, holdDisbursalData, unholdLeadData, rejectLeadData, recommendLeadData])
     useEffect(() => {
         if (SendBackSuccess && sendBackData) {
             Swal.fire({
@@ -226,7 +253,7 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
             navigate("/recommended-application")
         }
 
-    }, [holdApplicationData, unholdApplicationData, rejectApplicationData, recommendApplicationData,sanctionRejectData])
+    }, [holdApplicationData, unholdApplicationData, rejectApplicationData, recommendApplicationData, sanctionRejectData])
 
 
 
@@ -259,23 +286,36 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                         >
                             Preview
                         </Button>}
-                        {(activeRole !== "sanctionHead" && activeRole !== "admin") && 
-                        <>
-                        <Button
-                            variant="contained"
-                            color="success"
-                            onClick={() => handleApprove('')}
-                        >
-                            Forward
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="warning"
-                            onClick={() => handleActionClick(isHold ? "unhold" : 'hold')}
-                        >
-                            {isHold ? "Unhold" : "Hold"}
-                        </Button>
-                        </>
+                        {(activeRole !== "sanctionHead" && activeRole !== "admin") &&
+                            <>
+                                {!isHold &&
+                                    <>
+                                        {(activeRole === "disbursalManager") ?
+                                            <Button
+                                                variant="contained"
+                                                color="success"
+                                                onClick={() => handleActionClick('recommend')}
+                                            >
+                                                Recommend
+                                            </Button>
+                                            :
+                                            <Button
+                                                variant="contained"
+                                                color="success"
+                                                onClick={() => handleApprove('')}
+                                            >
+                                                Forward
+                                            </Button>}
+                                    </>
+                                }
+                                <Button
+                                    variant="contained"
+                                    color="warning"
+                                    onClick={() => handleActionClick(isHold ? "unhold" : 'hold')}
+                                >
+                                    {isHold ? "Unhold" : "Hold"}
+                                </Button>
+                            </>
                         }
                         <Button
                             variant="contained"
@@ -284,7 +324,7 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                         >
                             Reject
                         </Button>
-                        {activeRole !== "screener" &&
+                        {(activeRole !== "screener" && activeRole !== "disbursalManager") &&
                             <Button
                                 variant="contained"
                                 color="secondary"
@@ -299,7 +339,7 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
 
 
 
-                {(actionType === 'hold' || actionType === "unhold" || actionType === 'reject' || actionType === "sendBack") && (
+                {(actionType === 'hold' || actionType === "unhold" || actionType === 'reject' || actionType === "sendBack" || actionType === "recommend") && (
                     <Box
                         sx={{
                             marginTop: 3,
@@ -341,7 +381,7 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                             </>
                         )}
 
-                        {(selectedReason === 'Other' || actionType === "sendBack") && (
+                        {(selectedReason === 'Other' || actionType === "sendBack" || actionType === "recommend") && (
                             <>
                                 <Typography variant="h6" gutterBottom>
                                     Remarks
@@ -371,7 +411,7 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                                         },
                                     }}
                                 />
-                                {actionType === "sendBack" && (
+                                {(actionType === "sendBack") && (
                                     <>
                                         <FormControl fullWidth sx={{ marginBottom: 3 }}>
                                             <InputLabel>Send Back to</InputLabel>
@@ -392,7 +432,7 @@ const ActionButton = ({ id, isHold,setPreviewSanction,sanctionPreview,setForceRe
                                                     Select recipient to send back
                                                 </MenuItem>
                                                 {activeRole === "creditManager" && <MenuItem value="screener">Screener</MenuItem>}
-                                                {activeRole === "sanctionHead" &&<MenuItem value="creditManager">Credit Manager</MenuItem>}
+                                                {activeRole === "sanctionHead" && <MenuItem value="creditManager">Credit Manager</MenuItem>}
                                             </Select>
                                         </FormControl>
                                     </>

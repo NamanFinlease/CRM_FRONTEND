@@ -186,7 +186,7 @@ const DisbursalProfile = ({ disburse }) => {
 
       }
 
-      {activeRole === "disbursalManager" && !openRemark &&
+      {/* {activeRole === "disbursalManager" && !openRemark &&
         <Box display="flex" justifyContent="center" marginTop="20px">
           <Button
             variant="contained"
@@ -204,7 +204,7 @@ const DisbursalProfile = ({ disburse }) => {
           >
             Recommend
           </Button>
-        </Box>}
+        </Box>} */}
     </>
   );
 };

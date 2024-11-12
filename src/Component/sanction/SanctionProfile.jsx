@@ -7,7 +7,7 @@ import useStore from '../../Store';
 import BarButtons from '../BarButtons';
 import InternalDedupe from '../InternalDedupe';
 import ApplicationLogHistory from '../ApplicationLogHistory';
-import ActionButton from '../actionButton';
+import ActionButton from '../ActionButton';
 import PersonalDetails from '../applications/PersonalDetails';
 import BankDetails from '../applications/BankDetails';
 import UploadDocuments from '../UploadDocuments';

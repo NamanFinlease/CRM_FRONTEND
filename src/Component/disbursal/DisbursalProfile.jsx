@@ -15,6 +15,7 @@ import { useDisbursalProfileQuery } from '../../queries/applicationQueries';
 import useAuthStore from '../store/authStore';
 import useStore from '../../Store';
 import DisburseInfo from './DisburseInfo';
+import ActionButton from '../actionButton';
 
 
 
@@ -95,6 +96,7 @@ const DisbursalProfile = () => {
 
             {currentPage === "cam" && <Cam id={disbursalData._id} />}
             {currentPage === "disbursal" && <DisburseInfo disburse={disbursalData} />}
+           
           </>
 
         }

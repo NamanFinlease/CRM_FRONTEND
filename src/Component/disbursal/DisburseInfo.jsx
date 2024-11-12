@@ -13,20 +13,21 @@ import { disburseSchema } from '../../utils/validations';
 import { useDisburseLoanMutation } from '../../queries/applicationQueries';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import ActionButton from '../ActionButton';
 
 const DisburseInfo = ({ disburse }) => {
-  const {id} = useParams()
+  const { id } = useParams()
   const [showForm, setShowForm] = useState(false);
   const { activeRole } = useAuthStore()
   const { applicationProfile } = useStore()
   const navigate = useNavigate()
 
-  const { disbursalDate, loanRecommended } = disburse?.cam?.details
-  const [disburseLoan,{data,isSuccess,isError,error}] = useDisburseLoanMutation()
+  const { disbursalDate, netDisbursalAmount } = disburse?.cam?.details
+  const [disburseLoan, { data, isSuccess, isError, error }] = useDisburseLoanMutation()
 
   const defaultValues = {
     payableAccount: "",
-    amount: loanRecommended,
+    amount: netDisbursalAmount,
     paymentMode: "",
     channel: "",
     disbursalDate: disbursalDate && dayjs(disbursalDate),
@@ -39,22 +40,22 @@ const DisburseInfo = ({ disburse }) => {
   })
 
   const onSubmit = (data) => {
-    disburseLoan({id,data})
+    disburseLoan({ id, data })
   }
 
   const handleToggleForm = () => {
     setShowForm((prevShowForm) => !prevShowForm); // Toggle form visibility
   };
   useEffect(() => {
-    if(isSuccess&& data){
+    if (isSuccess && data) {
       Swal.fire({
         text: "Loan Disbursed!",
         icon: "success"
-    });
-    navigate("/disbursal-pending")
+      });
+      navigate("/disbursal-pending")
     }
-    
-  },[isSuccess,data])
+
+  }, [isSuccess, data])
 
   return (
     <Box
@@ -158,10 +159,10 @@ const DisburseInfo = ({ disburse }) => {
                       required
                       fullWidth
                       type="text"
+                      disabled
                       error={!!fieldState?.error}
                       helperText={fieldState?.error ? fieldState?.error?.message : ''}
                       inputProps={{
-                        pattern: "\\d*", // Only allow numeric input
                         placeholder: "Enter amount",
                         style: { color: '#363535' },
                       }}
@@ -184,11 +185,18 @@ const DisburseInfo = ({ disburse }) => {
                         '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
                           borderColor: '#3f51b5', // Border color on focus
                         },
+                        '&.Mui-disabled': {
+                          backgroundColor: '#e0e0e0', // Background color when disabled
+                          color: '#9e9e9e', // Label color when disabled
+                          '& .MuiInputBase-input': {
+                            color: '#9e9e9e', // Text color when disabled
+                          },
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#bdbdbd', // Border color when disabled
+                          },
+                        },
                       }}
-                    // inputProps={{
-                    //   placeholder: "Enter amount", // Placeholder text
-                    //   style: { color: '#363535' }, // Text color
-                    // }}
+
                     />
                   )}
 
@@ -341,7 +349,7 @@ const DisburseInfo = ({ disburse }) => {
 
               </Box>
 
-              {/* Submit button */}
+
               <Button
                 type='submit'
                 variant="contained"
@@ -359,7 +367,16 @@ const DisburseInfo = ({ disburse }) => {
               </Button>
             </Box>
           )}
+          {/* Submit button */}
         </>}
+      {!applicationProfile.isRejected &&<ActionButton
+        id={applicationProfile?._id}
+        isHold={applicationProfile?.onHold}
+      // setPreviewSanction={setPreviewSanction}
+      // sanctionPreview={sanctionPreview}
+      // setForceRender={setForceRender}
+
+      />}
     </Box>
   );
 };

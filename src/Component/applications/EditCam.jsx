@@ -19,6 +19,8 @@ const EditCam = ({ camData, setIsEditing }) => {
 
     const calculateDaysDifference = (disbursalDate, repaymentDate) => {
 
+        console.log('days differ',disbursalDate,repaymentDate)
+
         if (!disbursalDate && !repaymentDate) {
             return 0;
         }

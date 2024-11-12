@@ -16,7 +16,7 @@ export const applicationApi = createApi({
     },
 
   }),
-  tagTypes: ["getApplication","getProfile","bankDetails","applicantDetails",'getDisbursals',"getCamDetails","recommendedApplication"],
+  tagTypes: ["getApplication","getProfile","bankDetails","applicantDetails",'getDisbursals',"getCamDetails","recommendedApplication","getPendinDisbursals"],
   endpoints: (builder) => ({
     // GET request to fetch a Pokemon by name
     holdApplication: builder.mutation({
@@ -138,6 +138,15 @@ export const applicationApi = createApi({
       }),
       invalidatesTags:["getDisbursals"]
     }),
+    holdDisbursal: builder.mutation({
+      query: ({id,reason}) => ({
+
+        url: `disbursals/hold/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{reason}
+      }),
+      invalidatesTags:["getDisbursals","getPendinDisbursals"]
+    }),
     fetchAllApplication: builder.query({
       query: ({ page, limit }) => `/applications/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["getApplication"]
@@ -212,10 +221,14 @@ export const applicationApi = createApi({
     }),
     pendingDisbursal: builder.query({
       query: (id) => `/disbursals/pending/?role=${role()}`,
-      // providesTags:["getApplication"]
+      providesTags:["getPendinDisbursals"]
     }),
     disbursed: builder.query({
       query: (id) => `/disbursals/disbursed/?role=${role()}`,
+      // providesTags:["getApplication"]
+    }),
+    fetchDisbursalHold: builder.query({
+      query: ({page,limit}) => `/disbursals/hold/?page=${page}&limit=${limit}&role=${role()}`,
       // providesTags:["getApplication"]
     }),
     
@@ -236,6 +249,7 @@ export const {
     useUpdatePersonalDetailsMutation,
     useRecommendLoanMutation,
     useDisburseLoanMutation,
+    useHoldDisbursalMutation,
     useGetBankDetailsQuery,
     useFetchAllocatedApplicationQuery,
     useFetchSingleApplicationQuery,
@@ -254,5 +268,6 @@ export const {
     useDisbursalProfileQuery,
     usePendingDisbursalQuery,
     useDisbursedQuery,
+    useFetchDisbursalHoldQuery
 
 } = applicationApi;

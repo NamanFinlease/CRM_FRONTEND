@@ -45,6 +45,7 @@ import DisbursalProcess from './Component/disbursal/DisburseProcessing';
 import DisbursalProfile from './Component/disbursal/DisbursalProfile';
 import DisbursePending from './Component/disbursal/DisbursePending';
 import Disbursed from './Component/disbursal/Disbursed';
+import DisbursalHold from './Component/disbursal/DisbursalHold';
 
 
 function App() {
@@ -92,7 +93,7 @@ function App() {
                   <Route path="/compare" element={<CompareUserDetails />} />
                   <Route path="/application-process" element={<ProcessingApplication />} />
                   <Route path="/application-hold" element={<HoldApplication />} />
-                  <Route path="/disbursed" element={<Disbursed />} />
+               
 
                   <Route path="/rejected-Applications" element={<RejectedApplication />} />
                   <Route path="/sanction" element={<DynamicTable />} />
@@ -104,7 +105,9 @@ function App() {
                   <Route path="/disbursal-new" element={<DisburseNew />} />
                   <Route path="/disbursal-process" element={<DisbursalProcess />} />
                   <Route path="/disbursal-profile/:id" element={<DisbursalProfile />} />
-                  <Route path="/disbursal-pending/" element={<DisbursePending />} />
+                  <Route path="/disbursal-pending" element={<DisbursePending />} />
+                  <Route path="/disbursal-hold" element={<DisbursalHold />} />
+                  <Route path="/disbursed" element={<Disbursed />} />
 
                   <Route path="/application-recommendation" element={<DynamicTable
                     header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager"]}

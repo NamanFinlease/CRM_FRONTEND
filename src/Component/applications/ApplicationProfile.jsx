@@ -9,7 +9,7 @@ import { useFetchSingleApplicationQuery } from '../../queries/applicationQueries
 import useStore from '../../Store';
 import Cam from './Cam';
 import BarButtons from '../BarButtons';
-import ActionButton from '../actionButton';
+import ActionButton from '../ActionButton';
 import InternalDedupe from '../InternalDedupe';
 import ApplicationLogHistory from '../ApplicationLogHistory';
 import useAuthStore from '../store/authStore';
@@ -65,7 +65,8 @@ const ApplicationProfile = () => {
 
                     {/* Action Buttons */}
 
-                    {(!applicationData.isRejected && activeRole !== "sanctionHead" && activeRole !== "admin") && <Box display="flex" justifyContent="center" sx={{ marginTop: '20px' }}>
+                    {(!applicationData.isRejected  && activeRole !== "admin") && 
+                    <Box display="flex" justifyContent="center" sx={{ marginTop: '20px' }}>
                       <ActionButton
                         id={applicationData._id}
                         isHold={applicationData.onHold}
