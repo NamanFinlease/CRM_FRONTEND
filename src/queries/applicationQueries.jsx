@@ -7,8 +7,8 @@ export const applicationApi = createApi({
   reducerPath: 'applicationApi',
   baseQuery: fetchBaseQuery({
 
-    baseUrl: "https://api.fintechbasket.com/api", 
-    // baseUrl: "http://localhost:3000/api",
+    // baseUrl: "https://api.fintechbasket.com/api", 
+    baseUrl: "http://localhost:3000/api",
 
     credentials:"include",
     prepareHeaders: (headers, { getState }) => {

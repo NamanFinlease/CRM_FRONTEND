@@ -13,7 +13,7 @@ const Sanctioned = () => {
     const [page, setPage] = useState(1);
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 5,
+        pageSize: 10,
     });
 
     const handlePageChange = (newPaginationModel) => {
@@ -40,24 +40,24 @@ const Sanctioned = () => {
         { field: 'source', headerName: 'Source', width: 150 },
     ];
 
-    const rows = applications?.map(application => ({
-        id: application?._id, // Unique ID for each lead
-        name: `${application?.lead?.fName} ${application?.lead?.mName} ${application?.lead?.lName}`,
-        mobile: application?.lead?.mobile,
-        aadhaar: application?.lead?.aadhaar,
-        pan: application?.lead?.pan,
-        city: application?.lead?.city,
-        state: application?.lead?.state,
-        loanAmount: application?.lead?.loanAmount,
-        salary: application?.lead?.salary,
-        approvedBy: application?.approvedBy,
-        source: application?.lead?.source,
+    const rows = applications?.map(sanction => ({
+        id: sanction?._id, // Unique ID for each lead
+        name: `${sanction?.application?.lead?.fName} ${sanction?.application?.lead?.mName} ${sanction?.application?.lead?.lName}`,
+        mobile: sanction?.application?.lead?.mobile,
+        aadhaar: sanction?.application?.lead?.aadhaar,
+        pan: sanction?.application?.lead?.pan,
+        city: sanction?.application?.lead?.city,
+        state: sanction?.application?.lead?.state,
+        loanAmount: sanction?.application?.lead?.loanAmount,
+        salary: sanction?.application?.lead?.salary,
+        approvedBy: sanction?.application?.approvedBy,
+        source: sanction?.application?.lead?.source,
     }));
 
     useEffect(() => {
-        if (isSuccess && data?.applications && data.applications.length > 0) {
-            setApplications(data.applications)
-            setTotalApplications(data.totalApplications)
+        if (isSuccess && data?.sanction && data.sanction.length > 0) {
+            setApplications(data.sanction)
+            setTotalApplications(data.totalSanctions)
         }
 
     }, [isSuccess, data?.applications])
