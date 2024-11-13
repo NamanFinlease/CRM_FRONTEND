@@ -129,9 +129,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
         } else if (actionType === "sendBack") {
             if (activeRole === "sanctionHead") {
 
-                sanctionSendBack({ id: applicationProfile.lead._id, reason: remarks, sendTo: selectedRecipient })
+                sanctionSendBack({ id: applicationProfile?.application?.lead._id, reason: remarks, sendTo: selectedRecipient })
             } else if (activeRole === "creditManager") {
-                sendBack({ id: applicationProfile.lead._id, reason: remarks, sendTo: selectedRecipient })
+                sendBack({ id: applicationProfile?.lead._id, reason: remarks, sendTo: selectedRecipient })
             }
 
         } else if (actionType === "recommend") {
