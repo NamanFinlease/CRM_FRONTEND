@@ -13,6 +13,9 @@ import { Alert } from '@mui/material'; // Import Alert component
 import dayjs from 'dayjs';
 import useAuthStore from '../store/authStore';
 import { formatDate } from '../../utils/helper';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc); // Enable the utc plugin
 
 const accordionStyles = {
   borderRadius: '12px',
@@ -64,10 +67,11 @@ const Employment = ({ employmentData }) => {
   });
 
   const onSubmit = (data) => {
+    console.log('date test',data)
     const newData = {
       employment: {
         ...data,
-        employedSince: data.employedSince ? data.employedSince.toISOString().split('T')[0] : '', // Format as YYYY-MM-DD
+        employedSince: data.employedSince ? dayjs(data.employedSince).format('YYYY-MM-DD') : '', // Format as YYYY-MM-DD
       },
     };
     updatePersonalDetails({ id, updates: newData });
