@@ -104,7 +104,7 @@ function App() {
                   <Route path="/sanction-reject" element={<DynamicTable />} />
                   <Route path="/sanction-sentback" element={<DynamicTable />} />
                   <Route path="/sanctioned" element={<Sanctioned />} />
-                  <Route path="/recommended-applications" element={<RecommendedApplications />} />
+                  <Route path="/eSign-pending" element={<RecommendedApplications />} />
                   <Route path="/disbursal-new" element={<DisburseNew />} />
                   <Route path="/disbursal-process" element={<DisbursalProcess />} />
                   <Route path="/disbursal-profile/:id" element={<DisbursalProfile />} />

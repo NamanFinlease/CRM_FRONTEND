@@ -167,9 +167,20 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             >
                                 <AccordionDetails sx={{ backgroundColor: 'transparent', padding: 0 }}>
                                     <List>
-                                        <ListItem component={Link} to="/pending-sanctions" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
-                                            <ListItemText primary="Pending Sanctions" sx={{ color: '#fff' }} />
-                                        </ListItem>
+
+                                        {[
+                                            { text: 'Pending Sanctions', link: '/pending-sanctions' },
+                                            { text: 'Sanctioned', link: '/sanctioned' },
+                                        ].map((item, index) => (
+                                            <ListItem
+                                                key={index}
+                                                component={Link}
+                                                to={item.link}
+                                                sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}
+                                            >
+                                                <ListItemText primary={item.text} sx={{ color: '#fff' }} />
+                                            </ListItem>
+                                        ))}
                                         
                                     </List>
                                 </AccordionDetails>
@@ -195,8 +206,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                 <AccordionDetails sx={{ backgroundColor: 'transparent', padding: 0 }}>
                                     <List>
                                         {[
-                                            { text: 'Recommended Applications', link: '/recommended-applications' },
-                                            { text: 'Sanctioned', link: '/sanctioned' },
+                                            { text: 'E-Sign Pending', link: '/eSign-pending' },
                                             { text: 'Hold', link: '/application-hold' },
                                             { text: 'Rejected Applications', link: '/rejected-applications' },
                                         ].map((item, index) => (
