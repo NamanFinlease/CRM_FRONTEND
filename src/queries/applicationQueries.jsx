@@ -7,8 +7,8 @@ export const applicationApi = createApi({
   reducerPath: 'applicationApi',
   baseQuery: fetchBaseQuery({
 
-    // baseUrl: "https://api.fintechbasket.com/api", 
-    baseUrl: "http://localhost:3000/api",
+    baseUrl: "https://api.fintechbasket.com/api", 
+    // baseUrl: "http://localhost:3000/api",
 
     credentials:"include",
     prepareHeaders: (headers, { getState }) => {
@@ -16,7 +16,7 @@ export const applicationApi = createApi({
     },
 
   }),
-  tagTypes: ["getApplication","getProfile","bankDetails","applicantDetails",'getDisbursals',"getCamDetails","recommendedApplication","getPendinDisbursals"],
+  tagTypes: ["getApplication","getProfile","bankDetails","recommendedApplications","applicantDetails",'getDisbursals',"getCamDetails","pendingSanctions","getPendinDisbursals"],
   endpoints: (builder) => ({
     // GET request to fetch a Pokemon by name
     holdApplication: builder.mutation({
@@ -44,7 +44,7 @@ export const applicationApi = createApi({
         method: 'PATCH',
         body:{reason}
       }),
-      invalidatesTags:["getProfile","getApplication","recommendedApplication"]
+      invalidatesTags:["getProfile","getApplication","pendingSanctions"]
     }),
     unholdApplication: builder.mutation({
       query: ({id,reason}) => ({
@@ -80,7 +80,7 @@ export const applicationApi = createApi({
         method: 'PATCH',
         body:{sendTo,reason}
       }),
-      invalidatesTags:["getApplication","recommendedApplication"]
+      invalidatesTags:["getApplication","pendingSanctions"]
     }),
     disbursalSendBack: builder.mutation({
       query: ({id,reason,sendTo}) => ({
@@ -89,7 +89,7 @@ export const applicationApi = createApi({
         method: 'PATCH',
         body:{sendTo,reason}
       }),
-      invalidatesTags:["getApplication","recommendedApplication"]
+      invalidatesTags:["getApplication","pendingSanctions"]
     }),
     approveApplication: builder.mutation({
       query: (id) => ({
@@ -97,7 +97,7 @@ export const applicationApi = createApi({
         url: `sanction/approve/${id}/?role=${role()}`,
         method: 'PATCH',
       }),
-      invalidatesTags:["getApplication","recommendedApplication"]
+      invalidatesTags:["getApplication","pendingSanctions"]
     }),
     recommendApplication: builder.mutation({
       query: (id) => ({
@@ -105,6 +105,7 @@ export const applicationApi = createApi({
         url: `applications/recommend/${id}/?role=${role()}`,
         method: 'PATCH',
       }),
+      invalidatesTags:["recommendedApplications"]
     }),
 
 
@@ -172,7 +173,7 @@ export const applicationApi = createApi({
         method: 'PATCH',
         body:{reason}
       }),
-      invalidatesTags:["getProfile","getApplication","recommendedApplication"]
+      invalidatesTags:["getProfile","getApplication","pendingSanctions"]
     }),
     fetchAllApplication: builder.query({
       query: ({ page, limit }) => `/applications/?page=${page}&limit=${limit}&role=${role()}`,
@@ -218,9 +219,13 @@ export const applicationApi = createApi({
       query: () => `/applications/rejected/?role=${role()}`,
       providesTags:["getApplication"]
     }),
+    pendingSanctions: builder.query({
+      query: ({page,limit}) => `/sanction/pending/?page=${page}&limit=${limit}&role=${role()}`,
+      providesTags:["pendingSanctions"]
+    }),
     recommendedApplications: builder.query({
       query: ({page,limit}) => `/sanction/recommended/?page=${page}&limit=${limit}&role=${role()}`,
-      providesTags:["recommendedApplication"]
+      providesTags:["recommendedApplications"]
     }),
     sanctionProfile: builder.query({
       query: (id) => `/sanction/${id}/?role=${role()}`,
@@ -292,9 +297,10 @@ export const {
     useGetRejectedApplicationsQuery,  
     useGetCamDetailsQuery,
     useUpdateCamDetailsMutation,
-    useRecommendedApplicationsQuery,
+    usePendingSanctionsQuery,
     useSanctionProfileQuery,
     useSanctionedQuery,
+    useRecommendedApplicationsQuery,
     useLazySanctionPreviewQuery,
     useAllDisbursalsQuery,
     useAllocateDisbursalMutation,

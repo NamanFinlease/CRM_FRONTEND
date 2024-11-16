@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useSanctionedQuery } from '../../queries/applicationQueries'
+import { useRecommendedApplicationsQuery } from '../../queries/applicationQueries'
 import { Alert } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
+import useAuthStore from '../store/authStore';
 
 const RecommendedApplications = () => {
+
+    const {activeRole} = useAuthStore()
 
     const navigate = useNavigate()
 
@@ -19,14 +22,14 @@ const RecommendedApplications = () => {
     const handlePageChange = (newPaginationModel) => {
         // Fetch new data based on the new page
         setPaginationModel(newPaginationModel)
-        refetch(newPaginationModel); 
+        // refetch(newPaginationModel); 
     };
 
     const handleLeadClick = (lead) => {
         navigate(`/sanction-profile/${lead.id}`)
     }
 
-    const { data, isSuccess, isError, error } = useSanctionedQuery({page:paginationModel.page+1,limit:paginationModel.pageSize})
+    const { data, isSuccess, isError, error } = useRecommendedApplicationsQuery({page:paginationModel.page+1,limit:paginationModel.pageSize})
     const columns = [
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
@@ -36,11 +39,14 @@ const RecommendedApplications = () => {
         { field: 'state', headerName: 'State', width: 150 },
         { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
         { field: 'salary', headerName: 'Salary', width: 150 },
-        { field: 'approvedBy', headerName: 'Sanctioned By', width: 150 },
+        ...((activeRole === "sanctionHead" || activeRole === "admin" ) ?
+         [{ field: 'recommendedBy', headerName: 'Recommended By', width: 150 }] :[]),
         { field: 'source', headerName: 'Source', width: 150 },
     ];
 
-    const rows = applications?.map(sanction => ({
+    const rows = applications?.map(sanction => {
+        const {fName,mName,lName} = sanction?.application?.recommendedBy
+        return ({
         id: sanction?._id, // Unique ID for each lead
         name: `${sanction?.application?.lead?.fName} ${sanction?.application?.lead?.mName} ${sanction?.application?.lead?.lName}`,
         mobile: sanction?.application?.lead?.mobile,
@@ -50,17 +56,18 @@ const RecommendedApplications = () => {
         state: sanction?.application?.lead?.state,
         loanAmount: sanction?.application?.lead?.loanAmount,
         salary: sanction?.application?.lead?.salary,
-        approvedBy: sanction?.application?.approvedBy,
+        ...((activeRole === "sanctionHead" || activeRole === "admin" ) && 
+        { recommendedBy: `${fName}${mName ? ` ${mName}` :``} ${lName}`}),
         source: sanction?.application?.lead?.source,
-    }));
+    })});
 
     useEffect(() => {
-        if (isSuccess && data?.sanction && data.sanction.length > 0) {
-            setApplications(data.sanction)
-            setTotalApplications(data.totalSanctions)
+        if (isSuccess && data?.recommended && data.recommended.length > 0) {
+            setApplications(data.recommended)
+            setTotalApplications(data.totalRecommended)
         }
 
-    }, [isSuccess, data?.applications])
+    }, [isSuccess, data?.recommended])
     return (
         <>
             <div>
@@ -101,7 +108,7 @@ const RecommendedApplications = () => {
                             paginationModel={paginationModel}
                             paginationMode="server"
                             onPaginationModelChange={handlePageChange}
-                            onRowClick={(params) => handleLeadClick(params)}
+                            // onRowClick={(params) => handleLeadClick(params)}
                             sx={{
                                 color: '#1F2A40',  // Default text color for rows
                                 '& .MuiDataGrid-columnHeaders': {

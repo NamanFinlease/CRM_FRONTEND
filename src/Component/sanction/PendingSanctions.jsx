@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
-import { useRecommendedApplicationsQuery } from '../../queries/applicationQueries';
+import { usePendingSanctionsQuery } from '../../queries/applicationQueries';
 
 const PendingSanctions = () => {
   const [applications, setApplications] = useState([]); 
@@ -14,7 +14,7 @@ const PendingSanctions = () => {
   const navigate = useNavigate()
 
 
-  const { data: allApplication,isSuccess:applicationSuccess, refetch } = useRecommendedApplicationsQuery({page:paginationModel.page+1,limit:paginationModel.pageSize})
+  const { data: allApplication,isSuccess:applicationSuccess, refetch } = usePendingSanctionsQuery({page:paginationModel.page+1,limit:paginationModel.pageSize})
 
   useEffect(() => {
     if(applicationSuccess){
@@ -33,18 +33,6 @@ const PendingSanctions = () => {
     refetch(newPaginationModel); // Adjust this according to your data fetching logic
   };
 
-  // useEffect(() => {
-  //   if(isSuccess){
-  //       navigate("/application-process")
-
-  //   }
-
-  // },[isSuccess,allApplication])
-
-// useEffect(() => {
-//   refetch()
-// }, [page, allApplication])
-
 const handleLeadClick = (lead) => {
   navigate(`/sanction-profile/${lead.id}`)
 }
@@ -62,7 +50,6 @@ const handleLeadClick = (lead) => {
   ];
 
   const rows = applications?.map(sanction => {
-    console.log('updated sanction',sanction)
     return ({
     id: sanction?._id, // Unique ID for each lead
     name: `${sanction?.application?.lead?.fName} ${sanction?.application?.lead?.mName} ${sanction?.application?.lead?.lName}`,
@@ -73,11 +60,10 @@ const handleLeadClick = (lead) => {
     state: sanction?.application?.lead?.state,
     loanAmount: sanction?.application?.lead?.loanAmount,
     salary: sanction?.application?.lead?.salary,
-    recommendedBy: sanction?.application?.recommendedBy,
+    recommendedBy: `${sanction?.application?.recommendedBy?.fName}${sanction?.application?.recommendedBy?.mName ? ` ${sanction?.application?.recommendedBy?.mName}` : ``} ${sanction?.application?.recommendedBy?.lName}`,
     source: sanction?.application?.lead?.source,
   })});
 
-  console.log('sanction',applications)
 
   return (
     <div>

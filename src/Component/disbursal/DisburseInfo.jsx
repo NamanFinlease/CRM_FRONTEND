@@ -73,7 +73,6 @@ const DisburseInfo = ({ disburse }) => {
 
       {/* Clickable Header for Disbursal Bank with Background */}
 
-      {console.log('disbursed test',applicationProfile.isDisbursed)}
       {(activeRole === "disbursalHead" && !applicationProfile.isDisbursed && applicationProfile.isRecommended) &&
         <>
           <Box
