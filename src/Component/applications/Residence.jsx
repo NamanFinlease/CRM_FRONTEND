@@ -235,7 +235,7 @@ const Residence = ({ residence }) => {
                 </TableContainer>
                 <Divider sx={{ my: 2 }} />
 
-                {(activeRole !== "sanctionHead" && activeRole !== "sanctionHead") && <Box display="flex" justifyContent="flex-end">
+                {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end">
                   <Button
                     variant="contained"
                     style={buttonStyles}

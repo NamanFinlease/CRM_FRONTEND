@@ -206,7 +206,7 @@ const BankDetails = ({ id }) => {
                         </Table>
                     </TableContainer>
 
-                    {(activeRole !== "sanctionHead" && activeRole !== "admin") && <Box display="flex" justifyContent="flex-end" marginTop="20px">
+                    {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end" marginTop="20px">
                         <Button
                             variant="outlined"
                             onClick={handleOpenForm}

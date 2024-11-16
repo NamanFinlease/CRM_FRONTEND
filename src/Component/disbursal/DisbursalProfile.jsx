@@ -15,7 +15,7 @@ import { useDisbursalProfileQuery } from '../../queries/applicationQueries';
 import useAuthStore from '../store/authStore';
 import useStore from '../../Store';
 import DisburseInfo from './DisburseInfo';
-import ActionButton from '../actionButton';
+import ActionButton from '../ActionButton';
 
 
 
@@ -36,11 +36,11 @@ const DisbursalProfile = () => {
 
   useEffect(() => {
     if (isSuccess && data) {
-      setDisbursalData(data?.disbursal?.application)
+      setDisbursalData(data?.disbursal?.sanction)
       setApplicationProfile(data?.disbursal);
     }
-    if (isSuccess && data?.application?.lead?.document?.length) {
-      setUploadedDocs(data?.application?.lead?.document.map(doc => doc.type));
+    if (isSuccess && data?.sanction?.application?.lead?.document?.length) {
+      setUploadedDocs(data?.sanction?.application?.lead?.document.map(doc => doc.type));
     }
   }, [isSuccess, data]);
 
@@ -56,13 +56,13 @@ const DisbursalProfile = () => {
 
         {currentPage === "application" &&
           <>
-            {disbursalData?.lead?._id &&
+            {disbursalData?.application?.lead?._id &&
               <>
                 <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
-                  <ApplicantProfileData leadData={disbursalData?.lead} />
+                  <ApplicantProfileData leadData={disbursalData?.application?.lead} />
                 </Paper>
-                <InternalDedupe id={disbursalData?.lead?._id} />
-                <ApplicationLogHistory id={disbursalData?.lead?._id} />
+                <InternalDedupe id={disbursalData?.application?.lead?._id} />
+                <ApplicationLogHistory id={disbursalData?.application?.lead?._id} />
 
               </>
 
@@ -72,29 +72,29 @@ const DisbursalProfile = () => {
           </>
         }
 
-        {data && Object.keys(data).length > 0 &&
+        {disbursalData && Object.keys(disbursalData).length > 0 &&
           <>
-            {currentPage === "personal" && <PersonalDetails id={disbursalData?.applicant} />}
+            {currentPage === "personal" && <PersonalDetails id={disbursalData?.application?.applicant} />}
             {currentPage === "banking" &&
-              <BankDetails id={disbursalData?.applicant} />}
+              <BankDetails id={disbursalData?.application?.applicant} />}
 
             {currentPage === "verification" &&
               <VerifyContactDetails
-                isMobileVerified={disbursalData?.lead?.isMobileVerified}
-                isEmailVerified={disbursalData?.lead?.isEmailVerified}
-                isAadhaarVerified={disbursalData?.lead?.isAadhaarVerified}
-                isPanVerified={disbursalData?.lead?.isPanVerified}
+                isMobileVerified={disbursalData?.application?.lead?.isMobileVerified}
+                isEmailVerified={disbursalData?.application?.lead?.isEmailVerified}
+                isAadhaarVerified={disbursalData?.application?.lead?.isAadhaarVerified}
+                isPanVerified={disbursalData?.application?.lead?.isPanVerified}
               />
             }
             {currentPage === "documents" &&
               <UploadDocuments
-                leadData={disbursalData?.lead}
+                leadData={disbursalData?.application?.lead}
                 setUploadedDocs={setUploadedDocs}
                 uploadedDocs={uploadedDocs}
               />
             }
 
-            {currentPage === "cam" && <Cam id={disbursalData._id} />}
+            {currentPage === "cam" && <Cam id={disbursalData?.application?._id} />}
             {currentPage === "disbursal" && <DisburseInfo disburse={disbursalData} />}
            
           </>

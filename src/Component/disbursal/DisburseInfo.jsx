@@ -22,7 +22,7 @@ const DisburseInfo = ({ disburse }) => {
   const { applicationProfile } = useStore()
   const navigate = useNavigate()
 
-  const { disbursalDate, netDisbursalAmount } = disburse?.cam?.details
+  const { disbursalDate, netDisbursalAmount } = disburse?.application?.cam?.details
   const [disburseLoan, { data, isSuccess, isError, error }] = useDisburseLoanMutation()
 
   const defaultValues = {
@@ -69,10 +69,12 @@ const DisburseInfo = ({ disburse }) => {
       }}
     >
       {/* Render DisbursalProfile component before the dropdown header */}
-      <DisbursalProfile disburse={disburse} />
+      <DisbursalProfile disburse={disburse?.application} />
 
       {/* Clickable Header for Disbursal Bank with Background */}
-      {(activeRole === "disbursalHead" && !applicationProfile.isDisbursed) &&
+
+      {console.log('disbursed test',applicationProfile.isDisbursed)}
+      {(activeRole === "disbursalHead" && !applicationProfile.isDisbursed && applicationProfile.isRecommended) &&
         <>
           <Box
             onClick={handleToggleForm}
@@ -369,14 +371,19 @@ const DisburseInfo = ({ disburse }) => {
           )}
           {/* Submit button */}
         </>}
-      {!applicationProfile.isRejected &&<ActionButton
-        id={applicationProfile?._id}
-        isHold={applicationProfile?.onHold}
-      // setPreviewSanction={setPreviewSanction}
-      // sanctionPreview={sanctionPreview}
-      // setForceRender={setForceRender}
 
-      />}
+      {
+        !applicationProfile.isRejected &&
+        (activeRole !== "disbursalHead" || applicationProfile.isRecommended) &&
+
+        <ActionButton
+          id={applicationProfile?._id}
+          isHold={applicationProfile?.onHold}
+        // setPreviewSanction={setPreviewSanction}
+        // sanctionPreview={sanctionPreview}
+        // setForceRender={setForceRender}
+
+        />}
     </Box>
   );
 };

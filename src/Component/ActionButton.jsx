@@ -5,7 +5,7 @@ import { useHoldLeadMutation, useRecommendLeadMutation, useRejectLeadMutation, u
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from './store/authStore';
-import { useHoldApplicationMutation, useHoldDisbursalMutation, useRecommendApplicationMutation, useRecommendLoanMutation, useRejectApplicationMutation, useSanctionSendBackMutation, useSendBackMutation, useUnholdApplicationMutation } from '../queries/applicationQueries';
+import { useHoldApplicationMutation, useHoldDisbursalMutation, useRecommendApplicationMutation, useRecommendLoanMutation, useRejectApplicationMutation, useRejectDisbursalMutation, useSanctionSendBackMutation, useDisbursalSendBackMutation, useSendBackMutation, useUnholdApplicationMutation, useUnholdDisbursalMutation } from '../queries/applicationQueries';
 import useStore from '../Store';
 import RejectedLeads from './leads/RejectedLeads';
 
@@ -48,9 +48,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
 
     // Disbursal Action component API-----------
     const [holdDisbursal, { data: holdDisbursalData, isSuccess: IsholdDisbursalSuccess, isError: isDisbursalHoldError, error: disbursalHoldError }] = useHoldDisbursalMutation();
-    // const [unholdApplication, { data: unholdApplicationData, isSuccess: unholdApplicationSuccess, isError: isApplicationUnHoldError, error: unHoldApplicationError }] = useUnholdApplicationMutation();
+    const [unholdDisbursal, { data: unholdDisbursalData, isSuccess: unholdDisbursalSuccess, isError: isUnholdDisbursalError, error: unHoldDisbursalError }] = useUnholdDisbursalMutation();
     const [recommendLoan, { data: RecommendLoan, isSuccess: isLoanRecommend, isError: isRecommendError, error: recommendLoanError }] = useRecommendLoanMutation()
-    // const [rejectApplication, { data: rejectApplicationData, isSuccess: rejectApplicationSuccess, isError: isApplicationRejectError, error: rejectApplicationError }] = useRejectApplicationMutation();
+    const [rejectDisbursal, { data: rejectDisbursalData, isSuccess: rejectDisbursalSuccess, isError: isRejectDisbursalError, error: rejectDisbursalError }] = useRejectDisbursalMutation();
 
     // Lead Action component API ----------------------
     const [holdLead, { data: holdLeadData, isSuccess: holdLeadSuccess, isError: isHoldError, error: leadHoldError }] = useHoldLeadMutation();
@@ -61,6 +61,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
 
     // sanction Action mutation -------
     const [sanctionSendBack, { data: sanctionSendBackData, isSuccess: sanctionSendBackSuccess, isError: isSanctionSendBackError, error: sanctionSendBackError }] = useSanctionSendBackMutation()
+    const [disbursalSendBack, { data: disbursalSendBackData, isSuccess: disbursalSendBackSuccess, isError: isdisbursalSendBackError, error: disbursalSendBackError }] = useDisbursalSendBackMutation()
     const [sanctionReject, { data: sanctionRejectData, isSuccess: sanctionRejectSuccess, isError: isSanctionRejectError, error: sanctionRejectError }] = useRejectLeadMutation();
 
 
@@ -103,11 +104,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 holdLead({ id, reason: remarks })
             } else if (activeRole === "creditManager") {
                 holdApplication({ id, reason: remarks })
-            } else if (activeRole === "disbursalManager") {
+            } else if (activeRole === "disbursalManager" || activeRole === "disbursalHead") {
                 // console.log('disbursal hold',{ id:applicationProfile._id, reason: remarks })
                 holdDisbursal({ id: applicationProfile._id, reason: remarks })
-            } else if (activeRole === "disbursalHead") {
-                holdApplication({ id, reason: remarks })
             }
 
         } else if (actionType === 'reject') {
@@ -115,6 +114,8 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 rejectLead({ id, reason: remarks })
             } else if (activeRole === "creditManager") {
                 rejectApplication({ id, reason: remarks })
+            } else if (activeRole === "disbursalManager" || activeRole === "disbursalHead") {
+                rejectDisbursal({ id, reason: remarks })
             } else {
                 sanctionReject({ id, reason: remarks })
             }
@@ -125,19 +126,22 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 unholdLead({ id, reason: remarks })
             } else if (activeRole === "creditManager") {
                 unholdApplication({ id, reason: remarks })
+            } else if (activeRole === "disbursalManager" || activeRole === "disbursalHead") {
+                unholdDisbursal({ id, reason: remarks })
             }
         } else if (actionType === "sendBack") {
-            if (activeRole === "sanctionHead") {
-
-                sanctionSendBack({ id: applicationProfile?.application?.lead._id, reason: remarks, sendTo: selectedRecipient })
-            } else if (activeRole === "creditManager") {
+            if (activeRole === "creditManager") {
                 sendBack({ id: applicationProfile?.lead._id, reason: remarks, sendTo: selectedRecipient })
+            } else if (activeRole === "sanctionHead") {
+                sanctionSendBack({ id: applicationProfile?.application?.lead._id, reason: remarks, sendTo: selectedRecipient })
+            } else if(activeRole==='disbursalHead'){
+                disbursalSendBack({ id: applicationProfile?.sanction?.application?.lead._id, reason: remarks, sendTo: selectedRecipient })
             }
 
         } else if (actionType === "recommend") {
             if (activeRole === "disbursalManager") {
-                console.log('submit', applicationProfile._id, remarks)
-                // recommendLoan({ id: applicationProfile._id, remarks })
+                // console.log('submit', applicationProfile._id, remarks)
+                recommendLoan({ id: applicationProfile._id, remarks })
 
             }
 
@@ -213,9 +217,16 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
             });
             navigate("/recommended-application")
         }
+        if (disbursalSendBackSuccess && disbursalSendBackData) {
+            Swal.fire({
+                text: "Disbursal successfully send back!",
+                icon: "success"
+            });
+            navigate("/disbursal-process")
+        }
 
 
-    }, [sendBackData, sanctionSendBackData])
+    }, [sendBackData, sanctionSendBackData, disbursalSendBackSuccess, disbursalSendBackData])
     useEffect(() => {
         if (holdApplicationSuccess && holdApplicationData) {
             Swal.fire({
@@ -255,6 +266,24 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
 
     }, [holdApplicationData, unholdApplicationData, rejectApplicationData, recommendApplicationData, sanctionRejectData])
 
+    useEffect(()=> {
+        if (unholdDisbursalData && unholdDisbursalSuccess) {
+            Swal.fire({
+                text: "Disbursal Unhold!",
+                icon: "success"
+            });
+            navigate("/")
+        }
+        if (rejectApplicationSuccess && rejectApplicationData) {
+            Swal.fire({
+                text: "Disbursal Rejected!",
+                icon: "success"
+            });
+            navigate("/rejected-disbursals")
+        }
+
+    },[unholdDisbursalData, unholdDisbursalSuccess])
+
 
 
     return (
@@ -270,9 +299,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                         {recommendApplicationError?.data?.message} {applicationHoldError?.data?.message} {rejectApplicationError?.data?.message} {unHoldApplicationError?.data?.message}
                     </Alert>
                 }
-                {(isSanctionSendBackError) &&
+                {(isSanctionSendBackError || isdisbursalSendBackError) &&
                     <Alert severity="error" style={{ marginTop: "10px" }}>
                         {sanctionSendBackError?.data?.message}
+                        {disbursalSendBackError?.data?.message}
                     </Alert>
                 }
 
@@ -433,6 +463,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                                                 </MenuItem>
                                                 {activeRole === "creditManager" && <MenuItem value="screener">Screener</MenuItem>}
                                                 {activeRole === "sanctionHead" && <MenuItem value="creditManager">Credit Manager</MenuItem>}
+                                                {activeRole === "disbursalHead" && <MenuItem value="disbursalManager">Disbursal Manager</MenuItem>}
                                             </Select>
                                         </FormControl>
                                     </>

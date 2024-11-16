@@ -131,8 +131,6 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                         {[
                                             { text: 'New', link: '/new-applications' },
                                             { text: 'Inprocess', link: '/application-process' },
-                                            { text: 'Hold', link: '/application-hold' },
-                                            { text: 'Rejected Applications', link: '/rejected-applications' }
                                         ].map((item, index) => (
                                             <ListItem
                                                 key={index}
@@ -169,12 +167,48 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             >
                                 <AccordionDetails sx={{ backgroundColor: 'transparent', padding: 0 }}>
                                     <List>
-                                        <ListItem component={Link} to="/recommended-application" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
-                                            <ListItemText primary="Recommended" sx={{ color: '#fff' }} />
+                                        <ListItem component={Link} to="/pending-sanctions" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                            <ListItemText primary="Pending Sanctions" sx={{ color: '#fff' }} />
                                         </ListItem>
-                                        <ListItem component={Link} to="/sanctioned" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
-                                            <ListItemText primary="Sanctioned" sx={{ color: '#fff' }} />
-                                        </ListItem>
+                                        
+                                    </List>
+                                </AccordionDetails>
+                            </CSSTransition>
+                        </Accordion>
+                    )}
+                     {(activeRole === "creditManager" || activeRole === "sanctionHead" || activeRole === "admin") && (
+                        <Accordion expanded={expanded === 'globalApplication'} onChange={handleAccordionToggle('globalApplication')}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ backgroundColor: 'transparent', color: '#fff' }}>
+                                <Typography variant="subtitle1">Global Application</Typography>
+                            </AccordionSummary>
+                            <CSSTransition
+                                in={expanded === 'globalApplication'}
+                                timeout={300}
+                                classNames={{
+                                    enter: 'accordion-enter',
+                                    enterActive: 'accordion-enter-active',
+                                    exit: 'accordion-exit',
+                                    exitActive: 'accordion-exit-active',
+                                }}
+                                unmountOnExit
+                            >
+                                <AccordionDetails sx={{ backgroundColor: 'transparent', padding: 0 }}>
+                                    <List>
+                                        {[
+                                            { text: 'Recommended Applications', link: '/recommended-applications' },
+                                            { text: 'Sanctioned', link: '/sanctioned' },
+                                            { text: 'Hold', link: '/application-hold' },
+                                            { text: 'Rejected Applications', link: '/rejected-applications' },
+                                        ].map((item, index) => (
+                                            <ListItem
+                                                key={index}
+                                                component={Link}
+                                                to={item.link}
+                                                sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}
+                                            >
+                                                <ListItemText primary={item.text} sx={{ color: '#fff' }} />
+                                            </ListItem>
+                                        ))}
                                     </List>
                                 </AccordionDetails>
                             </CSSTransition>
@@ -209,7 +243,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                         <ListItem component={Link} to="/disbursal-hold" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
                                             <ListItemText primary="Hold" sx={{ color: '#fff' }} />
                                         </ListItem>
-                                        <ListItem component={Link} to="/disbursal-reject" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                        <ListItem component={Link} to="/rejected-disbursals" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
                                             <ListItemText primary="Rejected" sx={{ color: '#fff' }} />
                                         </ListItem>
                                         {(activeRole === "disbursalHead" || activeRole === "admin") &&

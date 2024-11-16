@@ -7,8 +7,8 @@ export const applicationApi = createApi({
   reducerPath: 'applicationApi',
   baseQuery: fetchBaseQuery({
 
-    baseUrl: "https://api.fintechbasket.com/api", 
-    // baseUrl: "http://localhost:3000/api",
+    // baseUrl: "https://api.fintechbasket.com/api", 
+    baseUrl: "http://localhost:3000/api",
 
     credentials:"include",
     prepareHeaders: (headers, { getState }) => {
@@ -55,6 +55,15 @@ export const applicationApi = createApi({
       }),
       invalidatesTags:["getProfile"]
     }),
+    unholdDisbursal: builder.mutation({
+      query: ({id,reason}) => ({
+
+        url: `disbursals/unhold/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{reason}
+      }),
+      invalidatesTags:["getProfile"]
+    }),
     sendBack: builder.mutation({
       query: ({id,reason,sendTo}) => ({
 
@@ -68,6 +77,15 @@ export const applicationApi = createApi({
       query: ({id,reason,sendTo}) => ({
 
         url: `sanction/sent-back/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{sendTo,reason}
+      }),
+      invalidatesTags:["getApplication","recommendedApplication"]
+    }),
+    disbursalSendBack: builder.mutation({
+      query: ({id,reason,sendTo}) => ({
+
+        url: `disbursals/sent-back/${id}/?role=${role()}`,
         method: 'PATCH',
         body:{sendTo,reason}
       }),
@@ -147,6 +165,15 @@ export const applicationApi = createApi({
       }),
       invalidatesTags:["getDisbursals","getPendinDisbursals"]
     }),
+    rejectDisbursal: builder.mutation({
+      query: ({id,reason}) => ({
+
+        url: `disbursals/reject/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:{reason}
+      }),
+      invalidatesTags:["getProfile","getApplication","recommendedApplication"]
+    }),
     fetchAllApplication: builder.query({
       query: ({ page, limit }) => `/applications/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["getApplication"]
@@ -193,7 +220,7 @@ export const applicationApi = createApi({
     }),
     recommendedApplications: builder.query({
       query: ({page,limit}) => `/sanction/recommended/?page=${page}&limit=${limit}&role=${role()}`,
-      providesTags:["recommendedApplicatio"]
+      providesTags:["recommendedApplication"]
     }),
     sanctionProfile: builder.query({
       query: (id) => `/sanction/${id}/?role=${role()}`,
@@ -231,6 +258,10 @@ export const applicationApi = createApi({
       query: ({page,limit}) => `/disbursals/hold/?page=${page}&limit=${limit}&role=${role()}`,
       // providesTags:["getApplication"]
     }),
+    rejectedDisbursals: builder.query({
+      query: () => `/disbursals/rejected/?role=${role()}`,
+      providesTags:["getApplication"]
+    }),
     
   }),
 });
@@ -245,11 +276,14 @@ export const {
     useAddBankMutation,
     useSendBackMutation,
     useSanctionSendBackMutation,
+    useDisbursalSendBackMutation,
     useApproveApplicationMutation,
     useUpdatePersonalDetailsMutation,
     useRecommendLoanMutation,
     useDisburseLoanMutation,
     useHoldDisbursalMutation,
+    useUnholdDisbursalMutation,
+    useRejectDisbursalMutation,
     useGetBankDetailsQuery,
     useFetchAllocatedApplicationQuery,
     useFetchSingleApplicationQuery,
@@ -268,6 +302,7 @@ export const {
     useDisbursalProfileQuery,
     usePendingDisbursalQuery,
     useDisbursedQuery,
-    useFetchDisbursalHoldQuery
+    useFetchDisbursalHoldQuery,
+    useRejectedDisbursalsQuery,
 
 } = applicationApi;

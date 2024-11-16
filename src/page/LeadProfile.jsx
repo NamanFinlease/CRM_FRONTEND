@@ -9,7 +9,7 @@ import ApplicationLogHistory from '../Component/ApplicationLogHistory';
 import VerifyContactDetails from '../Component/leads/DetailsVerification';
 import CibilScorePage from '../Component/leads/CibilScore';
 import useStore from '../Store';
-import ActionButton from '../Component/actionButton';
+import ActionButton from '../Component/ActionButton';
 import BarButtons from '../Component/BarButtons';
 import useAuthStore from '../Component/store/authStore';
 import ApplicantProfileData from '../Component/applicantProfileData';

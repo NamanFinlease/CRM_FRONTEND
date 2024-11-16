@@ -5,6 +5,7 @@ import { formatDate } from '../utils/helper';
 
 
 const ApplicantProfileData = ({leadData}) => {
+    console.log('lead data',leadData)
 
     const columns = [
         { label: "First Name", value: leadData?.fName, label2: "Middle Name", value2: leadData?.mName },

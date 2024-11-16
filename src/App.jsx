@@ -37,7 +37,7 @@ import AadhaarOtpVerification from './Component/leads/AadhaarOtpVerification';
 import CompareUserDetails from './Component/leads/PanCompare';
 import HoldApplication from './Component/applications/HoldApplication';
 import RejectedApplication from './Component/applications/RejectedApplication';
-import RecommendedApp from './Component/sanction/RecommendedApp';
+import PendingSanctions from './Component/sanction/PendingSanctions';
 import SanctionProfile from './Component/sanction/SanctionProfile';
 import Sanctioned from './Component/sanction/sanctioned';
 import DisburseNew from './Component/disbursal/DisburseNew';
@@ -47,7 +47,7 @@ import DisbursePending from './Component/disbursal/DisbursePending';
 import Disbursed from './Component/disbursal/Disbursed';
 import DisbursalHold from './Component/disbursal/DisbursalHold';
 import RejectedDisbursal from './Component/disbursal/RejectedDisbursal';
-import RecommendedApplication from './Component/applications/RecommendedApplication';
+import RecommendedApplications from './Component/applications/RecommendedApplications';
 
 
 function App() {
@@ -99,70 +99,20 @@ function App() {
 
                   <Route path="/rejected-Applications" element={<RejectedApplication />} />
                   <Route path="/sanction" element={<DynamicTable />} />
-                  <Route path="/recommended-application" element={<RecommendedApp />} />
+                  <Route path="/pending-sanctions" element={<PendingSanctions />} />
                   <Route path="/sanction-profile/:id" element={<SanctionProfile />} />
                   <Route path="/sanction-reject" element={<DynamicTable />} />
                   <Route path="/sanction-sentback" element={<DynamicTable />} />
                   <Route path="/sanctioned" element={<Sanctioned />} />
-                  <Route path="/recommended-applications" element={<RecommendedApplication />} />
+                  <Route path="/recommended-applications" element={<RecommendedApplications />} />
                   <Route path="/disbursal-new" element={<DisburseNew />} />
                   <Route path="/disbursal-process" element={<DisbursalProcess />} />
                   <Route path="/disbursal-profile/:id" element={<DisbursalProfile />} />
                   <Route path="/disbursal-pending" element={<DisbursePending />} />
                   <Route path="/disbursal-hold" element={<DisbursalHold />} />
-                  <Route path="/rejected-disbursal" element={<RejectedDisbursal />} />
+                  <Route path="/rejected-disbursals" element={<RejectedDisbursal />} />
                   <Route path="/disbursed" element={<Disbursed />} />
 
-                  <Route path="/application-recommendation" element={<DynamicTable
-                    header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager"]}
-                    rows={[
-                      ["601", "Recommend", "2024-09-09", "Online", "Isabella Johnson", "California", "Los Angeles", "Branch M", "555-3333", "JKL123456M", "Individual", "Pending", "Manager 1"],
-                      ["602", "Recommend", "2024-09-08", "Offline", "Oliver Martinez", "New York", "Brooklyn", "Branch N", "555-4444", "MNO789012N", "Business", "Review", "Manager 2"],
-                      ["603", "Recommend", "2024-09-07", "Referral", "Liam Davis", "Texas", "Houston", "Branch O", "555-5555", "PQR345678O", "Individual", "Active", "Manager 3"],
-                      ["604", "Recommend", "2024-09-06", "Online", "Sophia Wilson", "Florida", "Orlando", "Branch P", "555-6666", "STU901234P", "Business", "Completed", "Manager 4"]
-                    ]} />} />
-                  
-                  
-                  <Route path="/disbursal-inprocess" element={<DynamicTable
-                    header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager", "Sanction-On", "Sanction-Amount", "Disbursal Manager"]}
-                    rows={[
-                      ["1001", "In Process", "2024-09-09", "Online", "Ethan Scott", "California", "San Diego", "Branch CC", "555-9999", "XYZ123456A", "Individual", "Pending", "Manager 1", "2024-09-10", "$5000", "Disbursal Manager 1"],
-                      ["1002", "In Process", "2024-09-08", "Offline", "Ava Mitchell", "New York", "Queens", "Branch DD", "555-0000", "ABC789012B", "Business", "Review", "Manager 2", "2024-09-12", "$7500", "Disbursal Manager 2"],
-                      ["1003", "In Process", "2024-09-07", "Referral", "Liam Adams", "Texas", "Houston", "Branch EE", "555-1111", "DEF345678C", "Individual", "Active", "Manager 3", "2024-09-11", "$6000", "Disbursal Manager 3"],
-                      ["1004", "In Process", "2024-09-06", "Online", "Sophia Walker", "Florida", "Tampa", "Branch FF", "555-2222", "GHI901234D", "Business", "Completed", "Manager 4", "2024-09-14", "$5500", "Disbursal Manager 4"]
-                    ]} />} />
-                  <Route path="/disbursal-hold" element={<DynamicTable
-                    header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager", "Sanction-On", "Sanction-Amount", "Disbursal Manager"]}
-                    rows={[
-                      ["1101", "On Hold", "2024-09-09", "Online", "Isabella Lee", "California", "San Jose", "Branch GG", "555-3333", "JKL123456E", "Individual", "On Hold", "Manager 1", "2024-09-10", "$4000", "Disbursal Manager 1"],
-                      ["1102", "On Hold", "2024-09-08", "Offline", "Mason Clark", "New York", "Bronx", "Branch HH", "555-4444", "MNO789012F", "Business", "On Hold", "Manager 2", "2024-09-12", "$6500", "Disbursal Manager 2"],
-                      ["1103", "On Hold", "2024-09-07", "Referral", "Sophia Robinson", "Texas", "Austin", "Branch II", "555-5555", "PQR345678G", "Individual", "On Hold", "Manager 3", "2024-09-11", "$5500", "Disbursal Manager 3"],
-                      ["1104", "On Hold", "2024-09-06", "Online", "Liam Johnson", "Florida", "Jacksonville", "Branch JJ", "555-6666", "STU901234H", "Business", "On Hold", "Manager 4", "2024-09-14", "$5000", "Disbursal Manager 4"]
-                    ]} />} />
-                  <Route path="/disbursal-pending" element={<DynamicTable
-                    header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager", "Sanction-On", "Sanction-Amount", "Disbursal Manager", "Disbursal Recommended On"]}
-                    rows={[
-                      ["1201", "Pending", "2024-09-09", "Online", "Charlotte Moore", "California", "San Diego", "Branch KK", "555-7777", "UVW123456I", "Individual", "Pending", "Manager 1", "2024-09-10", "$7000", "Disbursal Manager 1", "2024-09-15"],
-                      ["1202", "Pending", "2024-09-08", "Offline", "Benjamin Adams", "New York", "Brooklyn", "Branch LL", "555-8888", "XYZ789012J", "Business", "Pending", "Manager 2", "2024-09-12", "$8500", "Disbursal Manager 2", "2024-09-16"],
-                      ["1203", "Pending", "2024-09-07", "Referral", "Ava Garcia", "Texas", "Dallas", "Branch MM", "555-9999", "ABC345678K", "Individual", "Pending", "Manager 3", "2024-09-11", "$6000", "Disbursal Manager 3", "2024-09-17"],
-                      ["1204", "Pending", "2024-09-06", "Online", "James Wilson", "Florida", "Miami", "Branch NN", "555-0000", "DEF901234L", "Business", "Pending", "Manager 4", "2024-09-14", "$6500", "Disbursal Manager 4", "2024-09-18"]
-                    ]} />} />
-                  <Route path="/disbursal-send-back" element={<DynamicTable
-                    header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager", "Sanction-On", "Sanction-Amount", "Disbursal Manager"]}
-                    rows={[
-                      ["1301", "Sent Back", "2024-09-09", "Online", "Mia Taylor", "California", "San Francisco", "Branch OO", "555-1111", "GHI123456M", "Individual", "Sent Back", "Manager 1", "2024-09-10", "$3000", "Disbursal Manager 1"],
-                      ["1302", "Sent Back", "2024-09-08", "Offline", "Noah White", "New York", "Manhattan", "Branch PP", "555-2222", "JKL789012N", "Business", "Sent Back", "Manager 2", "2024-09-12", "$4000", "Disbursal Manager 2"],
-                      ["1303", "Sent Back", "2024-09-07", "Referral", "Olivia Martinez", "Texas", "Austin", "Branch QQ", "555-3333", "MNO345678O", "Individual", "Sent Back", "Manager 3", "2024-09-11", "$3500", "Disbursal Manager 3"],
-                      ["1304", "Sent Back", "2024-09-06", "Online", "Ethan Lewis", "Florida", "Tampa", "Branch RR", "555-4444", "PQR901234P", "Business", "Sent Back", "Manager 4", "2024-09-14", "$5000", "Disbursal Manager 4"]
-                    ]} />} />
-                  <Route path="/disbursed" element={<DynamicTable
-                    header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status"]}
-                    rows={[
-                      ["1401", "Disbursed", "2024-09-09", "Online", "Emily Johnson", "California", "Los Angeles", "Branch SS", "555-5555", "STU123456Q", "Individual", "Disbursed"],
-                      ["1402", "Disbursed", "2024-09-08", "Offline", "James Brown", "New York", "Staten Island", "Branch TT", "555-6666", "VWX789012R", "Business", "Disbursed"],
-                      ["1403", "Disbursed", "2024-09-07", "Referral", "Ava Davis", "Texas", "San Antonio", "Branch UU", "555-7777", "YZA345678S", "Individual", "Disbursed"],
-                      ["1404", "Disbursed", "2024-09-06", "Online", "William Miller", "Florida", "Orlando", "Branch VV", "555-8888", "BCD901234T", "Business", "Disbursed"]
-                    ]} />} />
                   <Route path="/pre-collection" element={<DynamicTable
                     header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status"]}
                     rows={[

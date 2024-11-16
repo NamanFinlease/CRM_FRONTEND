@@ -106,13 +106,13 @@ const Navbar = () => {
 
     const sidebarLinks = [
         { text: "User Profile", path: "/user-profile" },
-        { text: "View Employees", path: "/employees-list" },
         { text: "Import CSV", path: "/import-csv" },
         ...(activeRole === "admin"
             ? [
-                  { text: "Add Employee", path: "/add-employee" },
-                  { text: "Add Bank Details", path: "/add-bank-details" },
-              ]
+                { text: "View Employees", path: "/employees-list" },
+                { text: "Add Employee", path: "/add-employee" },
+                { text: "Add Bank Details", path: "/add-bank-details" },
+            ]
             : []),
         { text: "Add Holiday Details", path: "/add-holiday-details" },
     ];
@@ -153,7 +153,7 @@ const Navbar = () => {
                             id="demo-simple-select-standard"
                             value={activeRole}
                             onChange={(e) => handleRoleChange(e)}
-                            // label="Age"
+                        // label="Age"
                         >
                             {empInfo.empRole &&
                                 empInfo.empRole.map((role, i) => (

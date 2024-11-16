@@ -245,18 +245,18 @@ const Dashboard = ({ isSidebarOpen }) => {
         title: 'Disburse Processing',
         no : data?.disbursal?.allocatedDisbursals || 0
       },
-      // disbursePending: {
-      //   icon: <NewReleasesIcon className='mt-3'
-      //   sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
-      //   path: "/disbursal-pending",
-      //   title: 'Disburse Pending',
-      //   no : data?.disbursal?.newLeads || 0
-      // },
+      disbursePending: {
+        icon: <NewReleasesIcon className='mt-3'
+        sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+        path: "/disbursal-pending",
+        title: 'Disbursal Pending',
+        no : data?.disbursal?.pendingDisbursals || 0
+      },
       disbursed: {
         icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/disbursed",
         title: 'Disbursed',
-        no : data?.disbursal?.totalDisbursals || 0
+        no : data?.disbursal?.disbursed || 0
       },
     
      

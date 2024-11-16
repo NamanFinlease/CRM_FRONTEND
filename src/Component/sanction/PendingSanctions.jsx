@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import { useRecommendedApplicationsQuery } from '../../queries/applicationQueries';
 
-const RecommendedApp = () => {
+const PendingSanctions = () => {
   const [applications, setApplications] = useState([]); 
   const [totalApplications, setTotalApplications] = useState(0); 
   const [page, setPage] = useState(1); 
@@ -142,4 +142,4 @@ const handleLeadClick = (lead) => {
   );
 };
 
-export default RecommendedApp;
+export default PendingSanctions;

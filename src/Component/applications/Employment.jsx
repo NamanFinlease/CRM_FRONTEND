@@ -67,7 +67,6 @@ const Employment = ({ employmentData }) => {
   });
 
   const onSubmit = (data) => {
-    console.log('date test',data)
     const newData = {
       employment: {
         ...data,
@@ -285,7 +284,7 @@ const Employment = ({ employmentData }) => {
 
               <Divider sx={{ my: 2 }} />
 
-              {(activeRole !== "sanctionHead" && activeRole !== "admin" ) && <Box display="flex" justifyContent="flex-end">
+              {(activeRole === "creditManager"  ) && <Box display="flex" justifyContent="flex-end">
                 <Button
                   variant="contained"
                   style={buttonStyles}

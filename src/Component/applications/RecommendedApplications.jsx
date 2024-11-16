@@ -4,7 +4,7 @@ import { Alert } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
 
-const Sanctioned = () => {
+const RecommendedApplications = () => {
 
     const navigate = useNavigate()
 
@@ -19,7 +19,7 @@ const Sanctioned = () => {
     const handlePageChange = (newPaginationModel) => {
         // Fetch new data based on the new page
         setPaginationModel(newPaginationModel)
-        refetch(newPaginationModel); // Adjust this according to your data fetching logic
+        refetch(newPaginationModel); 
     };
 
     const handleLeadClick = (lead) => {
@@ -134,4 +134,4 @@ const Sanctioned = () => {
     )
 }
 
-export default Sanctioned
+export default RecommendedApplications

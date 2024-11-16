@@ -220,7 +220,7 @@ const Reference = ({ reference }) => {
                   </Table>
                 </TableContainer>
                 <Divider sx={{ my: 2 }} />
-                {(activeRole !== "sanctionHead" && activeRole !== "admin") && <Box display="flex" justifyContent="flex-end" sx={{ my: 2 }}>
+                {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end" sx={{ my: 2 }}>
                   <Button
                     variant="outlined"
                     onClick={() => setOpenEdit(true)}
