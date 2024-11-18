@@ -48,6 +48,9 @@ import Disbursed from './Component/disbursal/Disbursed';
 import DisbursalHold from './Component/disbursal/DisbursalHold';
 import RejectedDisbursal from './Component/disbursal/RejectedDisbursal';
 import RecommendedApplication from './Component/applications/RecommendedApplication';
+import RepaymentForm from './Component/repayment/RepaymentForm';
+
+
 
 
 function App() {
@@ -112,7 +115,7 @@ function App() {
                   <Route path="/disbursal-hold" element={<DisbursalHold />} />
                   <Route path="/rejected-disbursal" element={<RejectedDisbursal />} />
                   <Route path="/disbursed" element={<Disbursed />} />
-
+                  <Route path="/repay" element={<RepaymentForm/>} />
                   <Route path="/application-recommendation" element={<DynamicTable
                     header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status", "Sanction Manager"]}
                     rows={[
