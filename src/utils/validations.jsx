@@ -123,6 +123,40 @@ export const disburseSchema = Yup.object().shape({
   remarks: Yup.string().required('Remarks are required'),
 });
 
+
+// Add and update bank details....
+export const bankDetailsSchema = Yup.object().shape({
+  bankName: Yup
+      .string()
+      .required('Bank Name is required')
+      .min(2, 'Bank Name must be at least 2 characters long')
+      .max(50, 'Bank Name cannot exceed 50 characters'),
+  branchName: Yup
+      .string()
+      .required('Branch Name is required')
+      .min(2, 'Branch Name must be at least 2 characters long')
+      .max(50, 'Branch Name cannot exceed 50 characters'),
+  bankAccNo: Yup
+      .string()
+      .required('Bank Account Number is required')
+      .matches(/^\d+$/, 'Bank Account Number must contain only digits')
+      .min(8, 'Bank Account Number must be at least 8 digits long')
+      .max(20, 'Bank Account Number cannot exceed 20 digits'),
+  ifscCode: Yup
+      .string()
+      .required('IFSC Code is required')
+      .matches(/^[A-Z]{4}0[A-Z0-9]{6}$/, 'Enter a valid IFSC Code'),
+  beneficiaryName: Yup
+      .string()
+      .required('Beneficiary Name is required')
+      .min(2, 'Beneficiary Name must be at least 2 characters long')
+      .max(50, 'Beneficiary Name cannot exceed 50 characters'),
+  accountType: Yup
+      .string()
+      .required('Account Type is required')
+      .oneOf(['savings', 'current'], 'Invalid Account Type'),
+});
+
   
 
   

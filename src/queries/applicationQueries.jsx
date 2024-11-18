@@ -125,6 +125,15 @@ export const applicationApi = createApi({
       }),
       invalidatesTags:["getApplication","bankDetails"]
     }),
+    updateBank: builder.mutation({
+      query: ({id,data}) => ({
+
+        url: `/applicant/bankDetails/${id}/?role=${role()}`,
+        method: 'PATCH',
+        body:data
+      }),
+      invalidatesTags:["getApplication","bankDetails"]
+    }),
     updatePersonalDetails: builder.mutation({
       query: ({id,updates}) => ({
 
@@ -279,6 +288,7 @@ export const {
     useUnholdApplicationMutation,
     useRecommendApplicationMutation,
     useAddBankMutation,
+    useUpdateBankMutation,
     useSendBackMutation,
     useSanctionSendBackMutation,
     useDisbursalSendBackMutation,
