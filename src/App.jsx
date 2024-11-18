@@ -47,7 +47,10 @@ import DisbursePending from './Component/disbursal/DisbursePending';
 import Disbursed from './Component/disbursal/Disbursed';
 import DisbursalHold from './Component/disbursal/DisbursalHold';
 import RejectedDisbursal from './Component/disbursal/RejectedDisbursal';
-import RecommendedApplications from './Component/applications/RecommendedApplications';
+import RecommendedApplication from './Component/applications/RecommendedApplication';
+import RepaymentForm from './Component/repayment/RepaymentForm';
+
+
 
 
 function App() {
