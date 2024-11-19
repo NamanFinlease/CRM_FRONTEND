@@ -17,6 +17,7 @@ import useAuthStore from './store/authStore';
 import DocumentsTable from './documentsTable';
 
 const UploadDocuments = ({ leadData }) => {
+
     const { id } = useParams();
     const fileInputRef = useRef()
     const { empInfo } = useAuthStore();
@@ -46,17 +47,7 @@ const UploadDocuments = ({ leadData }) => {
             ...prevFileInputs,
             file: selectedFile,
         }));
-        // if (['salarySlip', 'bankStatement', 'others'].includes(selectedDocType)) {
-        //     setDocuments((prevDocs) => ({
-        //         ...prevDocs,
-        //         [selectedDocType]: [...prevDocs[selectedDocType], selectedFile],
-        //     }));
-        // } else {
-        //     setDocuments((prevDocs) => ({
-        //         ...prevDocs,
-        //         [selectedDocType]: selectedFile,
-        //     }));
-        // }
+        
     };
 
     // Handle remarks input
@@ -144,12 +135,12 @@ const UploadDocuments = ({ leadData }) => {
         }
     }, [docSuccess]);
     useEffect(() => {
-        if (leadData.document && Object.keys(leadData.document)) {
+        if (leadData?.documents?.document && Object.keys(leadData?.documents?.document)) {
             const merged = [
-                ...leadData?.document?.multipleDocuments?.salarySlip,
-                ...leadData?.document?.multipleDocuments?.bankStatement,
-                ...leadData?.document?.multipleDocuments?.others,
-                ...leadData?.document?.singleDocuments
+                ...leadData?.documents?.document?.multipleDocuments?.salarySlip,
+                ...leadData?.documents?.document?.multipleDocuments?.bankStatement,
+                ...leadData?.documents?.document?.multipleDocuments?.others,
+                ...leadData?.documents?.document?.singleDocuments
             ];
             setUploadedDocs(merged)
         }
@@ -300,6 +291,7 @@ const UploadDocuments = ({ leadData }) => {
                     </>
                 )}
             </Box>
+            {console.log('uploaded',uploadedDocs)}
 
 
             {
