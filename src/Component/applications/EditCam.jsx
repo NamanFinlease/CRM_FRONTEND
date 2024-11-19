@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { Button, InputAdornment, TextField } from '@mui/material';
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
-import { useUpdateCamDetailsMutation } from '../../queries/applicationQueries';
+import { useUpdateCamDetailsMutation } from '../../Service/applicationQueries';
 import Swal from 'sweetalert2';
 import { useParams } from 'react-router-dom';
 

@@ -3,10 +3,10 @@ import { Button, Box, Typography, TextField, Alert } from '@mui/material';
 import useStore from '../../Store';
 import { formatDate } from '../../utils/helper';
 import useAuthStore from '../store/authStore';
-import { useRecommendLoanMutation } from '../../queries/applicationQueries';
 import { SignalCellularNullRounded } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { useRecommendLoanMutation } from '../../Service/applicationQueries';
 
 const DisbursalProfile = ({ disburse }) => {
   const { applicationProfile } = useStore()

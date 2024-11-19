@@ -11,7 +11,7 @@ import BankDetails from '../applications/BankDetails';
 import VerifyContactDetails from '../leads/DetailsVerification';
 import UploadDocuments from '../UploadDocuments';
 import Cam from '../applications/Cam';
-import { useDisbursalProfileQuery } from '../../queries/applicationQueries';
+import { useDisbursalProfileQuery } from '../../Service/applicationQueries';
 import useAuthStore from '../store/authStore';
 import useStore from '../../Store';
 import DisburseInfo from './DisburseInfo';

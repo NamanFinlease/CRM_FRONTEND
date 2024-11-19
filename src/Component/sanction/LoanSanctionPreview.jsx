@@ -13,7 +13,7 @@ import {
   Button,
   Alert,
 } from '@mui/material';
-import { useApproveApplicationMutation } from '../../queries/applicationQueries';
+import { useApproveApplicationMutation } from '../../Service/applicationQueries';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 

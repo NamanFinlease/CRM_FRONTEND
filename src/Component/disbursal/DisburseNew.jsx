@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
-import { useAllDisbursalsQuery, useAllocateDisbursalMutation } from '../../queries/applicationQueries';
+import { useAllDisbursalsQuery, useAllocateDisbursalMutation } from '../../Service/applicationQueries';
 import Header from '../Header';
 import useAuthStore from '../store/authStore';
 

@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { residenceSchema } from '../../utils/validations';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useUpdatePersonalDetailsMutation } from '../../queries/applicationQueries';
+import { useUpdatePersonalDetailsMutation } from '../../Service/applicationQueries';
 import useStore from '../../Store';
 import useAuthStore from '../store/authStore';
 

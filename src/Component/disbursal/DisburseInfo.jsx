@@ -10,10 +10,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { disburseSchema } from '../../utils/validations';
-import { useDisburseLoanMutation } from '../../queries/applicationQueries';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ActionButton from '../ActionButton';
+import { useDisburseLoanMutation } from '../../Service/applicationQueries';
 
 const DisburseInfo = ({ disburse }) => {
   const { id } = useParams()

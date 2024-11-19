@@ -3,7 +3,7 @@ import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 // import { useAllocateLeadMutation, useFetchAllLeadsQuery } from '../Service/Query';
 import { useNavigate } from 'react-router-dom';
-import { useAllocateApplicationMutation, useFetchAllApplicationQuery } from '../../queries/applicationQueries';
+import { useAllocateApplicationMutation, useFetchAllApplicationQuery } from '../../Service/applicationQueries';
 import Header from '../Header';
 import useAuthStore from '../store/authStore';
 

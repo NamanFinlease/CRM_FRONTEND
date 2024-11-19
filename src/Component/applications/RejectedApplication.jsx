@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useGetRejectedApplicationsQuery } from '../../queries/applicationQueries';
+import { useGetRejectedApplicationsQuery } from '../../Service/applicationQueries';
 import useAuthStore from '../store/authStore';
 
 

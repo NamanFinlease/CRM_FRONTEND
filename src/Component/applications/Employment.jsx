@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import useStore from '../../Store';
-import { useUpdatePersonalDetailsMutation } from '../../queries/applicationQueries';
+import { useUpdatePersonalDetailsMutation } from '../../Service/applicationQueries';
 import { employmentSchema } from '../../utils/validations';
 import { Alert } from '@mui/material'; // Import Alert component
 import dayjs from 'dayjs';

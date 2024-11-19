@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { leadsApi } from './Query'
-import { applicationApi } from '../queries/applicationQueries'
+import { applicationApi } from '../Service/applicationQueries'
 
 export const store = configureStore({
   reducer: {

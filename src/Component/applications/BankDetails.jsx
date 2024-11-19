@@ -17,7 +17,7 @@ import {
     Select,
     FormControl
 } from '@mui/material';
-import { useAddBankMutation, useGetBankDetailsQuery, useUpdateBankMutation } from '../../queries/applicationQueries';
+import { useAddBankMutation, useGetBankDetailsQuery, useUpdateBankMutation } from '../../Service/applicationQueries';
 import { useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import useStore from '../../Store';

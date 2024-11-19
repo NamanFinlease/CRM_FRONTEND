@@ -5,7 +5,7 @@ import { useHoldLeadMutation, useRecommendLeadMutation, useRejectLeadMutation, u
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from './store/authStore';
-import { useHoldApplicationMutation, useHoldDisbursalMutation, useRecommendApplicationMutation, useRecommendLoanMutation, useRejectApplicationMutation, useRejectDisbursalMutation, useSanctionSendBackMutation, useDisbursalSendBackMutation, useSendBackMutation, useUnholdApplicationMutation, useUnholdDisbursalMutation } from '../queries/applicationQueries';
+import { useHoldApplicationMutation, useHoldDisbursalMutation, useRecommendApplicationMutation, useRecommendLoanMutation, useRejectApplicationMutation, useRejectDisbursalMutation, useSanctionSendBackMutation, useDisbursalSendBackMutation, useSendBackMutation, useUnholdApplicationMutation, useUnholdDisbursalMutation } from '../Service/applicationQueries';
 import useStore from '../Store';
 import RejectedLeads from './leads/RejectedLeads';
 

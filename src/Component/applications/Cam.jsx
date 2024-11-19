@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, TextField, Table, TableBody, TableCell, TableRow, TableContainer, Paper, Grid2 } from '@mui/material';
-import { useGetCamDetailsQuery, useUpdateCamDetailsMutation } from '../../queries/applicationQueries';
+import { useGetCamDetailsQuery, useUpdateCamDetailsMutation } from '../../Service/applicationQueries';
 import { useParams } from 'react-router-dom';
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import EditCam from './EditCam';

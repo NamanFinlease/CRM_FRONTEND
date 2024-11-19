@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useRecommendedApplicationsQuery } from '../../queries/applicationQueries'
+import { useRecommendedApplicationsQuery } from '../../Service/applicationQueries'
 import { Alert } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'

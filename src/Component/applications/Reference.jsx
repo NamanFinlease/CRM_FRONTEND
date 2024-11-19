@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, Alert, Select, MenuItem, FormControl, InputLabel, FormHelperText, TableContainer, TableBody, TableRow, TableCell, Table } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useUpdatePersonalDetailsMutation } from '../../queries/applicationQueries';
+import { useUpdatePersonalDetailsMutation } from '../../Service/applicationQueries';
 import useStore from '../../Store';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { referenceSchema } from '../../utils/validations';

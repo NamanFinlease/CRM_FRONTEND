@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import { Alert } from '@mui/material';
 import useAuthStore from '../store/authStore';
-import { useDisbursedQuery, usePendingDisbursalQuery } from '../../queries/applicationQueries';
+import { useDisbursedQuery } from '../../Service/applicationQueries';
 
 
 

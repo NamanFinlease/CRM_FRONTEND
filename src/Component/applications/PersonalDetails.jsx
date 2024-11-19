@@ -12,7 +12,7 @@ import {
   TableHead,
   Divider,
 } from '@mui/material';
-import { useApplicantPersonalDetailsQuery } from '../../queries/applicationQueries';
+import { useApplicantPersonalDetailsQuery } from '../../Service/applicationQueries';
 import useStore from '../../Store';
 import Residence from './Residence';
 import Employment from './Employment';

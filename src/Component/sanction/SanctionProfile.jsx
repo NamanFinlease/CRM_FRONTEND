@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Paper, Box, Alert } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useLazySanctionPreviewQuery, useSanctionProfileQuery } from '../../queries/applicationQueries';
+import { useLazySanctionPreviewQuery, useSanctionProfileQuery } from '../../Service/applicationQueries';
 import useAuthStore from '../store/authStore';
 import useStore from '../../Store';
 import BarButtons from '../BarButtons';

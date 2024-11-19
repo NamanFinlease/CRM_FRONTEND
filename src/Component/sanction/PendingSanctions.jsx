@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
-import { usePendingSanctionsQuery } from '../../queries/applicationQueries';
+import { usePendingSanctionsQuery } from '../../Service/applicationQueries';
 
 const PendingSanctions = () => {
   const [applications, setApplications] = useState([]); 

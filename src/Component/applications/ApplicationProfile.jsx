@@ -5,7 +5,7 @@ import UploadDocuments from '../UploadDocuments';
 import LeadDetails from '../LeadDetails';
 import PersonalDetails from './PersonalDetails';
 import BankDetails from './BankDetails';
-import { useFetchSingleApplicationQuery } from '../../queries/applicationQueries';
+import { useFetchSingleApplicationQuery } from '../../Service/applicationQueries';
 import useStore from '../../Store';
 import Cam from './Cam';
 import BarButtons from '../BarButtons';
