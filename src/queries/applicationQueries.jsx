@@ -7,8 +7,8 @@ export const applicationApi = createApi({
   reducerPath: 'applicationApi',
   baseQuery: fetchBaseQuery({
 
-    baseUrl: "https://api.fintechbasket.com/api", 
-    // baseUrl: "http://localhost:3000/api",
+    // baseUrl: "https://api.fintechbasket.com/api", 
+    baseUrl: "http://localhost:3000/api",
 
     credentials:"include",
     prepareHeaders: (headers, { getState }) => {
@@ -16,7 +16,15 @@ export const applicationApi = createApi({
     },
 
   }),
-  tagTypes: ["getApplication","getProfile","bankDetails","recommendedApplications","applicantDetails",'getDisbursals',"getCamDetails","pendingSanctions","getPendinDisbursals"],
+  tagTypes: ["getApplication",
+    "getProfile",
+    "bankDetails",
+    "recommendedApplications",
+    "applicantDetails",
+    'getDisbursals',
+    "getCamDetails",
+    "pendingSanctions",
+    "getPendinDisbursals"],
   endpoints: (builder) => ({
     // GET request to fetch a Pokemon by name
     holdApplication: builder.mutation({
@@ -230,7 +238,7 @@ export const applicationApi = createApi({
     }),
     pendingSanctions: builder.query({
       query: ({page,limit}) => `/sanction/pending/?page=${page}&limit=${limit}&role=${role()}`,
-      providesTags:["pendingSanctions"]
+      providesTags:["pendingSanctions"] 
     }),
     recommendedApplications: builder.query({
       query: ({page,limit}) => `/sanction/recommended/?page=${page}&limit=${limit}&role=${role()}`,

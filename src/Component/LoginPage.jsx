@@ -13,9 +13,9 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [loginUser, { data: loginData, isSuccess: loginSuccess, isLoading: loginLoading, isError: loginError, error }] = useLoginUserMutation()
   const navigate = useNavigate();
-  const { isLoggedIn, setLogin, setEmpInfo,setActiveRole } = useAuthStore()
+  const { isLoggedIn, setLogin,empInfo, setEmpInfo,setActiveRole } = useAuthStore()
 
-  if (isLoggedIn) {
+  if (isLoggedIn && empInfo) {
     // Redirect to dashboard or homepage if the user is already logged in
     return <Navigate to="/" />;
   }
