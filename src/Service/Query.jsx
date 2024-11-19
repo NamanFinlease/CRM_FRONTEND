@@ -1,13 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import useAuthStore from '../Component/store/authStore';
+import { BASE_URL } from './BaseURL';
 // const role = useAuthStore()
 const role = () => JSON.parse(localStorage.getItem("auth-storage")).state.activeRole
 // Define a service using a base URL and expected endpoints
 export const leadsApi = createApi({
   reducerPath: "leadsApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://api.fintechbasket.com/api/",
-    baseUrl: "http://localhost:3000/api/",
+   
+    baseUrl:BASE_URL,
 
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
