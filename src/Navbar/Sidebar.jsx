@@ -271,6 +271,43 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             </CSSTransition>
                         </Accordion>
                     )}
+                    {(activeRole === "collectionExecutive" || activeRole === "collectionHead" || activeRole === "admin") && (
+                        <Accordion expanded={expanded === 'collection'} onChange={handleAccordionToggle('collection')}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ backgroundColor: 'transparent', color: '#fff' }}>
+                                <Typography variant="subtitle1">
+                                    Collection
+                                </Typography>
+                            </AccordionSummary>
+                            <CSSTransition
+                                in={expanded === 'collection'}
+                                timeout={300}
+                                classNames={{
+                                    enter: 'accordion-enter',
+                                    enterActive: 'accordion-enter-active',
+                                    exit: 'accordion-exit',
+                                    exitActive: 'accordion-exit-active',
+                                }}
+                                unmountOnExit
+                            >
+                                <AccordionDetails sx={{ backgroundColor: 'transparent', padding: 0 }}>
+                                    <List>
+                                    {[
+                                            { text: 'Active Leads', link: '/activeLeads' },
+                                        ].map((item, index) => (
+                                            <ListItem
+                                                key={index}
+                                                component={Link}
+                                                to={item.link}
+                                                sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}
+                                            >
+                                                <ListItemText primary={item.text} sx={{ color: '#fff' }} />
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                </AccordionDetails>
+                            </CSSTransition>
+                        </Accordion>
+                    )}
                 </List>
             </Box>
 

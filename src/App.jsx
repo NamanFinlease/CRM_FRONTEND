@@ -47,8 +47,9 @@ import DisbursePending from './Component/disbursal/DisbursePending';
 import Disbursed from './Component/disbursal/Disbursed';
 import DisbursalHold from './Component/disbursal/DisbursalHold';
 import RejectedDisbursal from './Component/disbursal/RejectedDisbursal';
-import RecommendedApplications from './Component/applications/RecommendedApplication';
+import RecommendedApplications from './Component/applications/RecommendedApplications';
 import RepaymentForm from './Component/repayment/RepaymentForm';
+import ActiveLeads from './Component/collection/ActiveLeads';
 
 
 
@@ -115,6 +116,10 @@ function App() {
                   <Route path="/disbursal-hold" element={<DisbursalHold />} />
                   <Route path="/rejected-disbursals" element={<RejectedDisbursal />} />
                   <Route path="/disbursed" element={<Disbursed />} />
+
+                  {/* Collection Routes */}
+                  <Route path="/activeLeads" element={<ActiveLeads />} />
+
 
                   <Route path="/pre-collection" element={<DynamicTable
                     header={["Lead Id", "Action", "Applied On", "Source", "Name", "State", "City", "Branch", "Mobile", "Pan", "UserType", "Status"]}

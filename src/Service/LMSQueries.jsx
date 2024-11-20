@@ -14,17 +14,23 @@ export const lmsQueries = createApi({
 
     }),
     tagTypes: [
-        "getApplication",
+        "ActiveLeads",
       
     ],
     endpoints: (builder) => ({
 
         activeLeads: builder.query({
             query: ({ page, limit }) => `/collections/active/?page=${page}&limit=${limit}&role=${role()}`,
+            providesTags:["ActiveLeads"]
+        }),
+        fetchActiveLead: builder.query({
+            query: (loanNo) => `/collections/active/${loanNo}/?role=${role()}`,
+            // providesTags:["ActiveLeads"]
         }),
     }),
 });
 export const {
-    useActiveLeadsQuery, 
+    useActiveLeadsQuery,
+    useFetchActiveLeadQuery,
 
 } = lmsQueries;
