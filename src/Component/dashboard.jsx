@@ -289,6 +289,36 @@ const Dashboard = ({ isSidebarOpen }) => {
           title: 'Leads Rejected',
           no : 10
         },
+      },
+
+      accountExecutive : {
+      
+        leadNew: {
+          icon: <NewReleasesIcon className='mt-3'
+          sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+          path: "/active-leads",
+          title: 'Active Leads',
+          no : supData?.leadsGeneratedToday
+        },
+        leadProcess: {
+          icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/close-leads",
+          title: 'Closed Leads ',
+          no : supData?.inProcessTodayCount
+        },
+        leadHold: {
+          icon: <PauseIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/lead-hold",
+          title: 'Leads Sanctioned',
+          no : supData?.sanctionedTodayCount
+        },
+        leadRejected: {
+          
+          icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/rejected-leads",
+          title: 'Leads Rejected',
+          no : 10
+        },
       }
     
   };
