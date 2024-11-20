@@ -271,7 +271,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             </CSSTransition>
                         </Accordion>
                     )}
-                    {(activeRole === "collectionExecutive" || activeRole === "collectionHead" || activeRole === "admin") && (
+                    {(activeRole === "collectionExecutive" || activeRole === "collectionHead" || activeRole === "accountExecutive" || activeRole === "admin") && (
                         <Accordion expanded={expanded === 'collection'} onChange={handleAccordionToggle('collection')}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ backgroundColor: 'transparent', color: '#fff' }}>
                                 <Typography variant="subtitle1">
@@ -291,8 +291,18 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             >
                                 <AccordionDetails sx={{ backgroundColor: 'transparent', padding: 0 }}>
                                     <List>
+                                    {(activeRole === "collectionExecutive" || activeRole === "admin") &&
+                                            <>
+                                                <ListItem component={Link} to="/activeLeads" sx={{ color: '#fff', textDecoration: 'none', padding: '10px 15px' }}>
+                                                    <ListItemText primary="Active Leads" sx={{ color: '#fff' }} />
+                                                </ListItem>
+                                                
+                                            </>
+                                        }
                                     {[
-                                            { text: 'Active Leads', link: '/activeLeads' },
+                                            // { text: 'Active Leads', link: '/activeLeads' },
+                                            { text: 'Verification Pending', link: '/verificationPending' },
+                                            { text: 'Closed Leads', link: '/closed' },
                                         ].map((item, index) => (
                                             <ListItem
                                                 key={index}
