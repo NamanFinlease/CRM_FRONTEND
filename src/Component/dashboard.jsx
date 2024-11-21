@@ -296,8 +296,8 @@ const Dashboard = ({ isSidebarOpen }) => {
         leadNew: {
           icon: <NewReleasesIcon className='mt-3'
           sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
-          path: "/active-leads",
-          title: 'Active Leads',
+          path: "/pending-verification",
+          title: 'Pending verification',
           no : supData?.leadsGeneratedToday
         },
         leadProcess: {
@@ -305,12 +305,6 @@ const Dashboard = ({ isSidebarOpen }) => {
           path: "/close-leads",
           title: 'Closed Leads ',
           no : supData?.inProcessTodayCount
-        },
-        leadHold: {
-          icon: <PauseIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
-          path: "/lead-hold",
-          title: 'Leads Sanctioned',
-          no : supData?.sanctionedTodayCount
         },
         leadRejected: {
           
@@ -399,7 +393,6 @@ const Dashboard = ({ isSidebarOpen }) => {
           gridTemplateColumns="repeat(12, 1fr)"
           gridAutoRows="140px"
           gap="20px"
-          
         >
           {renderRoleBoxes()} {/* Render boxes based on role */}
         </Box>
