@@ -50,6 +50,7 @@ import RejectedDisbursal from './Component/disbursal/RejectedDisbursal';
 import RecommendedApplications from './Component/applications/RecommendedApplications';
 import RepaymentForm from './Component/repayment/RepaymentForm';
 import ActiveLeads from './Component/collection/ActiveLeads';
+import CollectionProfile from './Component/collection/CollectionProfile';
 
 
 
@@ -119,6 +120,7 @@ function App() {
 
                   {/* Collection Routes */}
                   <Route path="/activeLeads" element={<ActiveLeads />} />
+                  <Route path="/collection-profile/:id" element={<CollectionProfile />} />
 
 
                   <Route path="/pre-collection" element={<DynamicTable

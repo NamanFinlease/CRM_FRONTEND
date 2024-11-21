@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Box, Typography, TextField, Alert } from '@mui/material';
-import useStore from '../../Store';
-import { formatDate } from '../../utils/helper';
-import useAuthStore from '../store/authStore';
 import { SignalCellularNullRounded } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import useStore from '../../Store';
+import useAuthStore from '../store/authStore';
 import { useRecommendLoanMutation } from '../../Service/applicationQueries';
 
-const DisbursalProfile = ({ disburse }) => {
+const LoanInfo = ({ disburse }) => {
   const { applicationProfile } = useStore()
   const { activeRole } = useAuthStore()
   const [remarks, setRemarks] = useState(null);
   const [openRemark, setOpenRemark] = useState(false)
   const navigate = useNavigate()
 
-  console.log('profile',applicationProfile)
 
   const { 
     sanction, 
@@ -201,4 +199,4 @@ const DisbursalProfile = ({ disburse }) => {
   );
 };
 
-export default DisbursalProfile;
+export default LoanInfo;

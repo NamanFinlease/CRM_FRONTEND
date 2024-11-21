@@ -67,7 +67,7 @@ const CollectionProfile = () => {
           </>
         }
 
-        {disbursalData && Object.keys(disbursalData).length > 0 &&
+        {collectionData && Object.keys(collectionData).length > 0 &&
           <>
             {currentPage === "personal" && <PersonalDetails id={collectionData?.application?.applicant} />}
             {currentPage === "banking" &&
