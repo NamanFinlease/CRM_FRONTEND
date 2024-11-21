@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Box, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import DisbursalProfile from './DisburseLoan'; // Ensure the path is correct
-import useAuthStore from '../store/authStore';
-import useStore from '../../Store';
 import { Controller, useForm } from 'react-hook-form';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { disburseSchema } from '../../utils/validations';
+import LoanInfo from './loanInfo';
+import useAuthStore from '../store/authStore';
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import ActionButton from '../ActionButton';
 import { useDisburseLoanMutation } from '../../Service/applicationQueries';
+import { disburseSchema } from '../../utils/validations';
+import useStore from '../../Store';
 
-const DisburseInfo = ({ disburse }) => {
+const ClosingRequest = ({ disburse }) => {
   const { id } = useParams()
   const [showForm, setShowForm] = useState(false);
   const { activeRole } = useAuthStore()
@@ -69,11 +67,11 @@ const DisburseInfo = ({ disburse }) => {
       }}
     >
       {/* Render DisbursalProfile component before the dropdown header */}
-      <DisbursalProfile disburse={disburse?.sanction?.application} />
+      <LoanInfo disburse={disburse?.sanction?.application} />
 
       {/* Clickable Header for Disbursal Bank with Background */}
 
-      {(activeRole === "disbursalHead" && !applicationProfile.isDisbursed && applicationProfile.isRecommended) &&
+      {(activeRole === "collectionExecutive"  ) &&
         <>
           <Box
             onClick={handleToggleForm}
@@ -104,7 +102,8 @@ const DisburseInfo = ({ disburse }) => {
           </Box>
 
           {/* Form that appears when the header is clicked */}
-          {showForm && (
+          {showForm &&
+           (
             <Box
               component="form"
               noValidate
@@ -369,9 +368,10 @@ const DisburseInfo = ({ disburse }) => {
             </Box>
           )}
           {/* Submit button */}
-        </>}
+        </>
+        }
 
-      {
+      {/* {
         !applicationProfile.isRejected &&
         (activeRole === "disbursalManager" || applicationProfile.isRecommended) &&
 
@@ -382,9 +382,9 @@ const DisburseInfo = ({ disburse }) => {
         // sanctionPreview={sanctionPreview}
         // setForceRender={setForceRender}
 
-        />}
+        />} */}
     </Box>
   );
 };
 
-export default DisburseInfo;
+export default ClosingRequest;

@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, Box, Typography, TextField, Alert } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import useStore from '../../Store';
+import useAuthStore from '../store/authStore';
+import { useRecommendLoanMutation } from '../../Service/applicationQueries';
+import { formatDate } from '../../utils/helper';
 
 const LoanInfo = ({ disburse }) => {
   const { applicationProfile } = useStore()
@@ -47,18 +51,14 @@ const LoanInfo = ({ disburse }) => {
   const info = [
     { label: "Loan No.", value: applicationProfile?.loanNo },
     { label: "Customer Name", value: `${fName}${mName ? ` ${mName}` : ``} ${lName}` },
-    { label: "Processed By", value: `${application?.creditManagerId?.fName}${application?.creditManagerId?.mName ? ` ${application?.creditManagerId?.mName}` : ``} ${application?.creditManagerId?.lName}` },
-    { label: "Processed On", value: "02-11-2024 15:39:38" },
-    { label: "Sanctioned By", value: `${sanction?.application?.approvedBy?.fName}${sanction?.application?.approvedBy?.mName ? ` ${sanction?.application?.approvedBy?.mName}` : ``} ${sanction?.application?.approvedBy?.lName}` },
-    { label: "Sanctioned On", value: sanction?.sanctionDate && formatDate(sanction?.sanctionDate) },
-    { label: "Loan Approved (Rs.)", value: cam?.details?.loanRecommended },
+    { label: "Principle Amount", value: cam?.details?.loanRecommended },
+    { label: "Repayment Date", value: cam?.details?.repaymentDate && formatDate(cam?.details?.repaymentDate) },
+    { label: "Repayment Amount", value: cam?.details?.repaymentAmount },
+    { label: "Actual Repayment Amount", value: cam?.details?.repaymentAmount },
     { label: "ROI % (p.d.) Approved", value: cam?.details?.roi },
     { label: "Processing Fee", value: cam?.details?.netAdminFeeAmount },
     { label: "Tenure", value: cam?.details?.eligibleTenure },
-    { label: "Sanctioned Email Sent On", value:sanction?.sanctionDate && formatDate(sanction?.sanctionDate) },
-    { label: "Sanctioned Email Sent To", value: lead?.personalEmail },
-    { label: "Sanctioned Email Response Status", value: "ACCEPTED" },
-    { label: "Acceptance Email", value: lead?.personalEmail },
+    { label: "DPD", value: cam?.details?.eligibleTenure },
     ...(applicationProfile.isDisbursed ? [
       { label: "Disbursed From", value: applicationProfile?.payableAccount },
       { label: "Disbursed On", value: applicationProfile?.disbursedBy && formatDate(applicationProfile?.disbursedAt) },

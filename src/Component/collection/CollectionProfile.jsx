@@ -13,7 +13,8 @@ import BankDetails from '../applications/BankDetails';
 import VerifyContactDetails from '../leads/DetailsVerification';
 import UploadDocuments from '../UploadDocuments';
 import Cam from '../applications/Cam';
-import DisburseInfo from '../disbursal/DisburseInfo';
+import DisburseInfo from '../disbursal/DisburseLoan';
+import ClosingRequest from './ClosingRequest';
 
 
 
@@ -94,6 +95,7 @@ const CollectionProfile = () => {
 
             {currentPage === "cam" && <Cam id={application?._id} />}
             {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal} />}
+            {currentPage === "collection" && <ClosingRequest disburse={collectionData?.disbursal} />}
            
           </>
 

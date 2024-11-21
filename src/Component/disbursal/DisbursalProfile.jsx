@@ -14,7 +14,7 @@ import Cam from '../applications/Cam';
 import { useDisbursalProfileQuery } from '../../Service/applicationQueries';
 import useAuthStore from '../store/authStore';
 import useStore from '../../Store';
-import DisburseInfo from './DisburseInfo';
+import DisburseInfo from './DisburseLoan';
 import ActionButton from '../ActionButton';
 
 
