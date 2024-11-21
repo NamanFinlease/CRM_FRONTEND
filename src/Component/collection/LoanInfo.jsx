@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Box, Typography, TextField, Alert } from '@mui/material';
-import { SignalCellularNullRounded } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import useStore from '../../Store';
-import useAuthStore from '../store/authStore';
-import { useRecommendLoanMutation } from '../../Service/applicationQueries';
 
 const LoanInfo = ({ disburse }) => {
   const { applicationProfile } = useStore()
@@ -14,6 +10,7 @@ const LoanInfo = ({ disburse }) => {
   const [openRemark, setOpenRemark] = useState(false)
   const navigate = useNavigate()
 
+  console.log('profile',applicationProfile)
 
   const { 
     sanction, 
@@ -25,7 +22,7 @@ const LoanInfo = ({ disburse }) => {
         lead: { fName, mName, lName } = {} 
       } = {} 
     } = {} 
-  } = applicationProfile || {};
+  } = applicationProfile?.disbursal || {};
 
   const [recommendLoan, { data, isSuccess, isError, error }] = useRecommendLoanMutation()
 

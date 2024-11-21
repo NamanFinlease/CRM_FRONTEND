@@ -22,7 +22,7 @@ const DisburseInfo = ({ disburse }) => {
   const { applicationProfile } = useStore()
   const navigate = useNavigate()
 
-  const { disbursalDate, netDisbursalAmount } = disburse?.application?.cam?.details
+  const { disbursalDate, netDisbursalAmount } = disburse?.sanction?.application?.cam?.details
   const [disburseLoan, { data, isSuccess, isError, error }] = useDisburseLoanMutation()
 
   const defaultValues = {
@@ -69,7 +69,7 @@ const DisburseInfo = ({ disburse }) => {
       }}
     >
       {/* Render DisbursalProfile component before the dropdown header */}
-      <DisbursalProfile disburse={disburse?.application} />
+      <DisbursalProfile disburse={disburse?.sanction?.application} />
 
       {/* Clickable Header for Disbursal Bank with Background */}
 
@@ -373,7 +373,7 @@ const DisburseInfo = ({ disburse }) => {
 
       {
         !applicationProfile.isRejected &&
-        (activeRole !== "disbursalHead" || applicationProfile.isRecommended) &&
+        (activeRole === "disbursalManager" || applicationProfile.isRecommended) &&
 
         <ActionButton
           id={applicationProfile?._id}

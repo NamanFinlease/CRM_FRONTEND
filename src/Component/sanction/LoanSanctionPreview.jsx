@@ -67,7 +67,7 @@ const LoanSanctionPreview = ({
       });
       handleClose();
 
-      navigate("/recommended-application")
+      navigate("/pending-sanctions")
 
     }
   }, [isSuccess, data])
