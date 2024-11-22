@@ -28,7 +28,6 @@ const LoanInfo = ({ disburse }) => {
     } = {} 
   } = applicationProfile?.disbursal || {};
 
-  const [recommendLoan, { data, isSuccess, isError, error }] = useRecommendLoanMutation()
 
   const handleCancel = () => {
     // Reset all states to go back to initial state
@@ -36,16 +35,7 @@ const LoanInfo = ({ disburse }) => {
     setOpenRemark(false)
   };
 
-  const handleSubmit = () => {
-    if (!remarks) {
-      Swal.fire({
-        text: "Add some remarks!",
-        icon: 'warning'
-      });
-      return
-    }
-    recommendLoan({ id: applicationProfile._id, remarks })
-  }
+
 
 
   const info = [
@@ -59,23 +49,15 @@ const LoanInfo = ({ disburse }) => {
     { label: "Processing Fee", value: cam?.details?.netAdminFeeAmount },
     { label: "Tenure", value: cam?.details?.eligibleTenure },
     { label: "DPD", value: cam?.details?.eligibleTenure },
-    ...(applicationProfile.isDisbursed ? [
-      { label: "Disbursed From", value: applicationProfile?.payableAccount },
-      { label: "Disbursed On", value: applicationProfile?.disbursedBy && formatDate(applicationProfile?.disbursedAt) },
-      { label: "Disbursed By", value: `${applicationProfile?.disbursedBy?.fName}${applicationProfile?.disbursedBy?.mName ? ` ${applicationProfile?.disbursedBy?.mName}` : ``} ${applicationProfile?.disbursedBy?.lName}` },
-      { label: "Disbursed Amount", value: applicationProfile?.amount },
-    ] : [])
+    // ...(applicationProfile.isDisbursed ? [
+    //   { label: "Disbursed From", value: applicationProfile?.payableAccount },
+    //   { label: "Disbursed On", value: applicationProfile?.disbursedBy && formatDate(applicationProfile?.disbursedAt) },
+    //   { label: "Disbursed By", value: `${applicationProfile?.disbursedBy?.fName}${applicationProfile?.disbursedBy?.mName ? ` ${applicationProfile?.disbursedBy?.mName}` : ``} ${applicationProfile?.disbursedBy?.lName}` },
+    //   { label: "Disbursed Amount", value: applicationProfile?.amount },
+    // ] : [])
   ];
 
-  useEffect(() => {
-    if (isSuccess && data) {
-      Swal.fire({
-        text: "Loan disbursement approved!",
-        icon: 'success'
-      });
-      navigate("/disbursal-process")
-    }
-  }, [isSuccess, data])
+
   return (
     <>
       <Box
@@ -111,7 +93,7 @@ const LoanInfo = ({ disburse }) => {
           ))}
         </Box>
       </Box>
-      {openRemark &&
+      {/* {openRemark &&
         <>
           <Box
             sx={{
@@ -190,7 +172,7 @@ const LoanInfo = ({ disburse }) => {
           </Box>
         </>
 
-      }
+      } */}
 
     </>
   );

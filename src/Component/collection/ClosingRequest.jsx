@@ -12,6 +12,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDisburseLoanMutation } from '../../Service/applicationQueries';
 import { disburseSchema } from '../../utils/validations';
 import useStore from '../../Store';
+import { useUpdateCollectionMutation } from '../../Service/LMSQueries';
 
 const ClosingRequest = ({ disburse }) => {
   const { id } = useParams()
@@ -21,24 +22,24 @@ const ClosingRequest = ({ disburse }) => {
   const navigate = useNavigate()
 
   const { disbursalDate, netDisbursalAmount } = disburse?.sanction?.application?.cam?.details
-  const [disburseLoan, { data, isSuccess, isError, error }] = useDisburseLoanMutation()
+  const [disburseLoan, { data, isSuccess, isError, error }] = useUpdateCollectionMutation()
 
   const defaultValues = {
-    payableAccount: "",
-    amount: netDisbursalAmount,
-    paymentMode: "",
-    channel: "",
-    disbursalDate: disbursalDate && dayjs(disbursalDate),
+    amount: "",
+    // paymentMode: "",
+    // channel: "",
+    paymentDate: disbursalDate && dayjs(disbursalDate),
     remarks: "",
   }
 
   const { handleSubmit, control, setValue } = useForm({
-    resolver: yupResolver(disburseSchema),
+    // resolver: yupResolver(disburseSchema),
     defaultValues: defaultValues
   })
 
   const onSubmit = (data) => {
-    disburseLoan({ id, data })
+    console.log('data', data)
+    // disburseLoan({ id, data })
   }
 
   const handleToggleForm = () => {
@@ -71,7 +72,7 @@ const ClosingRequest = ({ disburse }) => {
 
       {/* Clickable Header for Disbursal Bank with Background */}
 
-      {(activeRole === "collectionExecutive"  ) &&
+      {(activeRole === "collectionExecutive") &&
         <>
           <Box
             onClick={handleToggleForm}
@@ -89,7 +90,7 @@ const ClosingRequest = ({ disburse }) => {
             }}
           >
             <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#ffffff' }}>
-              Disbursal Bank
+              Closing Request
             </Typography>
             <ExpandMoreIcon
               sx={{
@@ -103,105 +104,132 @@ const ClosingRequest = ({ disburse }) => {
 
           {/* Form that appears when the header is clicked */}
           {showForm &&
-           (
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit(onSubmit)}
-              sx={{
-                padding: '20px',
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                backgroundColor: '#f9f9f9',
-                fontSize: '12px',
-                lineHeight: '1.5',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                marginTop: '10px',
-              }}
-            >
-              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-                <Controller
-                  name="payableAccount"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <FormControl fullWidth variant="outlined" error={!!fieldState.error}>
-                      <InputLabel sx={{ color: '#9e9e9e' }}>Payable Account</InputLabel>
-                      <Select
+            (
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit(onSubmit)}
+                sx={{
+                  padding: '20px',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  backgroundColor: '#f9f9f9',
+                  fontSize: '12px',
+                  lineHeight: '1.5',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                  marginTop: '10px',
+                }}
+              >
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+
+
+                  <Controller
+                    name="amount"
+                    control={control}
+                    render={({ field, fieldState }) => (
+
+                      <TextField
                         {...field}
-                        label="Payable Account *"
-                        sx={{ backgroundColor: '#f5f5f5', borderRadius: '8px', color: '#363535' }}
-                      >
-                        <MenuItem value="">
-                          <em>Select Account</em>
-                        </MenuItem>
-                        {
-                          applicationProfile?.disbursalBanks && applicationProfile?.disbursalBanks.map(bank =>
-
-                            <MenuItem key={bank._id} value={bank?.accountNo} >{bank?.accountNo}</MenuItem>
-                          )
-                        }
-                      </Select>
-                      {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
-                    </FormControl>
-                  )}
-                />
-
-
-                <Controller
-                  name="amount"
-                  control={control}
-                  render={({ field, fieldState }) => (
-
-                    <TextField
-                      {...field}
-                      label="Amount"
-                      variant="outlined"
-                      required
-                      fullWidth
-                      type="text"
-                      disabled
-                      error={!!fieldState?.error}
-                      helperText={fieldState?.error ? fieldState?.error?.message : ''}
-                      inputProps={{
-                        placeholder: "Enter amount",
-                        style: { color: '#363535' },
-                      }}
-                      sx={{
-                        backgroundColor: '#f5f5f5',
-                        borderRadius: '8px',
-                        color: '#5a5a5a',
-                        '& .MuiInputBase-input::placeholder': {
-                          color: '#363535', // Placeholder color
-                        },
-                        '& .MuiInputLabel-root': {
-                          color: '#9e9e9e', // Label color
-                        },
-                        '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#ccc', // Border color
-                        },
-                        '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#3f51b5', // Border color on hover
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#3f51b5', // Border color on focus
-                        },
-                        '&.Mui-disabled': {
-                          backgroundColor: '#e0e0e0', // Background color when disabled
-                          color: '#9e9e9e', // Label color when disabled
-                          '& .MuiInputBase-input': {
-                            color: '#9e9e9e', // Text color when disabled
+                        label="Received Amount"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        type="text"
+                        // disabled
+                        error={!!fieldState?.error}
+                        helperText={fieldState?.error ? fieldState?.error?.message : ''}
+                        inputProps={{
+                          placeholder: "Received Amount",
+                          style: { color: '#363535' },
+                        }}
+                        sx={{
+                          backgroundColor: '#f5f5f5',
+                          borderRadius: '8px',
+                          color: '#5a5a5a',
+                          '& .MuiInputBase-input::placeholder': {
+                            color: '#363535', // Placeholder color
                           },
-                          '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: '#bdbdbd', // Border color when disabled
+                          '& .MuiInputLabel-root': {
+                            color: '#9e9e9e', // Label color
                           },
-                        },
-                      }}
+                          '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#ccc', // Border color
+                          },
+                          '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#3f51b5', // Border color on hover
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#3f51b5', // Border color on focus
+                          },
+                          '&.Mui-disabled': {
+                            backgroundColor: '#e0e0e0', // Background color when disabled
+                            color: '#9e9e9e', // Label color when disabled
+                            '& .MuiInputBase-input': {
+                              color: '#9e9e9e', // Text color when disabled
+                            },
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#bdbdbd', // Border color when disabled
+                            },
+                          },
+                        }}
 
+                      />
+                    )}
+
+                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Controller
+                      name="paymentDate"
+                      control={control}
+                      render={({ field }) => (
+                        <DatePicker
+                          {...field}
+                          format="DD/MM/YYYY"
+                          label="Payment Date"
+                          value={field.value ? dayjs(field.value, 'YYYY-MM-DD') : null}
+                          onChange={(newValue) => {
+                            field.onChange(newValue);
+                          }}
+
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              variant="outlined"
+                              fullWidth
+                              required
+                              error={!!fieldState?.error}
+                              helperText={fieldState?.error ? fieldState?.error?.message : ''}
+                            />
+                          )}
+
+                          sx={{
+                            backgroundColor: '#f5f5f5',
+                            borderRadius: '8px',
+                            '& .MuiOutlinedInput-input': {
+                              color: '#363535', // Input text color
+                            },
+                            '& .MuiInputBase-input::placeholder': {
+                              color: '#5a5a5a', // Placeholder color
+                              opacity: 1, // Ensures placeholder color is not transparent
+                            },
+                            '& .MuiInputLabel-root': {
+                              color: '#9e9e9e', // Label color
+                            },
+                            '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#ccc', // Border color
+                            },
+                            '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#3f51b5', // Border color on hover
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#3f51b5', // Border color on focus
+                            },
+                          }}
+                        />
+                      )}
                     />
-                  )}
-
-                />
-                <Controller
+                  </LocalizationProvider>
+                  {/* <Controller
                   name="paymentMode"
                   control={control}
                   render={({ field, fieldState }) => (
@@ -249,42 +277,31 @@ const ClosingRequest = ({ disburse }) => {
 
                     </FormControl>
                   )}
-                />
+                /> */}
 
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+
+
+
+
                   <Controller
-                    name="disbursalDate"
+                    name="utr"
                     control={control}
-                    render={({ field }) => (
-                      <DatePicker
+                    render={({ field, fieldState }) => (
+
+                      <TextField
                         {...field}
-                        format="DD/MM/YYYY"
-                        label="Disbursal Date"
-                        value={field.value ? dayjs(field.value, 'YYYY-MM-DD') : null}
-                        onChange={(newValue) => {
-                          field.onChange(newValue);
-                        }}
-
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            variant="outlined"
-                            fullWidth
-                            required
-                            error={!!fieldState?.error}
-                            helperText={fieldState?.error ? fieldState?.error?.message : ''}
-                          />
-                        )}
-
+                        label="UTR"
+                        required
+                        variant="outlined"
+                        fullWidth
+                        error={!!fieldState?.error}
+                        helperText={fieldState?.error ? fieldState?.error?.message : ''}
                         sx={{
                           backgroundColor: '#f5f5f5',
                           borderRadius: '8px',
-                          '& .MuiOutlinedInput-input': {
-                            color: '#363535', // Input text color
-                          },
+                          color: '#5a5a5a',
                           '& .MuiInputBase-input::placeholder': {
-                            color: '#5a5a5a', // Placeholder color
-                            opacity: 1, // Ensures placeholder color is not transparent
+                            color: '#363535', // Placeholder color
                           },
                           '& .MuiInputLabel-root': {
                             color: '#9e9e9e', // Label color
@@ -299,77 +316,37 @@ const ClosingRequest = ({ disburse }) => {
                             borderColor: '#3f51b5', // Border color on focus
                           },
                         }}
+                        inputProps={{
+                          placeholder: 'Enter UTR here', // Placeholder text
+                          style: { color: '#363535' }, // Text color
+                        }}
                       />
                     )}
                   />
-                </LocalizationProvider>
+
+                </Box>
 
 
-
-                <Controller
-                  name="remarks"
-                  control={control}
-                  render={({ field, fieldState }) => (
-
-                    <TextField
-                      {...field}
-                      label="Remarks"
-                      required
-                      variant="outlined"
-                      fullWidth
-                      error={!!fieldState?.error}
-                      helperText={fieldState?.error ? fieldState?.error?.message : ''}
-                      sx={{
-                        backgroundColor: '#f5f5f5',
-                        borderRadius: '8px',
-                        color: '#5a5a5a',
-                        '& .MuiInputBase-input::placeholder': {
-                          color: '#363535', // Placeholder color
-                        },
-                        '& .MuiInputLabel-root': {
-                          color: '#9e9e9e', // Label color
-                        },
-                        '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#ccc', // Border color
-                        },
-                        '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#3f51b5', // Border color on hover
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#3f51b5', // Border color on focus
-                        },
-                      }}
-                      inputProps={{
-                        placeholder: 'Enter remarks here', // Placeholder text
-                        style: { color: '#363535' }, // Text color
-                      }}
-                    />
-                  )}
-                />
-
+                <Button
+                  type='submit'
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    marginTop: '20px',
+                    width: '100%',
+                    backgroundColor: '#3f51b5', // Custom button color
+                    '&:hover': {
+                      backgroundColor: '#1e88e5', // Hover effect
+                    },
+                  }}
+                >
+                  Disburse
+                </Button>
               </Box>
-
-
-              <Button
-                type='submit'
-                variant="contained"
-                color="primary"
-                sx={{
-                  marginTop: '20px',
-                  width: '100%',
-                  backgroundColor: '#3f51b5', // Custom button color
-                  '&:hover': {
-                    backgroundColor: '#1e88e5', // Hover effect
-                  },
-                }}
-              >
-                Disburse
-              </Button>
-            </Box>
-          )}
+            )}
           {/* Submit button */}
         </>
-        }
+      }
 
       {/* {
         !applicationProfile.isRejected &&
