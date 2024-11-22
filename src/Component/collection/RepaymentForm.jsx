@@ -43,7 +43,7 @@ const RepaymentForm = ({ disburse }) => {
         if (selectedOption === "partialPaid") {
 
             updatedData = {
-                partialPaiid: { ...data },
+                partialPaid: { ...data },
                 requestedStatus: selectedOption
             }
         } else {
