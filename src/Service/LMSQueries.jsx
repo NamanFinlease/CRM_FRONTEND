@@ -20,7 +20,7 @@ export const lmsQueries = createApi({
     endpoints: (builder) => ({
 
         updateCollection: builder.mutation({
-            query: ({ page, data }) => ({
+            query: ({ loanNo, data }) => ({
                url: `/collections/active/${loanNo}/?role=${role()}`,
                method:"PATCH",
                body:{data},
