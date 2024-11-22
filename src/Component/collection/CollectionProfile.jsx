@@ -13,7 +13,8 @@ import BankDetails from '../applications/BankDetails';
 import VerifyContactDetails from '../leads/DetailsVerification';
 import UploadDocuments from '../UploadDocuments';
 import Cam from '../applications/Cam';
-import DisburseInfo from '../disbursal/DisburseInfo';
+import DisburseInfo from '../disbursal/DisburseLoan';
+import ClosingRequest from './ClosingRequest';
 
 
 
@@ -27,16 +28,20 @@ const CollectionProfile = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState("application");
 
+  
   const { data, isSuccess, isError, error } = useFetchActiveLeadQuery(id, { skip: id === null });
-
+  const {lead} = collectionData?.disbursal?.sanction?.application ?? {}
+  const {application} = collectionData?.disbursal?.sanction ?? {}
+  
+  console.log('collection profile 1',data,collectionData)
 
   useEffect(() => {
     if (isSuccess && data) {
-      setCollectionData(data?.disbursal?.sanction)
-      setApplicationProfile(data?.disbursal);
+      setCollectionData(data?.data)
+      setApplicationProfile(data?.data);
     }
-    if (isSuccess && data?.sanction?.application?.lead?.document?.length) {
-    }
+    // if (isSuccess && data?.sanction?.application?.lead?.document?.length) {
+    // }
   }, [isSuccess, data]);
 
   return (
@@ -51,13 +56,13 @@ const CollectionProfile = () => {
 
         {currentPage === "application" &&
           <>
-            {collectionData?.application?.lead?._id &&
+            {lead?._id &&
               <>
                 <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', borderRadius: '10px' }}>
-                  <ApplicantProfileData leadData={collectionData?.application?.lead} />
+                  <ApplicantProfileData leadData={lead} />
                 </Paper>
-                <InternalDedupe id={collectionData?.application?.lead?._id} />
-                <ApplicationLogHistory id={collectionData?.application?.lead?._id} />
+                <InternalDedupe id={lead?._id} />
+                <ApplicationLogHistory id={lead?._id} />
 
               </>
 
@@ -67,28 +72,30 @@ const CollectionProfile = () => {
           </>
         }
 
-        {disbursalData && Object.keys(disbursalData).length > 0 &&
+        {collectionData && Object.keys(collectionData).length > 0 &&
           <>
-            {currentPage === "personal" && <PersonalDetails id={collectionData?.application?.applicant} />}
+          {console.log('collection profile',)}
+            {currentPage === "personal" && <PersonalDetails id={application?.applicant} />}
             {currentPage === "banking" &&
-              <BankDetails id={collectionData?.application?.applicant} />}
+              <BankDetails id={application?.applicant} />}
 
             {currentPage === "verification" &&
               <VerifyContactDetails
-                isMobileVerified={collectionData?.application?.lead?.isMobileVerified}
-                isEmailVerified={collectionData?.application?.lead?.isEmailVerified}
-                isAadhaarVerified={collectionData?.application?.lead?.isAadhaarVerified}
-                isPanVerified={collectionData?.application?.lead?.isPanVerified}
+                isMobileVerified={lead?.isMobileVerified}
+                isEmailVerified={lead?.isEmailVerified}
+                isAadhaarVerified={lead?.isAadhaarVerified}
+                isPanVerified={lead?.isPanVerified}
               />
             }
-            {currentPage === "documents" &&
+            {currentPage === "documents" && lead &&
               <UploadDocuments
-                leadData={collectionData?.application?.lead}
+                leadData={lead}
               />
             }
 
-            {currentPage === "cam" && <Cam id={collectionData?.application?._id} />}
-            {currentPage === "disbursal" && <DisburseInfo disburse={collectionData} />}
+            {currentPage === "cam" && <Cam id={application?._id} />}
+            {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal} />}
+            {currentPage === "collection" && <ClosingRequest disburse={collectionData?.disbursal} />}
            
           </>
 

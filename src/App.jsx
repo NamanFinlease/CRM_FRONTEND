@@ -52,6 +52,7 @@ import RepaymentForm from './Component/repayment/RepaymentForm';
 import ActiveLeads from './Component/collection/ActiveLeads';
 import PendingVerification from './Component/accounts/PendingVerification';
 import CloseLeads from './Component/accounts/CloseLeads';
+import CollectionProfile from './Component/collection/CollectionProfile';
 
 
 
@@ -124,6 +125,7 @@ function App() {
                   {/* Accounts Routes */}
                   <Route path="pending-verification" element={ <PendingVerification /> } />
                   <Route path='close-leads' element={ <CloseLeads />  } />
+                  <Route path="/collection-profile/:id" element={<CollectionProfile />} />
 
 
                   <Route path="/pre-collection" element={<DynamicTable

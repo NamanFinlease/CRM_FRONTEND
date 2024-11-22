@@ -19,6 +19,14 @@ export const lmsQueries = createApi({
     ],
     endpoints: (builder) => ({
 
+        updateCollection: builder.mutation({
+            query: ({ page, data }) => ({
+               url: `/collections/active/${loanNo}/?role=${role()}`,
+               method:"PATCH",
+               body:{data},
+            }),
+            providesTags:["ActiveLeads"]
+        }),
         activeLeads: builder.query({
             query: ({ page, limit }) => `/collections/active/?page=${page}&limit=${limit}&role=${role()}`,
             providesTags:["ActiveLeads"]
@@ -42,6 +50,7 @@ export const lmsQueries = createApi({
     
 });
 export const {
+    useUpdateCollectionMutation,
     useActiveLeadsQuery,
     useFetchActiveLeadQuery,
     usePendingVerificationQuery,

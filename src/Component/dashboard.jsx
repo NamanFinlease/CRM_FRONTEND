@@ -203,7 +203,7 @@ const Dashboard = ({ isSidebarOpen }) => {
       },
       sanctionPending: {
         icon: <NewReleasesIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
-        path: "/recommended-application",
+        path: "/pending-sanctions",
         title: 'Pending Sanction',
         no : data?.sanction?.newSanctions || 0
       },

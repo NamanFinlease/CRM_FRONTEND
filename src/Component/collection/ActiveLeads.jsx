@@ -42,21 +42,23 @@ const ActiveLeads = () => {
     ];
 
 
-    const rows = activeLeads?.map(activeLead => ({
-        id: activeLead?._id,
-        name: ` ${activeLead?.application?.lead?.fName}  ${activeLead?.application?.lead?.mName} ${activeLead?.application?.lead?.lName}`,
-        mobile: activeLead?.application?.lead?.mobile,
-        aadhaar: activeLead?.application?.lead?.aadhaar,
-        pan: activeLead?.application?.lead?.pan,
-        city: activeLead?.application?.lead?.city,
-        state: activeLead?.application?.lead?.state,
-        loanAmount: activeLead?.application?.lead?.loanAmount,
-        salary: activeLead?.application?.lead?.salary,
-        source: activeLead?.application?.lead?.source,
+    const rows = activeLeads?.map(activeLead => {
+        const {lead} = activeLead?.data?.disbursal?.sanction?.application
+        return ({
+        id: activeLead?.data?.loanNo,
+        name: ` ${lead?.fName}  ${lead?.mName} ${lead?.lName}`,
+        mobile: lead?.mobile,
+        aadhaar: lead?.aadhaar,
+        pan: lead?.pan,
+        city: lead?.city,
+        state: lead?.state,
+        loanAmount: lead?.loanAmount,
+        salary: lead?.salary,
+        source: lead?.source,
         ...((activeRole === "collectionHead" || activeRole === "admin") &&
-            { disbursalHead: `${disbursal?.disbursedBy?.fName}${disbursal?.disbursedBy?.mName ? ` ${disbursal?.disbursedBy?.mName}` : ``} ${disbursal?.disbursedBy?.lName}`, })
+            { disbursalHead: `${active?.data?.disbursal?.disbursedBy?.fName}${active?.data?.disbursal?.disbursedBy?.mName ? ` ${active?.data?.disbursal?.disbursedBy?.mName}` : ``} ${active?.data?.disbursal?.disbursedBy?.lName}`, })
 
-    }));
+    })});
 
     
     useEffect(() => {
