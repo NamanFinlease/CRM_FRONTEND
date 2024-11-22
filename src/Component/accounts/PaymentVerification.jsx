@@ -25,7 +25,7 @@ const barButtonOptions = [
     "Cam",
     "Disbursal",
     "collection",
-    "Banking",
+    "Accounts",
 ];
 function PaymentVerification() {
     const { id } = useParams();
