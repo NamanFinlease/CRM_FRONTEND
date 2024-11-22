@@ -50,6 +50,8 @@ import RejectedDisbursal from './Component/disbursal/RejectedDisbursal';
 import RecommendedApplications from './Component/applications/RecommendedApplications';
 import RepaymentForm from './Component/repayment/RepaymentForm';
 import ActiveLeads from './Component/collection/ActiveLeads';
+import PendingVerification from './Component/accounts/PendingVerification';
+import CloseLeads from './Component/accounts/CloseLeads';
 
 
 
@@ -119,6 +121,9 @@ function App() {
 
                   {/* Collection Routes */}
                   <Route path="/activeLeads" element={<ActiveLeads />} />
+                  {/* Accounts Routes */}
+                  <Route path="pending-verification" element={ <PendingVerification /> } />
+                  <Route path='close-leads' element={ <CloseLeads />  } />
 
 
                   <Route path="/pre-collection" element={<DynamicTable
