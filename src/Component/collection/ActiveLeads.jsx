@@ -24,6 +24,7 @@ const ActiveLeads = () => {
     }
 
     const handleLeadClick = (disbursal) => {
+        console.log("The disbursal" ,disbursal)
         navigate(`/collection-profile/${disbursal.id}`)
     }
     const columns = [
@@ -74,6 +75,7 @@ const ActiveLeads = () => {
   }, [isSuccess, data])
 
     return (
+
         <>
             <div className="crm-container">
                 <div
