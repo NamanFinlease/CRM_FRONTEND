@@ -232,6 +232,10 @@ function App() {
                                         path="/activeLeads"
                                         element={<ActiveLeads />}
                                     />
+                                    <Route
+                                        path="/collection-profile/:id"
+                                        element={<CollectionProfile />}
+                                    />
                                     {/* Accounts Routes */}
                                     <Route
                                         path="pending-verification"
