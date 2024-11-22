@@ -289,6 +289,30 @@ const Dashboard = ({ isSidebarOpen }) => {
           title: 'Leads Rejected',
           no : 10
         },
+      },
+
+      accountExecutive : {
+      
+        leadNew: {
+          icon: <NewReleasesIcon className='mt-3'
+          sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+          path: "/pending-verification",
+          title: 'Pending verification',
+          no : supData?.leadsGeneratedToday
+        },
+        leadProcess: {
+          icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/close-leads",
+          title: 'Closed Leads ',
+          no : supData?.inProcessTodayCount
+        },
+        leadRejected: {
+          
+          icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/rejected-leads",
+          title: 'Leads Rejected',
+          no : 10
+        },
       }
     
   };
@@ -369,7 +393,6 @@ const Dashboard = ({ isSidebarOpen }) => {
           gridTemplateColumns="repeat(12, 1fr)"
           gridAutoRows="140px"
           gap="20px"
-          
         >
           {renderRoleBoxes()} {/* Render boxes based on role */}
         </Box>

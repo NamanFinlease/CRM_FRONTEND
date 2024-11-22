@@ -35,11 +35,25 @@ export const lmsQueries = createApi({
             query: (loanNo) => `/collections/active/${loanNo}/?role=${role()}`,
             // providesTags:["ActiveLeads"]
         }),
+
+        pendingVerification : builder.query({
+            query : () => `/accounts/active/verify/?role=${role()}`
+        }),
+        verifyPendingLead : builder.mutation({
+            query : ({loanNo , status}) =>({
+                url : `/accounts/active/verify/${loanNo}/?role=${role()}`,
+                method : 'PATCH',
+                body : {status}
+            })
+        })
     }),
+    
 });
 export const {
     useUpdateCollectionMutation,
     useActiveLeadsQuery,
     useFetchActiveLeadQuery,
+    usePendingVerificationQuery,
+    useVerifyPendingLeadMutation
 
 } = lmsQueries;
