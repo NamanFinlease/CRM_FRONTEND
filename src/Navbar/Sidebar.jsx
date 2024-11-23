@@ -595,7 +595,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                             // { text: 'Active Leads', link: '/activeLeads' },
                                             {
                                                 text: "Verification Pending",
-                                                link: "/verificationPending",
+                                                link: "/pending-verification",
                                             },
                                             {
                                                 text: "Closed Leads",

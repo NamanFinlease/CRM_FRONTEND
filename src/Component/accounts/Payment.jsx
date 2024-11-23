@@ -47,47 +47,53 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
         }
     };
 
+    console.log('status', payment)
+
     return (
         <tr>
             <td>{payment.date ? formatDateToIST(payment.date) : "N/A"}</td>
             <td>{payment.amount || "N/A"}</td>
-            <td>{payment.status ? "Verified" : "Pending"}</td>
+            <td>{payment.isPartlyPaid ? "Verified" : "Pending"}</td>
             <td>{payment.utr || "N/A"}</td>
             <td>
                 {payment.requestedStatus
                     ? formatCamelCaseToTitle(payment.requestedStatus)
                     : "N/A"}
             </td>
-            <td>
-                <Select
-                    value={selectedStatus}
-                    onChange={handleStatusChange}
-                    displayEmpty
-                    fullWidth
-                    size="small"
-                >
-                    <MenuItem value="" disabled>
-                        Select Status
-                    </MenuItem>
+            {!payment.isPartlyPaid &&
+                <>
+                    <td>
+                        <Select
+                            value={selectedStatus}
+                            onChange={handleStatusChange}
+                            displayEmpty
+                            fullWidth
+                            size="small"
+                        >
+                            <MenuItem value="" disabled>
+                                Select Status
+                            </MenuItem>
 
-                    <MenuItem value={payment.requestedStatus}>
-                        {payment.requestedStatus
-                            ? formatCamelCaseToTitle(payment.requestedStatus)
-                            : "N/A"}
-                    </MenuItem>
-                </Select>
-            </td>
-            <td>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    onClick={handleSubmit}
-                    disabled={!selectedStatus}
-                >
-                    Update
-                </Button>
-            </td>
+                            <MenuItem value={payment.requestedStatus}>
+                                {payment.requestedStatus
+                                    ? formatCamelCaseToTitle(payment.requestedStatus)
+                                    : "N/A"}
+                            </MenuItem>
+                        </Select>
+                    </td>
+                    <td>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={handleSubmit}
+                            disabled={!selectedStatus}
+                        >
+                            Update
+                        </Button>
+                    </td>
+                </>
+            }
         </tr>
     );
 };

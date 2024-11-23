@@ -36,24 +36,26 @@ function PaymentVerification() {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState("application");
 
-    const { data, isSuccess, isError, error } = useFetchActiveLeadQuery(id, {
+    const { data, isSuccess, isError, error, refetch } = useFetchActiveLeadQuery(id, {
         skip: id === null,
     });
     const { lead } = collectionData?.disbursal?.sanction?.application ?? {};
     const { application } = collectionData?.disbursal?.sanction ?? {};
 
-    console.log("collection profile 1", data, collectionData);
 
     useEffect(() => {
         if (isSuccess && data) {
             setCollectionData(data?.data);
             setApplicationProfile(data?.data);
         }
-        // if (isSuccess && data?.sanction?.application?.lead?.document?.length) {
-        // }
+        
     }, [isSuccess, data]);
+    useEffect(() => {
+        if (id) {
+            refetch();
+        }
+    }, [id, refetch]);
 
-    console.log("The currnet Page is",currentPage)
 
     return (
         <div className="crm-container" style={{ padding: "10px" }}>
@@ -118,28 +120,28 @@ function PaymentVerification() {
                                 disburse={collectionData?.disbursal}
                             />
                         )}
-                       
+
 
                     </>
                 )}
-                 {currentPage === "accounts" && (
-    <>
-        {collectionData ? (
-            <Payment 
-                collectionData={collectionData} 
-                leadId={id} 
-                activeRole={activeRole} 
-            />
-        ) : (
-            <div>Loading account details...</div>
-        )}
-        {isError && (
-            <Alert severity="error" style={{ marginTop: "10px" }}>
-                {error?.data?.message || "Failed to load account details."}
-            </Alert>
-        )}
-    </>
-)}
+                {currentPage === "accounts" && (
+                    <>
+                        {collectionData ? (
+                            <Payment
+                                collectionData={collectionData}
+                                leadId={id}
+                                activeRole={activeRole}
+                            />
+                        ) : (
+                            <div>Loading account details...</div>
+                        )}
+                        {isError && (
+                            <Alert severity="error" style={{ marginTop: "10px" }}>
+                                {error?.data?.message || "Failed to load account details."}
+                            </Alert>
+                        )}
+                    </>
+                )}
 
                 {isError && (
                     <Alert severity="error" style={{ marginTop: "10px" }}>

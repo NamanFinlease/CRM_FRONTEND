@@ -13,7 +13,7 @@ export const lmsQueries = createApi({
             return headers;
         },
     }),
-    tagTypes: ["ActiveLeads"],
+    tagTypes: ["ActiveLeads","leadProfile"],
     endpoints: (builder) => ({
         updateCollection: builder.mutation({
             query: ({ loanNo, data }) => ({
@@ -21,7 +21,7 @@ export const lmsQueries = createApi({
                 method: "PATCH",
                 body: { data },
             }),
-            providesTags: ["ActiveLeads"],
+            providesTags: ["ActiveLeads","leadProfile"],
         }),
         activeLeads: builder.query({
             query: ({ page, limit }) =>
@@ -30,11 +30,12 @@ export const lmsQueries = createApi({
         }),
         fetchActiveLead: builder.query({
             query: (loanNo) => `/collections/active/${loanNo}/?role=${role()}`,
-            // providesTags:["ActiveLeads"]
+            providesTags:["ActiveLeads","leadProfile"]
         }),
 
         pendingVerification: builder.query({
             query: () => `/accounts/active/verify/?role=${role()}`,
+            providesTags:["leadProfile","ActiveLeads"]
         }),
         verifyPendingLead: builder.mutation({
             query: ({ loanNo, utr, status }) => ({
@@ -42,6 +43,7 @@ export const lmsQueries = createApi({
                 method: "PATCH",
                 body: { utr, status },
             }),
+            invalidatesTags:["leadProfile","activeLeads"]
         }),
         closedLeads: builder.query({
             query: ({ page, limit }) =>
