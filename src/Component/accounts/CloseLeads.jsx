@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom";
-import { Alert } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import useAuthStore from "../store/authStore";
-import { useActiveLeadsQuery } from "../../Service/LMSQueries";
+import { useNavigate } from "react-router-dom";
+import { useClosedLeadsQuery } from "../../Service/LMSQueries";
+import { DataGrid } from "@mui/x-data-grid";
 
-const ActiveLeads = () => {
-    const [activeLeads, setActiveLeads] = useState();
-    const [totalActiveLeads, setTotalActiveLeads] = useState();
+function CloseLeads() {
+    const [closedLeads, setClosedLeads] = useState();
+    const [totalClosedLeads, setTotalClosedLeads] = useState();
     const { empInfo, activeRole } = useAuthStore();
     const navigate = useNavigate();
     const [paginationModel, setPaginationModel] = useState({
@@ -15,18 +14,15 @@ const ActiveLeads = () => {
         pageSize: 10,
     });
 
-    const { data, isSuccess, isError, error, refetch } = useActiveLeadsQuery({
+    const { data, isSuccess, isError, error, refetch } = useClosedLeadsQuery({
         page: paginationModel.page + 1,
         limit: paginationModel.pageSize,
     });
+
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel);
     };
 
-    const handleLeadClick = (disbursal) => {
-        console.log("The disbursal", disbursal);
-        navigate(`/collection-profile/${disbursal.id}`);
-    };
     const columns = [
         { field: "name", headerName: "Full Name", width: 200 },
         { field: "mobile", headerName: "Mobile", width: 150 },
@@ -47,28 +43,29 @@ const ActiveLeads = () => {
               ]
             : []),
     ];
-
-    const rows = activeLeads?.map((activeLead) => {
-        const { lead } = activeLead?.data?.disbursal?.sanction?.application;
-        return {
-            id: activeLead?.data?.loanNo,
-            name: ` ${lead?.fName}  ${lead?.mName} ${lead?.lName}`,
-            mobile: lead?.mobile,
-            aadhaar: lead?.aadhaar,
-            pan: lead?.pan,
-            city: lead?.city,
-            state: lead?.state,
-            loanAmount: lead?.loanAmount,
-            salary: lead?.salary,
-            source: lead?.source,
-            ...((activeRole === "collectionHead" || activeRole === "admin") && {
-                disbursalHead: `${active?.data?.disbursal?.disbursedBy?.fName}${
-                    active?.data?.disbursal?.disbursedBy?.mName
-                        ? ` ${active?.data?.disbursal?.disbursedBy?.mName}`
+    let subrows;
+    const rows = closedLeads?.map((closedLead) => {
+        subrows = closedLead?.data.map((lead) => ({
+            id: lead?.loanNo || 0,
+            name: ` ${lead?.disbursal?.sanction?.application?.lead?.fName}  ${lead?.disbursal?.sanction?.application?.lead?.mName} ${lead?.disbursal?.sanction?.application?.lead?.lName}`,
+            mobile: lead?.disbursal?.sanction?.application?.lead?.mobile,
+            aadhaar: lead?.disbursal?.sanction?.application?.lead?.aadhaar,
+            pan: lead?.disbursal?.sanction?.application?.lead?.pan,
+            city: lead?.disbursal?.sanction?.application?.lead?.city,
+            state: lead?.disbursal?.sanction?.application?.lead?.state,
+            loanAmount:
+                lead?.disbursal?.sanction?.application?.lead?.loanAmount,
+            salary: lead?.disbursal?.sanction?.application?.lead?.salary,
+            source: lead?.disbursal?.sanction?.application?.lead?.source,
+            ...((activeRole === "accountExecutive" ||
+                activeRole === "admin") && {
+                disbursalHead: `${lead?.disbursal?.disbursedBy?.fName}${
+                    lead?.disbursal?.disbursedBy?.mName
+                        ? ` ${lead?.disbursal?.disbursedBy?.mName}`
                         : ``
-                } ${active?.data?.disbursal?.disbursedBy?.lName}`,
+                } ${lead?.disbursal?.disbursedBy?.lName}`,
             }),
-        };
+        }));
     });
 
     useEffect(() => {
@@ -79,10 +76,9 @@ const ActiveLeads = () => {
     }, [paginationModel]);
 
     useEffect(() => {
-        console.log("data", data);
         if (data) {
-            setActiveLeads(data.activeLeads);
-            setTotalActiveLeads(data?.totalActiveLeads);
+            setClosedLeads(data?.closedLeads);
+            setTotalClosedLeads(data?.totalClosedLeads);
         }
     }, [isSuccess, data]);
 
@@ -101,7 +97,7 @@ const ActiveLeads = () => {
                         marginBottom: "15px",
                     }}
                 >
-                    Total Applicattion: {totalActiveLeads || 0}{" "}
+                    Total Closed Leads: {totalClosedLeads || 0}{" "}
                     {/* Defaults to 0 if no leads */}
                 </div>
             </div>
@@ -109,18 +105,15 @@ const ActiveLeads = () => {
             {columns && (
                 <div style={{ height: 400, width: "100%" }}>
                     <DataGrid
-                        rows={rows}
+                        rows={subrows}
                         columns={columns}
-                        rowCount={totalActiveLeads}
+                        rowCount={totalClosedLeads}
                         // loading={isLoading}
                         pageSizeOptions={[5]}
                         paginationModel={paginationModel}
                         paginationMode="server"
                         onPaginationModelChange={handlePageChange}
-                        onRowClick={(params) => {
-                            console.log(params);
-                            return handleLeadClick(params);
-                        }}
+                        onRowClick={(params) => handleLeadClick(params)}
                         sx={{
                             color: "#1F2A40", // Default text color for rows
                             "& .MuiDataGrid-columnHeaders": {
@@ -145,11 +138,11 @@ const ActiveLeads = () => {
 
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>
-                    {error?.data?.message}
+                    {error?.message}
                 </Alert>
             )}
         </>
     );
-};
+}
 
-export default ActiveLeads;
+export default CloseLeads;

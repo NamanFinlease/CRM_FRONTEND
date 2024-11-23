@@ -67,7 +67,7 @@ const LoanSanctionPreview = ({
       });
       handleClose();
 
-      navigate("/recommended-application")
+      navigate("/pending-sanctions")
 
     }
   }, [isSuccess, data])
@@ -79,15 +79,15 @@ const LoanSanctionPreview = ({
         <Box sx={modalStyle}>
           <Container sx={{ padding: '20px', border: '1px solid #ddd' }}>
             {/* Header Section */}
-            {/* <Box textAlign="center" mb={3}>
+            <Box textAlign="center" mb={3}>
               <img
-                src="https://publicramlella.s3.ap-south-1.amazonaws.com/public_assets/Header.jpg"
+                src="https://ramleela.s3.ap-south-1.amazonaws.com/speedo-header.jpg"
                 alt="Sanctionletter-header"
                 width="760"
                 height="123"
                 style={{ maxWidth: '100%' }}
               />
-            </Box> */}
+            </Box>
 
             {/* Date Section */}
             <Box textAlign="right" mb={2}>
@@ -187,15 +187,15 @@ const LoanSanctionPreview = ({
             </TableContainer>
 
             {/* Footer */}
-            {/* <Box textAlign="center" mt={3}>
+            <Box textAlign="center" mt={3}>
               <img
-                src="https://publicramlella.s3.ap-south-1.amazonaws.com/public_assets/Footer.jpg"
+                src="https://ramleela.s3.ap-south-1.amazonaws.com/speedo-footer.jpeg"
                 alt="Sanctionletter-footer"
                 width="760"
                 height="104"
                 style={{ maxWidth: '100%' }}
               />
-            </Box> */}
+            </Box>
 
             {isError &&
               <Alert severity="error" style={{ marginTop: "10px" }}>

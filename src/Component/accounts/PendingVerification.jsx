@@ -1,31 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom";
-import { Alert } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import useAuthStore from "../store/authStore";
-import { useActiveLeadsQuery } from "../../Service/LMSQueries";
+import { useNavigate } from "react-router-dom";
+import {
+    usePendingVerificationQuery,
+    useVerifyPendingLeadMutation,
+} from "../../Service/LMSQueries";
+import { DataGrid } from "@mui/x-data-grid";
 
-const ActiveLeads = () => {
-    const [activeLeads, setActiveLeads] = useState();
-    const [totalActiveLeads, setTotalActiveLeads] = useState();
+function PendingVerification() {
+    const [pendingLeads, setPendingLeads] = useState();
+    const [totalPendingLeads, setTotalPendingLeads] = useState();
     const { empInfo, activeRole } = useAuthStore();
     const navigate = useNavigate();
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
         pageSize: 10,
     });
+    const { data, isSuccess, isError, error, refetch } =
+        usePendingVerificationQuery({
+            page: paginationModel.page + 1,
+            limit: paginationModel.pageSize,
+        });
 
-    const { data, isSuccess, isError, error, refetch } = useActiveLeadsQuery({
-        page: paginationModel.page + 1,
-        limit: paginationModel.pageSize,
-    });
     const handlePageChange = (newPaginationModel) => {
         setPaginationModel(newPaginationModel);
     };
 
     const handleLeadClick = (disbursal) => {
-        console.log("The disbursal", disbursal);
-        navigate(`/collection-profile/${disbursal.id}`);
+        navigate(`/pending-verification-profile/${disbursal.id}`);
     };
     const columns = [
         { field: "name", headerName: "Full Name", width: 200 },
@@ -47,29 +49,32 @@ const ActiveLeads = () => {
               ]
             : []),
     ];
-
-    const rows = activeLeads?.map((activeLead) => {
-        const { lead } = activeLead?.data?.disbursal?.sanction?.application;
-        return {
-            id: activeLead?.data?.loanNo,
-            name: ` ${lead?.fName}  ${lead?.mName} ${lead?.lName}`,
-            mobile: lead?.mobile,
-            aadhaar: lead?.aadhaar,
-            pan: lead?.pan,
-            city: lead?.city,
-            state: lead?.state,
-            loanAmount: lead?.loanAmount,
-            salary: lead?.salary,
-            source: lead?.source,
-            ...((activeRole === "collectionHead" || activeRole === "admin") && {
-                disbursalHead: `${active?.data?.disbursal?.disbursedBy?.fName}${
-                    active?.data?.disbursal?.disbursedBy?.mName
-                        ? ` ${active?.data?.disbursal?.disbursedBy?.mName}`
-                        : ``
-                } ${active?.data?.disbursal?.disbursedBy?.lName}`,
-            }),
-        };
-    });
+    // console.log("The pending Leads id is",pendingLeads[0].data[0].loanNo)
+    const rows = pendingLeads?.map((activeLead) => ({
+        id: activeLead?.data?.loanNo || 0,
+        name: ` ${activeLead?.data?.disbursal?.sanction?.application?.lead?.fName}  ${activeLead?.data?.disbursal?.sanction?.application?.lead?.mName} ${activeLead?.data?.disbursal?.sanction?.application?.lead?.lName}`,
+        mobile: activeLead?.data?.disbursal?.sanction?.application?.lead
+            ?.mobile,
+        aadhaar:
+            activeLead?.data?.disbursal?.sanction?.application?.lead?.aadhaar,
+        pan: activeLead?.data?.disbursal?.sanction?.application?.lead?.pan,
+        city: activeLead?.data?.disbursal?.sanction?.application?.lead?.city,
+        state: activeLead?.data?.disbursal?.sanction?.application?.lead?.state,
+        loanAmount:
+            activeLead?.data?.disbursal?.sanction?.application?.lead
+                ?.loanAmount,
+        salary: activeLead?.data?.disbursal?.sanction?.application?.lead
+            ?.salary,
+        source: activeLead?.data?.disbursal?.sanction?.application?.lead
+            ?.source,
+        ...((activeRole === "accountExecutive" || activeRole === "admin") && {
+            disbursalHead: `${activeLead?.data?.disbursal?.disbursedBy?.fName}${
+                activeLead?.data?.disbursal?.disbursedBy?.mName
+                    ? ` ${activeLead?.data?.disbursal?.disbursedBy?.mName}`
+                    : ``
+            } ${activeLead?.data?.disbursal?.disbursedBy?.lName}`,
+        }),
+    }));
 
     useEffect(() => {
         refetch({
@@ -79,10 +84,9 @@ const ActiveLeads = () => {
     }, [paginationModel]);
 
     useEffect(() => {
-        console.log("data", data);
         if (data) {
-            setActiveLeads(data.activeLeads);
-            setTotalActiveLeads(data?.totalActiveLeads);
+            setPendingLeads(data?.leadsToVerify);
+            setTotalPendingLeads(data?.totalActiveLeadsToVerify);
         }
     }, [isSuccess, data]);
 
@@ -101,7 +105,7 @@ const ActiveLeads = () => {
                         marginBottom: "15px",
                     }}
                 >
-                    Total Applicattion: {totalActiveLeads || 0}{" "}
+                    Total Pending Verifications: {totalPendingLeads || 0}{" "}
                     {/* Defaults to 0 if no leads */}
                 </div>
             </div>
@@ -111,16 +115,13 @@ const ActiveLeads = () => {
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        rowCount={totalActiveLeads}
+                        rowCount={totalPendingLeads}
                         // loading={isLoading}
                         pageSizeOptions={[5]}
                         paginationModel={paginationModel}
                         paginationMode="server"
                         onPaginationModelChange={handlePageChange}
-                        onRowClick={(params) => {
-                            console.log(params);
-                            return handleLeadClick(params);
-                        }}
+                        onRowClick={(params) => handleLeadClick(params)}
                         sx={{
                             color: "#1F2A40", // Default text color for rows
                             "& .MuiDataGrid-columnHeaders": {
@@ -150,6 +151,6 @@ const ActiveLeads = () => {
             )}
         </>
     );
-};
+}
 
-export default ActiveLeads;
+export default PendingVerification;

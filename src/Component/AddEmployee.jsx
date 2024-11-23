@@ -10,6 +10,8 @@ const roleOptions = [
     { value: "sanctionHead", label: "Sanction Head" },
     { value: "disbursalManager", label: "Disbursal Manager" },
     { value: "disbursalHead", label: "Disbursal Head" },
+    { value: "collectionExecutive", label: "Collection Executive" },
+    { value: "accountExecutive", label: "Account Executive" },
 ];
 
 

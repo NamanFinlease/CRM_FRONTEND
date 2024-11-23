@@ -139,7 +139,7 @@ export const bankDetailsSchema = Yup.object().shape({
   bankAccNo: Yup
       .string()
       .required('Bank Account Number is required')
-      .matches(/^\d+$/, 'Bank Account Number must contain only digits')
+      // .matches(/^\d+$/, 'Bank Account Number must contain only digits')
       .min(8, 'Bank Account Number must be at least 8 digits long')
       .max(20, 'Bank Account Number cannot exceed 20 digits'),
   ifscCode: Yup

@@ -1,223 +1,390 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Box, Typography, TextField, Alert } from '@mui/material';
-import useStore from '../../Store';
-import { formatDate } from '../../utils/helper';
+import { Button, Box, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DisbursalLoanInfo from './DisbursalLoanInfo'; // Ensure the path is correct
 import useAuthStore from '../store/authStore';
-import { SignalCellularNullRounded } from '@mui/icons-material';
+import useStore from '../../Store';
+import { Controller, useForm } from 'react-hook-form';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { disburseSchema } from '../../utils/validations';
+import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-import { useRecommendLoanMutation } from '../../Service/applicationQueries';
+import ActionButton from '../ActionButton';
+import { useDisburseLoanMutation } from '../../Service/applicationQueries';
 
-const DisbursalProfile = ({ disburse }) => {
-  const { applicationProfile } = useStore()
+const DisburseLoan = ({ disburse }) => {
+  const { id } = useParams()
+  const [showForm, setShowForm] = useState(false);
   const { activeRole } = useAuthStore()
-  const [remarks, setRemarks] = useState(null);
-  const [openRemark, setOpenRemark] = useState(false)
+  const { applicationProfile } = useStore()
   const navigate = useNavigate()
 
-  console.log('profile',applicationProfile)
+  const { disbursalDate, netDisbursalAmount } = disburse?.sanction?.application?.cam?.details
+  const [disburseLoan, { data, isSuccess, isError, error }] = useDisburseLoanMutation()
 
-  const { 
-    sanction, 
-    sanction: { 
-      application, 
-      application: { 
-        cam, 
-        lead, 
-        lead: { fName, mName, lName } = {} 
-      } = {} 
-    } = {} 
-  } = applicationProfile || {};
-
-  const [recommendLoan, { data, isSuccess, isError, error }] = useRecommendLoanMutation()
-
-  const handleCancel = () => {
-    // Reset all states to go back to initial state
-    setRemarks('');
-    setOpenRemark(false)
-  };
-
-  const handleSubmit = () => {
-    if (!remarks) {
-      Swal.fire({
-        text: "Add some remarks!",
-        icon: 'warning'
-      });
-      return
-    }
-    recommendLoan({ id: applicationProfile._id, remarks })
+  const defaultValues = {
+    payableAccount: "",
+    amount: netDisbursalAmount,
+    paymentMode: "",
+    channel: "",
+    disbursalDate: disbursalDate && dayjs(disbursalDate),
+    remarks: "",
   }
 
+  const { handleSubmit, control, setValue } = useForm({
+    resolver: yupResolver(disburseSchema),
+    defaultValues: defaultValues
+  })
 
-  const info = [
-    { label: "Loan No.", value: applicationProfile?.loanNo },
-    { label: "Customer Name", value: `${fName}${mName ? ` ${mName}` : ``} ${lName}` },
-    { label: "Processed By", value: `${application?.creditManagerId?.fName}${application?.creditManagerId?.mName ? ` ${application?.creditManagerId?.mName}` : ``} ${application?.creditManagerId?.lName}` },
-    { label: "Processed On", value: "02-11-2024 15:39:38" },
-    { label: "Sanctioned By", value: `${sanction?.application?.approvedBy?.fName}${sanction?.application?.approvedBy?.mName ? ` ${sanction?.application?.approvedBy?.mName}` : ``} ${sanction?.application?.approvedBy?.lName}` },
-    { label: "Sanctioned On", value: sanction?.sanctionDate && formatDate(sanction?.sanctionDate) },
-    { label: "Loan Approved (Rs.)", value: cam?.details?.loanRecommended },
-    { label: "ROI % (p.d.) Approved", value: cam?.details?.roi },
-    { label: "Processing Fee", value: cam?.details?.netAdminFeeAmount },
-    { label: "Tenure", value: cam?.details?.eligibleTenure },
-    { label: "Sanctioned Email Sent On", value:sanction?.sanctionDate && formatDate(sanction?.sanctionDate) },
-    { label: "Sanctioned Email Sent To", value: lead?.personalEmail },
-    { label: "Sanctioned Email Response Status", value: "ACCEPTED" },
-    { label: "Acceptance Email", value: lead?.personalEmail },
-    ...(applicationProfile.isDisbursed ? [
-      { label: "Disbursed From", value: applicationProfile?.payableAccount },
-      { label: "Disbursed On", value: applicationProfile?.disbursedBy && formatDate(applicationProfile?.disbursedAt) },
-      { label: "Disbursed By", value: `${applicationProfile?.disbursedBy?.fName}${applicationProfile?.disbursedBy?.mName ? ` ${applicationProfile?.disbursedBy?.mName}` : ``} ${applicationProfile?.disbursedBy?.lName}` },
-      { label: "Disbursed Amount", value: applicationProfile?.amount },
-    ] : [])
-  ];
+  const onSubmit = (data) => {
+    disburseLoan({ id, data })
+  }
 
+  const handleToggleForm = () => {
+    setShowForm((prevShowForm) => !prevShowForm); // Toggle form visibility
+  };
   useEffect(() => {
     if (isSuccess && data) {
       Swal.fire({
-        text: "Loan disbursement approved!",
-        icon: 'success'
+        text: "Loan Disbursed!",
+        icon: "success"
       });
-      navigate("/disbursal-process")
+      navigate("/disbursal-pending")
     }
+
   }, [isSuccess, data])
+
   return (
-    <>
-      <Box
-        sx={{
-          maxWidth: '1200px',
-          margin: '10px',
-          padding: '20px',
-          border: '1px solid #ddd',
-          borderRadius: '8px',
-          backgroundColor: '#f9f9f9',
-          fontSize: '12px',
-          lineHeight: '1.5',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr', // Two columns
-            gap: '0',
-            borderCollapse: 'collapse',
-          }}
-        >
-          {/* Map over the data array to create each field in a row */}
-          {info.map((field, index) => (
-            <Box
-              key={index}
-              sx={{ display: 'flex', alignItems: 'center', borderBottom: '1px solid #ccc', padding: '10px' }}
-            >
-              <label style={{ fontWeight: 'bold', width: '50%' }}>{field.label}</label>
-              <span>{field.value} {field.label === "ROI % (p.d.) Approved" && "%" }</span>
-            </Box>
-          ))}
-        </Box>
-      </Box>
-      {openRemark &&
+    <Box
+      sx={{
+        padding: '20px',
+        maxWidth: '800px',
+        margin: '0 auto',
+        backgroundColor: '#ffffff',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        borderRadius: '8px',
+      }}
+    >
+      {/* Render DisbursalProfile component before the dropdown header */}
+      <DisbursalLoanInfo disburse={disburse?.sanction?.application} />
+
+      {/* Clickable Header for Disbursal Bank with Background */}
+
+      {(activeRole === "disbursalHead" && !applicationProfile.isDisbursed && applicationProfile.isRecommended) &&
         <>
           <Box
+            onClick={handleToggleForm}
             sx={{
-              marginTop: 3,
-              padding: 4,
-              backgroundColor: '#f9f9f9', // Light background for the entire form
-              borderRadius: 2,
-              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+              backgroundColor: '#3f51b5', // Background color for header
+              borderRadius: '8px',
+              padding: '10px',
+              textAlign: 'center',
+              cursor: 'pointer',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: '#ffffff', // Text color
+              marginTop: '20px',
             }}
           >
-
-            <Typography variant="h6" gutterBottom>
-              Remarks
+            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#ffffff' }}>
+              Disbursal Bank
             </Typography>
-            <TextField
-              label="Add your remarks"
-              value={remarks}
-              onChange={(e) => setRemarks(e.target.value)}
-              fullWidth
-              multiline
-              rows={3}
+            <ExpandMoreIcon
               sx={{
-                marginBottom: 3,
-                color: '#363535',                // Ensure text is black or dark
-                backgroundColor: '#ebebeb',   // Light background for text area
-                borderRadius: 1,
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#c4c4c4',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#1976d2',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1976d2',
-                  },
-                },
+                marginLeft: '8px',
+                color: '#ffffff',
+                transform: showForm ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.3s',
               }}
             />
           </Box>
-          {isError &&
-              <Alert severity="error" style={{ marginTop: "10px" }}>
-                {error?.data?.message}
-              </Alert>
-            }
 
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 3 }}>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={handleCancel}
+          {/* Form that appears when the header is clicked */}
+          {showForm && (
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit(onSubmit)}
               sx={{
-                padding: '10px 20px',
-                borderRadius: 2,
-                fontWeight: 'bold',
-                backgroundColor: '#f5f5f5',
-                ':hover': { backgroundColor: '#e0e0e0' },
+                padding: '20px',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                backgroundColor: '#f9f9f9',
+                fontSize: '12px',
+                lineHeight: '1.5',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                marginTop: '10px',
               }}
             >
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit}
-              sx={{
-                padding: '10px 20px',
-                borderRadius: 2,
-                fontWeight: 'bold',
-                backgroundColor: '#1976d2',
-                ':hover': { backgroundColor: '#1565c0' },
-              }}
-            >
-              Submit
-            </Button>
-          </Box>
-        </>
+              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+                <Controller
+                  name="payableAccount"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FormControl fullWidth variant="outlined" error={!!fieldState.error}>
+                      <InputLabel sx={{ color: '#9e9e9e' }}>Payable Account</InputLabel>
+                      <Select
+                        {...field}
+                        label="Payable Account *"
+                        sx={{ backgroundColor: '#f5f5f5', borderRadius: '8px', color: '#363535' }}
+                      >
+                        <MenuItem value="">
+                          <em>Select Account</em>
+                        </MenuItem>
+                        {
+                          applicationProfile?.disbursalBanks && applicationProfile?.disbursalBanks.map(bank =>
 
-      }
+                            <MenuItem key={bank._id} value={bank?.accountNo} >{bank?.accountNo}</MenuItem>
+                          )
+                        }
+                      </Select>
+                      {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+                    </FormControl>
+                  )}
+                />
 
-      {/* {activeRole === "disbursalManager" && !openRemark &&
-        <Box display="flex" justifyContent="center" marginTop="20px">
-          <Button
-            variant="contained"
-            onClick={() => setOpenRemark(true)}
-            sx={{
-              backgroundColor: '#5cb85c',
-              color: '#fff',
-              padding: '10px 20px',
-              margin: '10px 0 20px 0',
-              borderRadius: '5px',
-              '&:hover': {
-                backgroundColor: '#4cae4c' // Darker shade on hover
-              }
-            }}
-          >
-            Recommend
-          </Button>
-        </Box>} */}
-    </>
+
+                <Controller
+                  name="amount"
+                  control={control}
+                  render={({ field, fieldState }) => (
+
+                    <TextField
+                      {...field}
+                      label="Amount"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      type="text"
+                      disabled
+                      error={!!fieldState?.error}
+                      helperText={fieldState?.error ? fieldState?.error?.message : ''}
+                      inputProps={{
+                        placeholder: "Enter amount",
+                        style: { color: '#363535' },
+                      }}
+                      sx={{
+                        backgroundColor: '#f5f5f5',
+                        borderRadius: '8px',
+                        color: '#5a5a5a',
+                        '& .MuiInputBase-input::placeholder': {
+                          color: '#363535', // Placeholder color
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: '#9e9e9e', // Label color
+                        },
+                        '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#ccc', // Border color
+                        },
+                        '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#3f51b5', // Border color on hover
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#3f51b5', // Border color on focus
+                        },
+                        '&.Mui-disabled': {
+                          backgroundColor: '#e0e0e0', // Background color when disabled
+                          color: '#9e9e9e', // Label color when disabled
+                          '& .MuiInputBase-input': {
+                            color: '#9e9e9e', // Text color when disabled
+                          },
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#bdbdbd', // Border color when disabled
+                          },
+                        },
+                      }}
+
+                    />
+                  )}
+
+                />
+                <Controller
+                  name="paymentMode"
+                  control={control}
+                  render={({ field, fieldState }) => (
+
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel sx={{ color: '#9e9e9e' }}>Payment Mode</InputLabel>
+                      <Select
+                        {...field}
+                        label="Payment Mode"
+                        required
+                        sx={{ backgroundColor: '#f5f5f5', borderRadius: '8px', color: '#363535' }}
+                      >
+                        <MenuItem value="">
+                          <em>Select</em>
+                        </MenuItem>
+                        <MenuItem value="online">Online</MenuItem>
+                        <MenuItem value="offline">Offline</MenuItem>
+                      </Select>
+                      {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+
+                    </FormControl>
+                  )}
+                />
+
+                <Controller
+                  name="channel"
+                  control={control}
+                  render={({ field, fieldState }) => (
+
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel sx={{ color: '#9e9e9e' }}>Channel</InputLabel>
+                      <Select
+                        {...field}
+                        label="Channel"
+                        required
+                        sx={{ backgroundColor: '#f5f5f5', borderRadius: '8px', color: '#363535' }}
+                      >
+                        <MenuItem value="">
+                          <em>Select</em>
+                        </MenuItem>
+                        <MenuItem value="imps">IMPS</MenuItem>
+                        <MenuItem value="neft">NEFT</MenuItem>
+                      </Select>
+                      {fieldState.error && <Typography color="error">{fieldState.error.message}</Typography>}
+
+                    </FormControl>
+                  )}
+                />
+
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Controller
+                    name="disbursalDate"
+                    control={control}
+                    render={({ field }) => (
+                      <DatePicker
+                        {...field}
+                        format="DD/MM/YYYY"
+                        label="Disbursal Date"
+                        value={field.value ? dayjs(field.value, 'YYYY-MM-DD') : null}
+                        onChange={(newValue) => {
+                          field.onChange(newValue);
+                        }}
+
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            fullWidth
+                            required
+                            error={!!fieldState?.error}
+                            helperText={fieldState?.error ? fieldState?.error?.message : ''}
+                          />
+                        )}
+
+                        sx={{
+                          backgroundColor: '#f5f5f5',
+                          borderRadius: '8px',
+                          '& .MuiOutlinedInput-input': {
+                            color: '#363535', // Input text color
+                          },
+                          '& .MuiInputBase-input::placeholder': {
+                            color: '#5a5a5a', // Placeholder color
+                            opacity: 1, // Ensures placeholder color is not transparent
+                          },
+                          '& .MuiInputLabel-root': {
+                            color: '#9e9e9e', // Label color
+                          },
+                          '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#ccc', // Border color
+                          },
+                          '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#3f51b5', // Border color on hover
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#3f51b5', // Border color on focus
+                          },
+                        }}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+
+
+
+                <Controller
+                  name="remarks"
+                  control={control}
+                  render={({ field, fieldState }) => (
+
+                    <TextField
+                      {...field}
+                      label="Remarks"
+                      required
+                      variant="outlined"
+                      fullWidth
+                      error={!!fieldState?.error}
+                      helperText={fieldState?.error ? fieldState?.error?.message : ''}
+                      sx={{
+                        backgroundColor: '#f5f5f5',
+                        borderRadius: '8px',
+                        color: '#5a5a5a',
+                        '& .MuiInputBase-input::placeholder': {
+                          color: '#363535', // Placeholder color
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: '#9e9e9e', // Label color
+                        },
+                        '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#ccc', // Border color
+                        },
+                        '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#3f51b5', // Border color on hover
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#3f51b5', // Border color on focus
+                        },
+                      }}
+                      inputProps={{
+                        placeholder: 'Enter remarks here', // Placeholder text
+                        style: { color: '#363535' }, // Text color
+                      }}
+                    />
+                  )}
+                />
+
+              </Box>
+
+
+              <Button
+                type='submit'
+                variant="contained"
+                color="primary"
+                sx={{
+                  marginTop: '20px',
+                  width: '100%',
+                  backgroundColor: '#3f51b5', // Custom button color
+                  '&:hover': {
+                    backgroundColor: '#1e88e5', // Hover effect
+                  },
+                }}
+              >
+                Disburse
+              </Button>
+            </Box>
+          )}
+          {/* Submit button */}
+        </>}
+
+      {
+        !applicationProfile.isRejected &&
+        (activeRole === "disbursalManager" || applicationProfile.isRecommended) &&
+
+        <ActionButton
+          id={applicationProfile?._id}
+          isHold={applicationProfile?.onHold}
+        // setPreviewSanction={setPreviewSanction}
+        // sanctionPreview={sanctionPreview}
+        // setForceRender={setForceRender}
+
+        />}
+    </Box>
   );
 };
 
-export default DisbursalProfile;
+export default DisburseLoan;

@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Box, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import DisbursalProfile from './DisburseLoan'; // Ensure the path is correct
-import useAuthStore from '../store/authStore';
-import useStore from '../../Store';
+import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { Controller, useForm } from 'react-hook-form';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { disburseSchema } from '../../utils/validations';
-import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import ActionButton from '../ActionButton';
+import useAuthStore from '../store/authStore';
+import useStore from '../../Store';
 import { useDisburseLoanMutation } from '../../Service/applicationQueries';
 
-const DisburseInfo = ({ disburse }) => {
+const collectPayment = ({ disburse }) => {
   const { id } = useParams()
   const [showForm, setShowForm] = useState(false);
   const { activeRole } = useAuthStore()
@@ -69,7 +65,7 @@ const DisburseInfo = ({ disburse }) => {
       }}
     >
       {/* Render DisbursalProfile component before the dropdown header */}
-      <DisbursalProfile disburse={disburse?.application} />
+      {/* <DisbursalProfile disburse={disburse?.application} /> */}
 
       {/* Clickable Header for Disbursal Bank with Background */}
 
@@ -387,4 +383,4 @@ const DisburseInfo = ({ disburse }) => {
   );
 };
 
-export default DisburseInfo;
+export default collectPayment;

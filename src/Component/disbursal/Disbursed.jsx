@@ -50,15 +50,15 @@ const Disbursed = () => {
 
     const rows = disbursals?.map(disbursal => ({
         id: disbursal?._id,
-        name: ` ${disbursal?.application?.lead?.fName}  ${disbursal?.application?.lead?.mName} ${disbursal?.application?.lead?.lName}`,
-        mobile: disbursal?.application?.lead?.mobile,
-        aadhaar: disbursal?.application?.lead?.aadhaar,
-        pan: disbursal?.application?.lead?.pan,
-        city: disbursal?.application?.lead?.city,
-        state: disbursal?.application?.lead?.state,
-        loanAmount: disbursal?.application?.lead?.loanAmount,
-        salary: disbursal?.application?.lead?.salary,
-        source: disbursal?.application?.lead?.source,
+        name: ` ${disbursal?.sanction?.application?.lead?.fName}  ${disbursal?.sanction?.application?.lead?.mName} ${disbursal?.sanction?.application?.lead?.lName}`,
+        mobile: disbursal?.sanction?.application?.lead?.mobile,
+        aadhaar: disbursal?.sanction?.application?.lead?.aadhaar,
+        pan: disbursal?.sanction?.application?.lead?.pan,
+        city: disbursal?.sanction?.application?.lead?.city,
+        state: disbursal?.sanction?.application?.lead?.state,
+        loanAmount: disbursal?.sanction?.application?.lead?.loanAmount,
+        salary: disbursal?.sanction?.application?.lead?.salary,
+        source: disbursal?.sanction?.application?.lead?.source,
         ...((activeRole === "disbursalHead" || activeRole === "admin") &&
             { disbursalHead: `${disbursal?.disbursedBy?.fName}${disbursal?.disbursedBy?.mName ? ` ${disbursal?.disbursedBy?.mName}` : ``} ${disbursal?.disbursedBy?.lName}`, })
 
