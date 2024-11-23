@@ -51,9 +51,17 @@
 
 // // export default Payment;
 
-
-import React , {useState} from "react";
-import { Paper, Typography, Table, TableBody, TableHead, TableRow, TableCell, Alert } from "@mui/material";
+import React, { useState } from "react";
+import {
+    Paper,
+    Typography,
+    Table,
+    TableBody,
+    TableHead,
+    TableRow,
+    TableCell,
+    Alert,
+} from "@mui/material";
 // import PaymentRow from "./PaymentRow";
 
 import { Select, MenuItem, Button } from "@mui/material";
@@ -61,16 +69,28 @@ import { Select, MenuItem, Button } from "@mui/material";
 const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [selectedStatus, setSelectedStatus] = useState("");
 
+    const formatCamelCaseToTitle = (text) => {
+        return text
+            .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space before capital letters
+            .replace(/^[a-z]/, (match) => match.toUpperCase()); // Capitalize the first letter
+    };
+
     // Convert date to IST
     const formatDateToIST = (dateString) => {
-        const options = { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" };
-        return new Intl.DateTimeFormat("en-IN", options).format(new Date(dateString));
+        const options = {
+            timeZone: "Asia/Kolkata",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+        };
+        return new Intl.DateTimeFormat("en-IN", options).format(
+            new Date(dateString)
+        );
     };
 
     const handleStatusChange = (event) => {
         setSelectedStatus(event.target.value);
     };
-      
 
     const handleSubmit = () => {
         if (selectedStatus) {
@@ -82,9 +102,13 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
         <tr>
             <td>{payment.date ? formatDateToIST(payment.date) : "N/A"}</td>
             <td>{payment.amount || "N/A"}</td>
-            <td>{payment.status || "N/A"}</td>
+            <td>{payment.status ? "Verified" : "Pending"}</td>
             <td>{payment.utr || "N/A"}</td>
-            <td>{payment.collectionStatusRequested || "N/A"}</td>
+            <td>
+                {payment.requestedStatus
+                    ? formatCamelCaseToTitle(payment.requestedStatus)
+                    : "N/A"}
+            </td>
             <td>
                 <Select
                     value={selectedStatus}
@@ -96,10 +120,15 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                     <MenuItem value="" disabled>
                         Select Status
                     </MenuItem>
-                    <MenuItem value="Settled">Settled</MenuItem>
-                    <MenuItem value="Write-Off">Write-Off</MenuItem>
-                    <MenuItem value="Partly Paid">Partly Paid</MenuItem>
-                    <MenuItem value="Closed">Closed</MenuItem>
+
+                    <MenuItem value={payment.requestedStatus}>
+                        {payment.requestedStatus
+                            ? formatCamelCaseToTitle(payment.requestedStatus)
+                            : "N/A"}
+                    </MenuItem>
+                    {/* <MenuItem value="writeOff">Write-Off</MenuItem>
+                    <MenuItem value="partialPaid">Partly Paid</MenuItem>
+                    <MenuItem value="closed">Closed</MenuItem> */}
                 </Select>
             </td>
             <td>
@@ -117,17 +146,22 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
     );
 };
 
-
 const Payment = ({ collectionData, leadId, activeRole }) => {
     if (!collectionData) {
         return <div>Loading...</div>;
     }
+    console.log(collectionData);
 
-    const paymentInfo = collectionData.partialPaid || [];
+    const paymentInfo =
+        collectionData.partialPaid.length > 0
+            ? collectionData.partialPaid
+            : collectionData;
 
     const handleUpdateStatus = (utr, newStatus) => {
         // Implement the API call to update the status
-        console.log(`Updating status for UTR: ${utr}, New Status: ${newStatus}`);
+        console.log(
+            `Updating status for UTR: ${utr}, New Status: ${newStatus}`
+        );
     };
 
     return (
@@ -151,12 +185,18 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                 <TableBody>
                     {paymentInfo.length > 0 ? (
                         paymentInfo.map((payment, index) => (
-                            <PaymentRow key={index} payment={payment} onUpdateStatus={handleUpdateStatus} />
+                            <PaymentRow
+                                key={index}
+                                payment={payment}
+                                onUpdateStatus={handleUpdateStatus}
+                            />
                         ))
                     ) : (
                         <TableRow>
                             <TableCell colSpan={7}>
-                                <Alert severity="info">No payment data available.</Alert>
+                                <Alert severity="info">
+                                    No payment data available.
+                                </Alert>
                             </TableCell>
                         </TableRow>
                     )}
@@ -165,8 +205,6 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
         </Paper>
     );
 };
-
-
 
 export default Payment;
 
@@ -258,8 +296,6 @@ export default Payment;
 //         </tr>
 //     );
 // };
-
-
 
 // const Payment = ({ collectionData, leadId, activeRole }) => {
 //     if (!collectionData) {

@@ -52,54 +52,60 @@ function PendingVerification() {
             : []),
     ];
     // console.log("The pending Leads id is",pendingLeads[0].data[0].loanNo)
-    // const rows = pendingLeads?.map((activeLead) => ({
-    //     id: activeLead?.data?.loanNo || 0,
-    //     name: ` ${activeLead?.data?.disbursal?.sanction?.application?.lead?.fName}  ${activeLead?.data?.disbursal?.sanction?.application?.lead?.mName} ${activeLead?.data?.disbursal?.sanction?.application?.lead?.lName}`,
-    //     mobile: activeLead?.data?.disbursal?.sanction?.application?.lead
-    //         ?.mobile,
-    //     aadhaar:
-    //         activeLead?.data?.disbursal?.sanction?.application?.lead?.aadhaar,
-    //     pan: activeLead?.data?.disbursal?.sanction?.application?.lead?.pan,
-    //     city: activeLead?.data?.disbursal?.sanction?.application?.lead?.city,
-    //     state: activeLead?.data?.disbursal?.sanction?.application?.lead?.state,
-    //     loanAmount:
-    //         activeLead?.data?.disbursal?.sanction?.application?.lead
-    //             ?.loanAmount,
-    //     salary: activeLead?.data?.disbursal?.sanction?.application?.lead
-    //         ?.salary,
-    //     source: activeLead?.data?.disbursal?.sanction?.application?.lead
-    //         ?.source,
-    //     ...((activeRole === "accountExecutive" || activeRole === "admin") && {
-    //         disbursalHead: `${activeLead?.data?.disbursal?.disbursedBy?.fName}${
-    //             activeLead?.data?.disbursal?.disbursedBy?.mName
-    //                 ? ` ${activeLead?.data?.disbursal?.disbursedBy?.mName}`
-    //                 : ``
-    //         } ${activeLead?.data?.disbursal?.disbursedBy?.lName}`,
-    //     }),
-    // }));
+    const rows = pendingLeads?.map((activeLead) => ({
+        id: activeLead?.data?.loanNo || 0,
+        name: ` ${activeLead?.data?.disbursal?.sanction?.application?.lead?.fName}  ${activeLead?.data?.disbursal?.sanction?.application?.lead?.mName} ${activeLead?.data?.disbursal?.sanction?.application?.lead?.lName}`,
+        mobile: activeLead?.data?.disbursal?.sanction?.application?.lead
+            ?.mobile,
+        aadhaar:
+            activeLead?.data?.disbursal?.sanction?.application?.lead?.aadhaar,
+        pan: activeLead?.data?.disbursal?.sanction?.application?.lead?.pan,
+        city: activeLead?.data?.disbursal?.sanction?.application?.lead?.city,
+        state: activeLead?.data?.disbursal?.sanction?.application?.lead?.state,
+        loanAmount:
+            activeLead?.data?.disbursal?.sanction?.application?.lead
+                ?.loanAmount,
+        salary: activeLead?.data?.disbursal?.sanction?.application?.lead
+            ?.salary,
+        source: activeLead?.data?.disbursal?.sanction?.application?.lead
+            ?.source,
+        ...((activeRole === "accountExecutive" || activeRole === "admin") && {
+            disbursalHead: `${activeLead?.data?.disbursal?.disbursedBy?.fName}${
+                activeLead?.data?.disbursal?.disbursedBy?.mName
+                    ? ` ${activeLead?.data?.disbursal?.disbursedBy?.mName}`
+                    : ``
+            } ${activeLead?.data?.disbursal?.disbursedBy?.lName}`,
+        }),
+    }));
+    // console.log(pendingLeads);
+    // const rows = pendingLeads?.map((activeLead) =>
+    //     activeLead?.data?.map((leadData) => ({
+    //         id: leadData?.loanNo || 0,
+    //         name: `${leadData?.disbursal?.sanction?.application?.lead?.fName} ${
+    //             leadData?.disbursal?.sanction?.application?.lead?.mName || ""
+    //         } ${
+    //             leadData?.disbursal?.sanction?.application?.lead?.lName
+    //         }`.trim(),
+    //         mobile: leadData?.disbursal?.sanction?.application?.lead?.mobile,
+    //         aadhaar: leadData?.disbursal?.sanction?.application?.lead?.aadhaar,
+    //         pan: leadData?.disbursal?.sanction?.application?.lead?.pan,
+    //         city: leadData?.disbursal?.sanction?.application?.lead?.city,
+    //         state: leadData?.disbursal?.sanction?.application?.lead?.state,
+    //         loanAmount:
+    //             leadData?.disbursal?.sanction?.application?.lead?.loanAmount,
+    //         salary: leadData?.disbursal?.sanction?.application?.lead?.salary,
+    //         source: leadData?.disbursal?.sanction?.application?.lead?.source,
+    //         ...((activeRole === "accountExecutive" ||
+    //             activeRole === "admin") && {
+    //             disbursalHead: `${leadData?.disbursal?.disbursedBy?.fName}${
+    //                 leadData?.disbursal?.disbursedBy?.mName
+    //                     ? ` ${leadData?.disbursal?.disbursedBy?.mName}`
+    //                     : ""
+    //             } ${leadData?.disbursal?.disbursedBy?.lName}`.trim(),
+    //         }),
+    //     }))
+    // );
 
-    const rows = pendingLeads?.flatMap((activeLead) =>
-        activeLead?.data?.map((leadData) => ({
-            id: leadData?.loanNo || 0,
-            name: `${leadData?.disbursal?.sanction?.application?.lead?.fName} ${leadData?.disbursal?.sanction?.application?.lead?.mName || ""} ${leadData?.disbursal?.sanction?.application?.lead?.lName}`.trim(),
-            mobile: leadData?.disbursal?.sanction?.application?.lead?.mobile,
-            aadhaar: leadData?.disbursal?.sanction?.application?.lead?.aadhaar,
-            pan: leadData?.disbursal?.sanction?.application?.lead?.pan,
-            city: leadData?.disbursal?.sanction?.application?.lead?.city,
-            state: leadData?.disbursal?.sanction?.application?.lead?.state,
-            loanAmount: leadData?.disbursal?.sanction?.application?.lead?.loanAmount,
-            salary: leadData?.disbursal?.sanction?.application?.lead?.salary,
-            source: leadData?.disbursal?.sanction?.application?.lead?.source,
-            ...((activeRole === "accountExecutive" || activeRole === "admin") && {
-                disbursalHead: `${leadData?.disbursal?.disbursedBy?.fName}${
-                    leadData?.disbursal?.disbursedBy?.mName
-                        ? ` ${leadData?.disbursal?.disbursedBy?.mName}`
-                        : ""
-                } ${leadData?.disbursal?.disbursedBy?.lName}`.trim(),
-            }),
-        }))
-    );
-    
     useEffect(() => {
         refetch({
             page: paginationModel.page + 1,
