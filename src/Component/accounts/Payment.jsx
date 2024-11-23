@@ -96,7 +96,6 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
     if (!collectionData) {
         return <div>Loading...</div>;
     }
-    console.log(collectionData);
 
     const [verifyPendingLead, isLoading, isSuccess, isError] =
         useVerifyPendingLeadMutation();

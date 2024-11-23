@@ -242,7 +242,7 @@ function App() {
                                         element={<PendingVerification />}
                                     />
                                     <Route
-                                        path="close-leads"
+                                        path="closed-leads"
                                         element={<CloseLeads />}
                                     />
                                     <Route

@@ -43,6 +43,11 @@ export const lmsQueries = createApi({
                 body: { utr, status },
             }),
         }),
+        closedLeads: builder.query({
+            query: ({ page, limit }) =>
+                `/collections/closed/?page=${page}&limit=${limit}&role=${role()}`,
+            // providesTags: ["ActiveLeads"],
+        }),
     }),
 });
 export const {
@@ -51,4 +56,5 @@ export const {
     useFetchActiveLeadQuery,
     usePendingVerificationQuery,
     useVerifyPendingLeadMutation,
+    useClosedLeadsQuery,
 } = lmsQueries;

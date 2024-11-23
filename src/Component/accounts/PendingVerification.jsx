@@ -29,8 +29,6 @@ function PendingVerification() {
     const handleLeadClick = (disbursal) => {
         navigate(`/pending-verification-profile/${disbursal.id}`);
     };
-
-    console.log("The Pending Verifications ");
     const columns = [
         { field: "name", headerName: "Full Name", width: 200 },
         { field: "mobile", headerName: "Mobile", width: 150 },
@@ -77,34 +75,6 @@ function PendingVerification() {
             } ${activeLead?.data?.disbursal?.disbursedBy?.lName}`,
         }),
     }));
-    // console.log(pendingLeads);
-    // const rows = pendingLeads?.map((activeLead) =>
-    //     activeLead?.data?.map((leadData) => ({
-    //         id: leadData?.loanNo || 0,
-    //         name: `${leadData?.disbursal?.sanction?.application?.lead?.fName} ${
-    //             leadData?.disbursal?.sanction?.application?.lead?.mName || ""
-    //         } ${
-    //             leadData?.disbursal?.sanction?.application?.lead?.lName
-    //         }`.trim(),
-    //         mobile: leadData?.disbursal?.sanction?.application?.lead?.mobile,
-    //         aadhaar: leadData?.disbursal?.sanction?.application?.lead?.aadhaar,
-    //         pan: leadData?.disbursal?.sanction?.application?.lead?.pan,
-    //         city: leadData?.disbursal?.sanction?.application?.lead?.city,
-    //         state: leadData?.disbursal?.sanction?.application?.lead?.state,
-    //         loanAmount:
-    //             leadData?.disbursal?.sanction?.application?.lead?.loanAmount,
-    //         salary: leadData?.disbursal?.sanction?.application?.lead?.salary,
-    //         source: leadData?.disbursal?.sanction?.application?.lead?.source,
-    //         ...((activeRole === "accountExecutive" ||
-    //             activeRole === "admin") && {
-    //             disbursalHead: `${leadData?.disbursal?.disbursedBy?.fName}${
-    //                 leadData?.disbursal?.disbursedBy?.mName
-    //                     ? ` ${leadData?.disbursal?.disbursedBy?.mName}`
-    //                     : ""
-    //             } ${leadData?.disbursal?.disbursedBy?.lName}`.trim(),
-    //         }),
-    //     }))
-    // );
 
     useEffect(() => {
         refetch({

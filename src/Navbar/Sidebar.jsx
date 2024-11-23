@@ -599,7 +599,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                             },
                                             {
                                                 text: "Closed Leads",
-                                                link: "/closed",
+                                                link: "/closed-leads",
                                             },
                                         ].map((item, index) => (
                                             <ListItem
@@ -681,7 +681,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                         {[
                                             {
                                                 text: "Closed Leads",
-                                                link: "/closed",
+                                                link: "/closed-leads",
                                             },
                                         ].map((item, index) => (
                                             <ListItem
