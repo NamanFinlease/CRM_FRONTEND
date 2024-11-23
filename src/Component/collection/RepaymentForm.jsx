@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Box,
@@ -7,31 +7,33 @@ import {
     Radio,
     FormLabel,
     TextField,
-} from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import Swal from 'sweetalert2';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useUpdateCollectionMutation } from '../../Service/LMSQueries';
-import { useParams } from 'react-router-dom';
+} from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import Swal from "sweetalert2";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useUpdateCollectionMutation } from "../../Service/LMSQueries";
+import { useParams } from "react-router-dom";
 const requestStatus = [
     { value: "closed", label: "Close" },
     { value: "partialPaid", label: "Partial Payment" },
     { value: "settled", label: "Settlement" },
     { value: "writeOff", label: "Write Off" },
-]
+];
 const RepaymentForm = ({ disburse }) => {
-    const { id } = useParams()
-    const [selectedOption, setSelectedOption] = useState('');
-    const { disbursalDate } = disburse?.sanction?.application?.cam?.details || {};
-    const [updateCollection, { data, isSuccess, isLoading, isError, error }] = useUpdateCollectionMutation();
+    const { id } = useParams();
+    const [selectedOption, setSelectedOption] = useState("");
+    const { disbursalDate } =
+        disburse?.sanction?.application?.cam?.details || {};
+    const [updateCollection, { data, isSuccess, isLoading, isError, error }] =
+        useUpdateCollectionMutation();
 
     const defaultValues = {
-        amount: '',
+        amount: "",
         date: null,
-        utr: '',
+        utr: "",
     };
 
     const { handleSubmit, control, reset } = useForm({
@@ -39,34 +41,30 @@ const RepaymentForm = ({ disburse }) => {
     });
 
     const onSubmit = (data) => {
-        let updatedData
+        let updatedData;
         if (selectedOption === "partialPaid") {
-
             updatedData = {
                 partialPaid: { ...data },
-                // requestedStatus: selectedOption
-            }
+                requestedStatus: selectedOption,
+            };
         } else {
             updatedData = {
                 ...data,
-                requestedStatus: selectedOption
-
-            }
+                requestedStatus: selectedOption,
+            };
         }
-        updateCollection({ loanNo: id, data: updatedData })
-        console.log('data', updatedData);
-
+        updateCollection({ loanNo: id, data: updatedData });
+        console.log("data", updatedData);
     };
-
 
     useEffect(() => {
         if (isSuccess && data) {
             Swal.fire({
-                text: 'Closing request sent!',
-                icon: 'success',
+                text: "Closing request sent!",
+                icon: "success",
             });
-            setSelectedOption("")
-            reset()
+            setSelectedOption("");
+            reset();
         }
     }, [isSuccess, data]);
 
@@ -76,18 +74,18 @@ const RepaymentForm = ({ disburse }) => {
             noValidate
             onSubmit={handleSubmit(onSubmit)}
             sx={{
-                padding: '20px',
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                backgroundColor: '#949494',
-                fontSize: '12px',
-                lineHeight: '1.5',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                marginTop: '10px',
+                padding: "20px",
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                backgroundColor: "#949494",
+                fontSize: "12px",
+                lineHeight: "1.5",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                marginTop: "10px",
             }}
         >
             {/* Radio Button Group */}
-            <FormLabel component="legend" sx={{ marginBottom: '16px' }}>
+            <FormLabel component="legend" sx={{ marginBottom: "16px" }}>
                 Select Option
             </FormLabel>
             <RadioGroup
@@ -95,10 +93,13 @@ const RepaymentForm = ({ disburse }) => {
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
             >
-                {requestStatus.map(status =>
-
-                    <FormControlLabel value={status.value} control={<Radio />} label={status.label} />
-                )}
+                {requestStatus.map((status) => (
+                    <FormControlLabel
+                        value={status.value}
+                        control={<Radio />}
+                        label={status.label}
+                    />
+                ))}
             </RadioGroup>
 
             {/* Conditionally Render Inputs */}
@@ -106,10 +107,10 @@ const RepaymentForm = ({ disburse }) => {
                 <>
                     <Box
                         sx={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(2, 1fr)',
-                            gap: '16px',
-                            marginTop: '16px',
+                            display: "grid",
+                            gridTemplateColumns: "repeat(2, 1fr)",
+                            gap: "16px",
+                            marginTop: "16px",
                         }}
                     >
                         <Controller
@@ -123,15 +124,19 @@ const RepaymentForm = ({ disburse }) => {
                                     required
                                     fullWidth
                                     error={!!fieldState?.error}
-                                    helperText={fieldState?.error ? fieldState?.error?.message : ''}
+                                    helperText={
+                                        fieldState?.error
+                                            ? fieldState?.error?.message
+                                            : ""
+                                    }
                                     inputProps={{
-                                        placeholder: 'Received Amount',
+                                        placeholder: "Received Amount",
                                     }}
                                     sx={{
                                         // backgroundColor: '#f5f5f5',
-                                        borderRadius: '8px',
-                                        '& .MuiInputBase-input::placeholder': {
-                                            color: '#363535',
+                                        borderRadius: "8px",
+                                        "& .MuiInputBase-input::placeholder": {
+                                            color: "#363535",
                                         },
                                     }}
                                 />
@@ -170,13 +175,17 @@ const RepaymentForm = ({ disburse }) => {
                                     variant="outlined"
                                     fullWidth
                                     error={!!fieldState?.error}
-                                    helperText={fieldState?.error ? fieldState?.error?.message : ''}
+                                    helperText={
+                                        fieldState?.error
+                                            ? fieldState?.error?.message
+                                            : ""
+                                    }
                                     inputProps={{
-                                        placeholder: 'Enter UTR here',
+                                        placeholder: "Enter UTR here",
                                     }}
                                     sx={{
                                         // backgroundColor: '#f5f5f5',
-                                        borderRadius: '8px',
+                                        borderRadius: "8px",
                                     }}
                                 />
                             )}
@@ -188,15 +197,14 @@ const RepaymentForm = ({ disburse }) => {
                         variant="contained"
                         color="primary"
                         sx={{
-                            marginTop: '20px',
-                            width: '100%',
+                            marginTop: "20px",
+                            width: "100%",
                         }}
                     >
                         Submit
                     </Button>
                 </>
             )}
-
         </Box>
     );
 };

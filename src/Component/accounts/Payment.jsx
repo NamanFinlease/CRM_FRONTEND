@@ -1,56 +1,3 @@
-// // // import React from "react";
-// // // import { useVerifyPendingLeadMutation } from '../../Service/LMSQueries'
-// // // function Payment() {
-// // //     console.log("Payment status")
-// // //     return <div>Payment</div>;
-// // // }
-
-// // // export default Payment;
-
-// // import React from "react";
-
-// // const Payment = ({ collectionData, leadId, activeRole }) => {
-
-// //     console.log("The collection data is ",collectionData)
-// //     if (!collectionData) {
-// //         return <div>Loading...</div>; // Handle missing data gracefully
-// //     }
-
-// //     // Access required fields from collectionData
-// //     const paymentInfo = collectionData.partialPaid || [];
-
-// //     return (
-// //         <div>
-// //             <h3>Payment Verification for Lead ID: {leadId}</h3>
-// //             <p>Role: {activeRole}</p>
-// //             <table>
-// //                 <thead>
-// //                     <tr>
-// //                         <th>Date</th>
-// //                         <th>Amount</th>
-// //                         <th>Status</th>
-// //                     </tr>
-// //                 </thead>
-// //                 <tbody>
-// //                     {paymentInfo.map((payment, index) => (
-// //                         <tr key={index}>
-// //                             <td>{payment.date}</td>
-// //                             <td>{payment.amount}</td>
-// //                             <td>{payment.status}</td>
-// //                             <td>{payment.utr}</td>
-// //                             <td>{payment.collectionStatusRequested}</td>
-// //                             {/* Also add a drop down with 4 options Settled WriteOff PartlyPaid Closed  */}
-// //                             {/* Now add an button with ane update status  */}
-// //                         </tr>
-// //                     ))}
-// //                 </tbody>
-// //             </table>
-// //         </div>
-// //     );
-// // };
-
-// // export default Payment;
-
 import React, { useState } from "react";
 import {
     Paper,
@@ -62,7 +9,7 @@ import {
     TableCell,
     Alert,
 } from "@mui/material";
-// import PaymentRow from "./PaymentRow";
+import { useVerifyPendingLeadMutation } from "../../Service/LMSQueries";
 
 import { Select, MenuItem, Button } from "@mui/material";
 
@@ -126,9 +73,6 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                             ? formatCamelCaseToTitle(payment.requestedStatus)
                             : "N/A"}
                     </MenuItem>
-                    {/* <MenuItem value="writeOff">Write-Off</MenuItem>
-                    <MenuItem value="partialPaid">Partly Paid</MenuItem>
-                    <MenuItem value="closed">Closed</MenuItem> */}
                 </Select>
             </td>
             <td>
@@ -152,13 +96,38 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
     }
     console.log(collectionData);
 
+    const [verifyPendingLead, isLoading, isSuccess, isError] =
+        useVerifyPendingLeadMutation();
+
     const paymentInfo =
         collectionData.partialPaid.length > 0
             ? collectionData.partialPaid
             : collectionData;
 
-    const handleUpdateStatus = (utr, newStatus) => {
-        // Implement the API call to update the status
+    const handleUpdateStatus = async (utr, newStatus) => {
+        try {
+            console.log(collectionData);
+            const response = await verifyPendingLead({
+                loanNo: collectionData.loanNo, // ID of the CAM (assuming this is passed as a prop)
+                utr: utr,
+                status: newStatus, // The updated data from the form
+            }).unwrap();
+
+            if (response?.success) {
+                Swal.fire({
+                    text: "Status Updated Successfuly!",
+                    icon: "success",
+                });
+                // setIsEditing(false); // Stop editing after successful update
+                // setErrorMessage(""); // Clear any error message
+            } else {
+                // setErrorMessage("Failed to update the data. Please try again.");
+                console.log("Failed to update status ");
+            }
+        } catch (error) {
+            console.error("Error updating CAM details:", error);
+            // setErrorMessage("An error occurred while updating the data.");
+        }
         console.log(
             `Updating status for UTR: ${utr}, New Status: ${newStatus}`
         );
