@@ -14,7 +14,8 @@ import VerifyContactDetails from "../leads/DetailsVerification";
 import UploadDocuments from "../UploadDocuments";
 import Cam from "../applications/Cam";
 import DisburseInfo from "../disbursal/DisburseLoan";
-// import ClosingRequest from "./ClosingRequest";
+import Payment from './Payment';
+import ClosingRequest from "../collection/ClosingRequest";
 
 const barButtonOptions = [
     "Application",
@@ -51,6 +52,8 @@ function PaymentVerification() {
         // if (isSuccess && data?.sanction?.application?.lead?.document?.length) {
         // }
     }, [isSuccess, data]);
+
+    console.log("The currnet Page is",currentPage)
 
     return (
         <div className="crm-container" style={{ padding: "10px" }}>
@@ -115,8 +118,29 @@ function PaymentVerification() {
                                 disburse={collectionData?.disbursal}
                             />
                         )}
+                       
+
                     </>
                 )}
+                 {currentPage === "accounts" && (
+    <>
+        {collectionData ? (
+            <Payment 
+                collectionData={collectionData} 
+                leadId={id} 
+                activeRole={activeRole} 
+            />
+        ) : (
+            <div>Loading account details...</div>
+        )}
+        {isError && (
+            <Alert severity="error" style={{ marginTop: "10px" }}>
+                {error?.data?.message || "Failed to load account details."}
+            </Alert>
+        )}
+    </>
+)}
+
                 {isError && (
                     <Alert severity="error" style={{ marginTop: "10px" }}>
                         {error?.data?.message}
