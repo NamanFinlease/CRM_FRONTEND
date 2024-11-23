@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 
 const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [selectedStatus, setSelectedStatus] = useState("");
-    console.log(payment.requestedStatus);
+    console.log(payment);
 
     const formatCamelCaseToTitle = (text) => {
         return text
@@ -100,21 +100,22 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
     const [verifyPendingLead, isLoading, isSuccess, isError] =
         useVerifyPendingLeadMutation();
 
+    console.log(collectionData);
+
     const paymentInfo =
         collectionData.partialPaid.length > 0
             ? collectionData.partialPaid
             : collectionData;
 
+    console.log(paymentInfo);
+
     const handleUpdateStatus = async (utr, newStatus) => {
         try {
-            console.log(collectionData);
             const response = await verifyPendingLead({
                 loanNo: collectionData.loanNo, // ID of the CAM (assuming this is passed as a prop)
                 utr: utr,
                 status: newStatus, // The updated data from the form
             }).unwrap();
-
-            console.log(response);
 
             if (response?.success) {
                 Swal.fire({
@@ -163,6 +164,12 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                                 onUpdateStatus={handleUpdateStatus}
                             />
                         ))
+                    ) : paymentInfo ? (
+                        <PaymentRow
+                            key={1}
+                            payment={paymentInfo}
+                            onUpdateStatus={handleUpdateStatus}
+                        />
                     ) : (
                         <TableRow>
                             <TableCell colSpan={7}>

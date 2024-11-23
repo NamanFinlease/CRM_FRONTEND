@@ -43,31 +43,30 @@ function CloseLeads() {
               ]
             : []),
     ];
-    const rows = closedLeads?.map((closedLead) => ({
-        id: closedLead?.data?.loanNo || 0,
-        name: ` ${closedLead?.data?.disbursal?.sanction?.application?.lead?.fName}  ${closedLead?.data?.disbursal?.sanction?.application?.lead?.mName} ${closedLead?.data?.disbursal?.sanction?.application?.lead?.lName}`,
-        mobile: closedLead?.data?.disbursal?.sanction?.application?.lead
-            ?.mobile,
-        aadhaar:
-            closedLead?.data?.disbursal?.sanction?.application?.lead?.aadhaar,
-        pan: closedLead?.data?.disbursal?.sanction?.application?.lead?.pan,
-        city: closedLead?.data?.disbursal?.sanction?.application?.lead?.city,
-        state: closedLead?.data?.disbursal?.sanction?.application?.lead?.state,
-        loanAmount:
-            closedLead?.data?.disbursal?.sanction?.application?.lead
-                ?.loanAmount,
-        salary: closedLead?.data?.disbursal?.sanction?.application?.lead
-            ?.salary,
-        source: closedLead?.data?.disbursal?.sanction?.application?.lead
-            ?.source,
-        ...((activeRole === "accountExecutive" || activeRole === "admin") && {
-            disbursalHead: `${closedLead?.data?.disbursal?.disbursedBy?.fName}${
-                closedLead?.data?.disbursal?.disbursedBy?.mName
-                    ? ` ${closedLead?.data?.disbursal?.disbursedBy?.mName}`
-                    : ``
-            } ${closedLead?.data?.disbursal?.disbursedBy?.lName}`,
-        }),
-    }));
+    let subrows;
+    const rows = closedLeads?.map((closedLead) => {
+        subrows = closedLead?.data.map((lead) => ({
+            id: lead?.loanNo || 0,
+            name: ` ${lead?.disbursal?.sanction?.application?.lead?.fName}  ${lead?.disbursal?.sanction?.application?.lead?.mName} ${lead?.disbursal?.sanction?.application?.lead?.lName}`,
+            mobile: lead?.disbursal?.sanction?.application?.lead?.mobile,
+            aadhaar: lead?.disbursal?.sanction?.application?.lead?.aadhaar,
+            pan: lead?.disbursal?.sanction?.application?.lead?.pan,
+            city: lead?.disbursal?.sanction?.application?.lead?.city,
+            state: lead?.disbursal?.sanction?.application?.lead?.state,
+            loanAmount:
+                lead?.disbursal?.sanction?.application?.lead?.loanAmount,
+            salary: lead?.disbursal?.sanction?.application?.lead?.salary,
+            source: lead?.disbursal?.sanction?.application?.lead?.source,
+            ...((activeRole === "accountExecutive" ||
+                activeRole === "admin") && {
+                disbursalHead: `${lead?.disbursal?.disbursedBy?.fName}${
+                    lead?.disbursal?.disbursedBy?.mName
+                        ? ` ${lead?.disbursal?.disbursedBy?.mName}`
+                        : ``
+                } ${lead?.disbursal?.disbursedBy?.lName}`,
+            }),
+        }));
+    });
 
     useEffect(() => {
         refetch({
@@ -106,7 +105,7 @@ function CloseLeads() {
             {columns && (
                 <div style={{ height: 400, width: "100%" }}>
                     <DataGrid
-                        rows={rows}
+                        rows={subrows}
                         columns={columns}
                         rowCount={totalClosedLeads}
                         // loading={isLoading}
@@ -139,7 +138,7 @@ function CloseLeads() {
 
             {isError && (
                 <Alert severity="error" style={{ marginTop: "10px" }}>
-                    {error?.data?.message}
+                    {error?.message}
                 </Alert>
             )}
         </>
