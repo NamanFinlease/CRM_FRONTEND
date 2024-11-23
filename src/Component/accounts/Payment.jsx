@@ -12,9 +12,11 @@ import {
 import { useVerifyPendingLeadMutation } from "../../Service/LMSQueries";
 
 import { Select, MenuItem, Button } from "@mui/material";
+import Swal from "sweetalert2";
 
 const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [selectedStatus, setSelectedStatus] = useState("");
+    console.log(payment.requestedStatus);
 
     const formatCamelCaseToTitle = (text) => {
         return text
@@ -112,6 +114,8 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
                 utr: utr,
                 status: newStatus, // The updated data from the form
             }).unwrap();
+
+            console.log(response);
 
             if (response?.success) {
                 Swal.fire({
