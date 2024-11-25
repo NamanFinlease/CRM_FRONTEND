@@ -30,7 +30,6 @@ const PendingSanctions = () => {
   const handlePageChange = (newPaginationModel) => {
     // Fetch new data based on the new page
     setPaginationModel(newPaginationModel)
-    refetch(newPaginationModel); // Adjust this according to your data fetching logic
   };
 
 const handleLeadClick = (lead) => {

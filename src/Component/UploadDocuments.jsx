@@ -6,6 +6,8 @@ import {
     IconButton,
     Checkbox,
     TextField,
+    CircularProgress,
+    Tooltip,
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
@@ -32,7 +34,7 @@ const UploadDocuments = ({ leadData }) => {
         salarySlip: [],
         bankStatement: [],
     });
-    const [uploadDocuments, { data, isSuccess: docSuccess, isError: isDocError, error: docError }] = useUploadDocumentsMutation();
+    const [uploadDocuments, { data, isSuccess: docSuccess, isLoading, isError: isDocError, error: docError }] = useUploadDocumentsMutation();
 
     // Handle file selection
     const handleFileChange = (index, event) => {
@@ -47,7 +49,7 @@ const UploadDocuments = ({ leadData }) => {
             ...prevFileInputs,
             file: selectedFile,
         }));
-        
+
     };
 
     // Handle remarks input
@@ -113,12 +115,10 @@ const UploadDocuments = ({ leadData }) => {
                 salarySlip: [],
                 bankStatement: [],
             });
+            console.log('uploadeddddddddd')
             setFileInputs([{ file: null, remarks: '' }]); // Reset file inputs
             setSelectedDocType(null)
 
-            // Fetch the updated list of documents if necessary
-            // const docs = await getLeadDocs(id).unwrap();
-            // setUploadedDocumentDetails(docs);
         } catch (error) {
             Swal.fire('Error!', 'Failed to upload documents. Please try again.', 'error');
             console.error('Upload error:', error); // Log error for debugging
@@ -281,17 +281,24 @@ const UploadDocuments = ({ leadData }) => {
                                 </Box>
                             ))}
                         </Box>
-                        <Button
-                            variant="contained"
-                            onClick={handleSubmit}
-                            sx={{ mt: 3, backgroundColor: '#007bff', color: '#ffffff', '&:hover': { backgroundColor: '#0056b3' } }}
-                        >
-                            Upload
-                        </Button>
+                                <Button
+                                    onClick={handleSubmit}
+                                    disabled={isLoading}
+                                    // variant="contained"
+                                    sx={{
+                                        backgroundColor: isLoading ? "#ccc" : "#1F2A40",
+                                        color: isLoading ? "#666" : "white",
+                                        cursor: isLoading ? "not-allowed" : "pointer",
+                                        "&:hover": {
+                                            backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+                                        },
+                                    }}
+                                >
+                                    {isLoading ? <CircularProgress size={20} color="inherit" /> : "Submit"}
+                                </Button>
                     </>
                 )}
             </Box>
-            {console.log('uploaded',uploadedDocs)}
 
 
             {

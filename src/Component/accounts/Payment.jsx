@@ -16,7 +16,6 @@ import Swal from "sweetalert2";
 
 const PaymentRow = ({ payment, onUpdateStatus }) => {
     const [selectedStatus, setSelectedStatus] = useState("");
-    console.log(payment);
 
     const formatCamelCaseToTitle = (text) => {
         return text
@@ -47,7 +46,6 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
         }
     };
 
-    console.log('status', payment)
 
     return (
         <tr>

@@ -25,7 +25,7 @@ export const lmsQueries = createApi({
         }),
         activeLeads: builder.query({
             query: ({ page, limit }) =>
-                `/collections/active/?page=${page}&limit=${limit}&role=${role()}`,
+                `/collections/active/?role=${role()}`,
             providesTags: ["ActiveLeads"],
         }),
         fetchActiveLead: builder.query({
@@ -47,7 +47,7 @@ export const lmsQueries = createApi({
         }),
         closedLeads: builder.query({
             query: ({ page, limit }) =>
-                `/collections/closed/?page=${page}&limit=${limit}&role=${role()}`,
+                `/collections/closed/?role=${role()}`,
             // providesTags: ["ActiveLeads"],
         }),
     }),

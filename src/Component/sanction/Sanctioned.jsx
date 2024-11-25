@@ -18,17 +18,18 @@ const Sanctioned = () => {
         pageSize: 10,
     });
 
+
+    const { data, isSuccess,isLoading, isError, error,refetch } = useSanctionedQuery({page:paginationModel.page+1,limit:paginationModel.pageSize})
     const handlePageChange = (newPaginationModel) => {
         // Fetch new data based on the new page
         setPaginationModel(newPaginationModel)
-        refetch(newPaginationModel); // Adjust this according to your data fetching logic
+        // refetch()
     };
 
     const handleLeadClick = (lead) => {
         navigate(`/sanction-profile/${lead.id}`)
     }
 
-    const { data, isSuccess, isError, error } = useSanctionedQuery({page:paginationModel.page+1,limit:paginationModel.pageSize})
     const columns = [
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
@@ -64,7 +65,7 @@ const Sanctioned = () => {
             setTotalApplications(data.totalSanctions)
         }
 
-    }, [isSuccess, data?.applications])
+    }, [isSuccess, data])
     return (
         <>
             <div>
@@ -100,11 +101,11 @@ const Sanctioned = () => {
                             rows={rows}
                             columns={columns}
                             rowCount={totalApplications}
-                            // loading={isLoading}
+                            loading={isLoading}
                             pageSizeOptions={[5]}
                             paginationModel={paginationModel}
                             paginationMode="server"
-                            onPaginationModelChange={handlePageChange}
+                            onPaginationModelChange={(pagination) => handlePageChange(pagination)}
                             onRowClick={(params) => handleLeadClick(params)}
                             sx={{
                                 color: '#1F2A40',  // Default text color for rows

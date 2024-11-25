@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { Button, InputAdornment, TextField } from '@mui/material';
+import { Button, CircularProgress, InputAdornment, TextField } from '@mui/material';
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { useUpdateCamDetailsMutation } from '../../Service/applicationQueries';
 import Swal from 'sweetalert2';
@@ -15,11 +15,10 @@ const EditCam = ({ camData, setIsEditing }) => {
 
 
 
-    const [updateCamDetails, isLoading, isSuccess, isError] = useUpdateCamDetailsMutation();
+    const [updateCamDetails, {isLoading, isSuccess, isError}] = useUpdateCamDetailsMutation();
 
     const calculateDaysDifference = (disbursalDate, repaymentDate) => {
 
-        console.log('days differ',disbursalDate,repaymentDate)
 
         if (!disbursalDate && !repaymentDate) {
             return 0;
@@ -41,7 +40,7 @@ const EditCam = ({ camData, setIsEditing }) => {
         return repayAmount
 
     }
-    const calculatePF = (loanRecommended,pfPercent) => {
+    const calculatePF = (loanRecommended, pfPercent) => {
         const processingFee = Number(loanRecommended) ? (Number(loanRecommended) * Number(pfPercent) / 100) : 0
         return processingFee
 
@@ -56,9 +55,9 @@ const EditCam = ({ camData, setIsEditing }) => {
                 [name]: value,   // Update the field that triggered the change event
             };
 
-            if(name === 'adminFeePercentage'){
-                updatedFormData.netAdminFeeAmount = calculatePF(updatedFormData.loanRecommended,updatedFormData.adminFeePercentage);
-                
+            if (name === 'adminFeePercentage') {
+                updatedFormData.netAdminFeeAmount = calculatePF(updatedFormData.loanRecommended, updatedFormData.adminFeePercentage);
+
             }
 
             // Handle loan recommendation logic
@@ -69,7 +68,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                     : 0;
                 // Add calculated fields to updatedFormData
                 updatedFormData.finalsalaryToIncomeRatioPercentage = `${finalsalaryToIncomeRatioPercentage.toFixed()}`;
-                updatedFormData.netAdminFeeAmount = calculatePF(updatedFormData.loanRecommended,updatedFormData.adminFeePercentage);
+                updatedFormData.netAdminFeeAmount = calculatePF(updatedFormData.loanRecommended, updatedFormData.adminFeePercentage);
                 updatedFormData.netDisbursalAmount = recommendedLoan - updatedFormData?.netAdminFeeAmount;
                 updatedFormData.repaymentAmount = calculateRepayment(recommendedLoan)
             }
@@ -77,10 +76,10 @@ const EditCam = ({ camData, setIsEditing }) => {
             if (name === 'repaymentDate' || name === 'disbursalDate') {
 
                 const eligibleTenure = calculateDaysDifference(updatedFormData.disbursalDate, updatedFormData.repaymentDate);
-                updatedFormData.eligibleTenure = eligibleTenure + 1  || 0;
+                updatedFormData.eligibleTenure = eligibleTenure + 1 || 0;
 
                 // Convert ROI to decimal
-                const roiDecimal = Number(updatedFormData?.roi)/100;
+                const roiDecimal = Number(updatedFormData?.roi) / 100;
                 // ro
                 // Calculate repaymentAmount using the correct formula
                 const loanRecommended = Number(updatedFormData.loanRecommended);
@@ -88,7 +87,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                     ? loanRecommended + (loanRecommended * roiDecimal * (eligibleTenure + 1))
                     : 0;
             }
-           
+
             // Return the updated form data
             return updatedFormData;
         });
@@ -197,7 +196,7 @@ const EditCam = ({ camData, setIsEditing }) => {
         }));
     }, [formData.salaryAmount1, formData.salaryAmount2, formData.salaryAmount3]);
 
-   
+
 
 
 
@@ -431,9 +430,9 @@ const EditCam = ({ camData, setIsEditing }) => {
                         disabled // Updated from InputProps to slotProps
                         slotProps={{
                             input: {
-                              endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
                             },
-                          }}
+                        }}
                     />
                 </div>
                 <div style={{ flex: '1 1 46%' }}>
@@ -447,10 +446,10 @@ const EditCam = ({ camData, setIsEditing }) => {
                         onChange={handleChange}
                         slotProps={{
                             input: {
-                              endAdornment: <InputAdornment position="end" style={{ marginLeft: '-300px' }}>%</InputAdornment>,
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-300px' }}>%</InputAdornment>,
                             },
-                          }}
-                        // disabled
+                        }}
+                    // disabled
                     />
                 </div>
                 <div style={{ flex: '1 1 46%' }}>
@@ -464,10 +463,10 @@ const EditCam = ({ camData, setIsEditing }) => {
                         onChange={handleChange}
                         slotProps={{
                             input: {
-                              endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
                             },
-                          }}
-                        // disabled
+                        }}
+                    // disabled
                     />
                 </div>
                 <div style={{ flex: '1 1 46%' }}>
@@ -502,9 +501,9 @@ const EditCam = ({ camData, setIsEditing }) => {
                         disabled
                         slotProps={{
                             input: {
-                              endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
                             },
-                          }}
+                        }}
                     />
                 </div>
 
@@ -521,7 +520,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                     />
                 </div>
                 {/* New Row (Additional Fields) */}
-                
+
 
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
@@ -560,7 +559,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                 </div>
                 {/* Sixth Row (More Fields) */}
 
-              
+
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
                         label="Processing Fee"
@@ -588,14 +587,23 @@ const EditCam = ({ camData, setIsEditing }) => {
                 </div>
 
                 {/* Save and Cancel Buttons */}
+                {console.log('isLoading',isLoading)}
                 <div style={{ flex: '1 1 100%', marginTop: '20px' }}>
                     <Button
                         type="submit"  // Use 'type="submit"' to handle form submit
-                        variant="contained"
-                        color="primary"
-                    //  onClick={handleSave}
+                        // color="primary"
+                        disabled={isLoading}
+                        sx={{
+                            backgroundColor: isLoading ? "#ccc" : "#1F2A40",
+                            color: isLoading ? "#666" : "white",
+                            cursor: isLoading ? "not-allowed" : "pointer",
+                            "&:hover": {
+                                backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+                            },
+                        }}
                     >
-                        Save CAM
+                        {isLoading ? <CircularProgress size={20} color="inherit" /> : "Save CAM"}
+                    
                     </Button>
                     <Button
                         variant="outlined"

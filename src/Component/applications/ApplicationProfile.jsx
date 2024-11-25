@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Box } from '@mui/material';
+import { Paper, Box, Alert } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import UploadDocuments from '../UploadDocuments';
 import LeadDetails from '../LeadDetails';
@@ -20,14 +20,14 @@ const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Ve
 
 const ApplicationProfile = () => {
   const { id } = useParams();
-  const { empInfo,activeRole } = useAuthStore()
+  const { empInfo, activeRole } = useAuthStore()
   const { setApplicationProfile } = useStore();
   const navigate = useNavigate();
   const [uploadedDocs, setUploadedDocs] = useState([]);
   const [currentPage, setCurrentPage] = useState("application");
   const [leadEdit, setLeadEdit] = useState(false);
 
-  const { data: applicationData, isSuccess: applicationSuccess } = useFetchSingleApplicationQuery(id, { skip: id === null });
+  const { data: applicationData, isSuccess: applicationSuccess, isError, error, refetch } = useFetchSingleApplicationQuery(id, { skip: id === null });
 
 
   useEffect(() => {
@@ -38,7 +38,12 @@ const ApplicationProfile = () => {
       setUploadedDocs(applicationData?.lead?.document.map(doc => doc.type));
     }
   }, [applicationSuccess, applicationData]);
-  console.log("id",applicationData)
+
+  useEffect(() => {
+    if (id) {
+      refetch();
+    }
+  }, [id, refetch]);
 
   return (
     <div className="crm-container" style={{ padding: '10px' }}>
@@ -62,17 +67,22 @@ const ApplicationProfile = () => {
                   <>
                     <InternalDedupe id={applicationData?.lead?._id} />
                     <ApplicationLogHistory id={applicationData?.lead?._id} />
+                    {isError && (
+                      <Alert severity="error" style={{ marginTop: "10px" }}>
+                        {error?.data?.message}
+                      </Alert>
+                    )}
 
                     {/* Action Buttons */}
 
-                    {(!applicationData.isRejected  && activeRole !== "admin") && 
-                    <Box display="flex" justifyContent="center" sx={{ marginTop: '20px' }}>
-                      <ActionButton
-                        id={applicationData._id}
-                        isHold={applicationData.onHold}
-                      />
+                    {(!applicationData.isRejected && activeRole !== "admin") &&
+                      <Box display="flex" justifyContent="center" sx={{ marginTop: '20px' }}>
+                        <ActionButton
+                          id={applicationData._id}
+                          isHold={applicationData.onHold}
+                        />
 
-                    </Box>}
+                      </Box>}
                   </>
 
                 }
@@ -112,6 +122,7 @@ const ApplicationProfile = () => {
           </div>
         </>
       )}
+
     </div>
   );
 };
