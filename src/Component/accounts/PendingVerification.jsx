@@ -27,7 +27,7 @@ function PendingVerification() {
     };
 
     const handleLeadClick = (disbursal) => {
-        navigate(`/pending-verification-profile/${disbursal.id}`);
+        navigate(`/collection-profile/${disbursal.id}`);
     };
     const columns = [
         { field: "name", headerName: "Full Name", width: 200 },
@@ -121,7 +121,7 @@ function PendingVerification() {
                         paginationModel={paginationModel}
                         paginationMode="server"
                         onPaginationModelChange={handlePageChange}
-                        onRowClick={(params) => handleLeadClick(params)}
+                        onRowClick={(params) => activeRole === "accountExecutive" ? handleLeadClick(params) : null}
                         sx={{
                             color: "#1F2A40", // Default text color for rows
                             "& .MuiDataGrid-columnHeaders": {
