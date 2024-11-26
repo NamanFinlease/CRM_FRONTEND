@@ -14,7 +14,7 @@ import Cam from '../applications/Cam';
 import { useDisbursalProfileQuery } from '../../Service/applicationQueries';
 import useAuthStore from '../store/authStore';
 import useStore from '../../Store';
-import DisburseInfo from './DisburseLoan';
+import DisburseLoan from './DisburseLoan';
 import ActionButton from '../ActionButton';
 
 
@@ -95,7 +95,7 @@ const DisbursalProfile = () => {
             }
 
             {currentPage === "cam" && <Cam id={disbursalData?.application?._id} />}
-            {currentPage === "disbursal" && <DisburseInfo disburse={disbursalData} />}
+            {currentPage === "disbursal" && <DisburseLoan disburse={disbursalData} />}
            
           </>
 

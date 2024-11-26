@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, Alert, Select, MenuItem, FormControl, InputLabel, FormHelperText, TableContainer, TableBody, TableRow, TableCell, Table } from '@mui/material';
+import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, Alert, Select, MenuItem, FormControl, InputLabel, FormHelperText, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useUpdatePersonalDetailsMutation } from '../../Service/applicationQueries';
@@ -24,12 +24,16 @@ const paperStyles = {
 
 const Reference = ({ reference }) => {
   const { applicationProfile } = useStore();
-  const { empInfo,activeRole } = useAuthStore()
+  const { empInfo, activeRole } = useAuthStore()
   const [openEdit, setOpenEdit] = useState(false)
   const id = applicationProfile._id;
   const [referenceDetails, setReferenceDetails] = useState()
 
-  const [updatePersonalDetails, { data, isSuccess, isError, error }] = useUpdatePersonalDetailsMutation();
+  // const defaultValues = {
+
+  // }
+
+  const [updatePersonalDetails, { data, isSuccess, isLoading, isError, error }] = useUpdatePersonalDetailsMutation();
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(referenceSchema)
@@ -56,6 +60,7 @@ const Reference = ({ reference }) => {
     }
 
   }, [reference])
+  console.log('reference details',referenceDetails)
 
   return (
     <>
@@ -198,8 +203,18 @@ const Reference = ({ reference }) => {
                   {/* Submit Button */}
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
                     <Button variant="outlined" onClick={() => reset()}>Cancel</Button>
-                    <Button variant="contained" type="submit" sx={{ backgroundColor: '#007bb2', color: '#fff' }}>
-                      Save
+                    <Button
+                      type="submit"
+                      sx={{
+
+                        backgroundColor: isLoading ? "#ccc" : "#1F2A40",
+                        color: isLoading ? "#666" : "white",
+                        cursor: isLoading ? "not-allowed" : "pointer",
+                        "&:hover": {
+                          backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+                        },
+                      }}>
+                      {isLoading ? <CircularProgress size={20} color="inherit" /> : "Save"}
                     </Button>
                   </Box>
                 </Box>

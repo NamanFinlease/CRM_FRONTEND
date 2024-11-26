@@ -21,8 +21,9 @@ const DisburseLoan = ({ disburse }) => {
   const { activeRole } = useAuthStore()
   const { applicationProfile } = useStore()
   const navigate = useNavigate()
+  console.log('disbursal date',disburse?.sanction)
 
-  const { disbursalDate, netDisbursalAmount } = disburse?.sanction?.application?.cam?.details
+  const { disbursalDate, netDisbursalAmount } = disburse?.application?.cam?.details
   const [disburseLoan, { data, isSuccess, isError, error }] = useDisburseLoanMutation()
 
   const defaultValues = {
@@ -69,7 +70,7 @@ const DisburseLoan = ({ disburse }) => {
       }}
     >
       {/* Render DisbursalProfile component before the dropdown header */}
-      <DisbursalLoanInfo disburse={disburse?.sanction?.application} />
+      <DisbursalLoanInfo disburse={disburse?.application} />
 
       {/* Clickable Header for Disbursal Bank with Background */}
 

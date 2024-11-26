@@ -50,7 +50,7 @@ const CollectionProfile = () => {
     useEffect(() => {
         if (isSuccess && data) {
             setCollectionData(data?.data)
-            setApplicationProfile(data?.data);
+            setApplicationProfile(data?.data?.disbursal);
         }
         // if (isSuccess && data?.sanction?.application?.lead?.document?.length) {
         // }
@@ -106,7 +106,7 @@ const CollectionProfile = () => {
                         }
 
                         {currentPage === "cam" && <Cam id={application?._id} />}
-                        {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal} />}
+                        {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal?.sanction} />}
                         {currentPage === "collection" && <ClosingRequest disburse={collectionData?.disbursal} />}
                         {currentPage === "accounts" && (
                     <>

@@ -7,10 +7,9 @@ import {
     Typography,
     TextField,
     Button,
-    Grid,
     InputAdornment,
-    Icon,
-    Divider,
+    Alert,
+    CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -23,7 +22,7 @@ const AddBankDetails = () => {
     const [branchName, setBranchName] = useState("");
     const [accountHolder, setAccountHolder] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
-    const [adminBank, { data, isError, isSuccess, error: bankError }] =
+    const [adminBank, { data, isError, isLoading, isSuccess, error: bankError }] =
         useAdminBankMutation();
     const [error, setError] = useState("");
 
@@ -78,21 +77,21 @@ const AddBankDetails = () => {
         });
     };
 
-        // Call API once a valid IFSC code is entered
-        useEffect(() => {
-            if (ifsc.length === 11) {
-                fetchBankDetails(ifsc);
-            }
-        }, [ifsc]);
-    
-        useEffect(() => {
-            if ((isSuccess, data)) {
-                Swal.fire({
-                    text: data?.message,
-                    icon: "success",
-                });
-            }
-        }, [isSuccess, data]);
+    // Call API once a valid IFSC code is entered
+    useEffect(() => {
+        if (ifsc.length === 11) {
+            fetchBankDetails(ifsc);
+        }
+    }, [ifsc]);
+
+    useEffect(() => {
+        if ((isSuccess, data)) {
+            Swal.fire({
+                text: data?.message,
+                icon: "success",
+            });
+        }
+    }, [isSuccess, data]);
 
     return (
         <Box
@@ -135,7 +134,13 @@ const AddBankDetails = () => {
                     </Typography>
 
                     <CardContent>
-                        <Grid container spacing={2}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: "16px",
+                            }}
+                        >
                             {[
                                 {
                                     label: "IFSC",
@@ -150,8 +155,7 @@ const AddBankDetails = () => {
                                             <InputAdornment position="start">
                                                 <SearchIcon
                                                     sx={{
-                                                        backgroundColor:
-                                                            "#9e9e9e", // Matches placeholder color
+                                                        backgroundColor: "#9e9e9e", // Matches placeholder color
                                                         borderRadius: "50%",
                                                         padding: "4px",
                                                         color: "#fff", // Icon color if you want it to stand out on background
@@ -165,98 +169,92 @@ const AddBankDetails = () => {
                                     label: "Bank Name",
                                     placeholder: "Enter Bank Name",
                                     value: bankName,
-                                    onChange: (e) =>
-                                        setBankName(e.target.value),
+                                    onChange: (e) => setBankName(e.target.value),
                                     disabled: true,
                                 },
                                 {
                                     label: "Branch Name",
                                     placeholder: "Enter Branch Name",
                                     value: branchName,
-                                    onChange: (e) =>
-                                        setBranchName(e.target.value),
+                                    onChange: (e) => setBranchName(e.target.value),
                                     disabled: true,
                                 },
                                 {
                                     label: "Account Holder",
                                     placeholder: "Enter Account Holder Name",
                                     value: accountHolder,
-                                    onChange: (e) =>
-                                        setAccountHolder(e.target.value),
+                                    onChange: (e) => setAccountHolder(e.target.value),
                                     disabled: false,
                                 },
                                 {
                                     label: "Account Number",
                                     placeholder: "Enter Account Number",
                                     value: accountNumber,
-                                    onChange: (e) =>
-                                        setAccountNumber(e.target.value),
+                                    onChange: (e) => setAccountNumber(e.target.value),
                                     disabled: false,
                                 },
                             ].map((field, index) => (
-                                <Grid item xs={12} sm={6} key={index}>
-                                    <Box
+                                <Box
+                                    key={index}
+                                    sx={{
+                                        flex: "1 1 calc(50% - 16px)", // 50% width with space
+                                        padding: "8px",
+                                        borderRadius: "8px",
+                                        backgroundColor: "#f9f9f9",
+                                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                                        "&:hover": {
+                                            boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
+                                        },
+                                    }}
+                                >
+                                    <Typography
                                         sx={{
-                                            padding: "8px",
-                                            borderRadius: "8px",
-                                            backgroundColor: "#f9f9f9",
-                                            boxShadow:
-                                                "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                                            "&:hover": {
-                                                boxShadow:
-                                                    "0px 8px 15px rgba(0, 0, 0, 0.2)",
-                                            },
+                                            fontWeight: "500",
+                                            color: "#42a5f5",
+                                            mb: 1,
                                         }}
                                     >
-                                        <Typography
-                                            sx={{
-                                                fontWeight: "500",
-                                                color: "#42a5f5",
-                                                mb: 1,
-                                            }}
-                                        >
-                                            {field.label}
-                                        </Typography>
-                                        <TextField
-                                            variant="outlined"
-                                            placeholder={field.placeholder}
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            error={field.error}
-                                            helperText={field.helperText}
-                                            fullWidth
-                                            disabled={field.disabled} // Conditionally disable
-                                            InputProps={field.InputProps || {}}
-                                            sx={{
-                                                "& .MuiOutlinedInput-root": {
-                                                    backgroundColor: "#fff",
-                                                    "& fieldset": {
-                                                        borderColor: "#42a5f5",
-                                                    },
-                                                    "&:hover fieldset": {
-                                                        borderColor: "#1e88e5",
-                                                    },
-                                                    "& input": {
-                                                        color: "#000",
-                                                        "&:disabled": {
-                                                            color: "#000", // Ensure black font color when disabled
-                                                            WebkitTextFillColor:
-                                                                "#000", // Override text fill color
-                                                        },
-                                                    }, // Set input text color to black
+                                        {field.label}
+                                    </Typography>
+                                    <TextField
+                                        variant="outlined"
+                                        placeholder={field.placeholder}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        error={field.error}
+                                        helperText={field.helperText}
+                                        fullWidth
+                                        disabled={field.disabled} // Conditionally disable
+                                        InputProps={field.InputProps || {}}
+                                        sx={{
+                                            "& .MuiOutlinedInput-root": {
+                                                backgroundColor: "#fff",
+                                                "& fieldset": {
+                                                    borderColor: "#42a5f5",
                                                 },
-                                            }}
-                                        />
-                                    </Box>
-                                </Grid>
+                                                "&:hover fieldset": {
+                                                    borderColor: "#1e88e5",
+                                                },
+                                                "& input": {
+                                                    color: "#000",
+                                                    "&:disabled": {
+                                                        color: "#000", // Ensure black font color when disabled
+                                                        WebkitTextFillColor: "#000", // Override text fill color
+                                                    },
+                                                }, // Set input text color to black
+                                            },
+                                        }}
+                                    />
+                                </Box>
                             ))}
-                        </Grid>
+                        </Box>
 
                         <Box sx={{ textAlign: "center", mt: 4 }}>
                             <Button
                                 type="submit"
                                 variant="contained"
                                 color="primary"
+                                disabled={isLoading}
                                 sx={{
                                     fontWeight: "600",
                                     textTransform: "none",
@@ -270,13 +268,20 @@ const AddBankDetails = () => {
                                     },
                                 }}
                             >
-                                Submit
+                                {isLoading ? <CircularProgress size={20} color="inherit" /> : "Submit"}
+                                
                             </Button>
                         </Box>
                     </CardContent>
                 </form>
             </Card>
+            {isError &&
+                <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+                    {bankError?.data?.message}
+                </Alert>
+            }
         </Box>
+
     );
 };
 
