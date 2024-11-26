@@ -15,7 +15,8 @@ import {
     MenuItem,
     InputLabel,
     Select,
-    FormControl
+    FormControl,
+    CircularProgress
 } from '@mui/material';
 import { useAddBankMutation, useGetBankDetailsQuery, useUpdateBankMutation } from '../../Service/applicationQueries';
 import { useParams } from 'react-router-dom';
@@ -34,7 +35,7 @@ const BankDetails = ({ id }) => {
 
     const bankRes = useGetBankDetailsQuery(id, { skip: id === null })
     const [addBank, addBankRes] = useAddBankMutation();
-    const [updatBank, {data:updateData,isSuccess:updateSuccess,isError:isUpdateError,error:updateError}] = useUpdateBankMutation();
+    const [updatBank, {data:updateData,isSuccess:updateSuccess,isLoading:updateLoading,isError:isUpdateError,error:updateError}] = useUpdateBankMutation();
 
     // React Hook Form setup
     const { handleSubmit, control, reset, formState: { errors } } = useForm({
@@ -206,12 +207,18 @@ const BankDetails = ({ id }) => {
                                     Cancel
                                 </Button>
                                 <Button
-                                    variant="contained"
-                                    color="primary"
+                                    disabled={addBankRes?.isLoading || updateLoading}
                                     type="submit"
-                                    sx={{ marginRight: '10px' }}
+                                    sx={{
+                                        backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : "#1F2A40",
+                                        color: (addBankRes?.isLoading || updateLoading) ? "#666" : "white",
+                                        cursor: (addBankRes?.isLoading || updateLoading) ? "not-allowed" : "pointer",
+                                        "&:hover": {
+                                            backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : "#3F4E64",
+                                        },
+                                    }}
                                 >
-                                    Save
+                                    {(addBankRes?.isLoading || updateLoading) ? <CircularProgress size={20} color="inherit" /> : "Save"}
                                 </Button>
 
                             </Box>

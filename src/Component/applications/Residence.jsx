@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, InputLabel, Select, MenuItem, FormControl, FormHelperText, Alert, TableContainer, TableBody, TableRow, TableCell, Table } from '@mui/material';
+import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, InputLabel, Select, MenuItem, FormControl, FormHelperText, Alert, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { residenceSchema } from '../../utils/validations';
@@ -22,25 +22,17 @@ const paperStyles = {
   boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
 };
 
-const buttonStyles = {
-  borderRadius: '8px',
-  padding: '10px 20px',
-  background: 'linear-gradient(45deg, #42a5f5, #007bb2)',
-  color: '#fff',
-  '&:hover': {
-    background: 'linear-gradient(45deg, #007bb2, #42a5f5)',
-  },
-};
+
 
 
 const Residence = ({ residence }) => {
   const { applicationProfile } = useStore()
-  const { empInfo ,activeRole} = useAuthStore()
+  const { empInfo, activeRole } = useAuthStore()
   const id = applicationProfile._id
   const [columns, setColumns] = useState(null)
   const [isEditingResidence, setIsEditingResidence] = useState(false);
 
-  const [updatePersonalDetails, { data, isSuccess, isError, error }] = useUpdatePersonalDetailsMutation()
+  const [updatePersonalDetails, { data, isSuccess, isLoading, isError, error }] = useUpdatePersonalDetailsMutation()
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(residenceSchema), // Connect Yup with React Hook Form
@@ -54,8 +46,7 @@ const Residence = ({ residence }) => {
   });
 
   const onSubmit = (data) => {
-    console.log('data',data)
-    updatePersonalDetails({ id, updates: {residence:data} })
+    updatePersonalDetails({ id, updates: { residence: data } })
     // Call API or mutation function here
   };
 
@@ -73,6 +64,17 @@ const Residence = ({ residence }) => {
 
       reset();
     }
+  };
+
+  const buttonStyles = {
+    borderRadius: '8px',
+    padding: '10px 20px',
+    backgroundColor: isLoading ? "#ccc" : "#1F2A40",
+    color: isLoading ? "#666" : "white",
+    cursor: isLoading ? "not-allowed" : "pointer",
+    "&:hover": {
+      backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+    },
   };
 
   useEffect(() => {
@@ -211,8 +213,12 @@ const Residence = ({ residence }) => {
                     <Button variant="outlined" onClick={handleResidenceEditToggle}>
                       Cancel
                     </Button>
-                    <Button variant="contained" style={buttonStyles} type="submit">
-                      Save
+                    <Button
+                      style={buttonStyles}
+                      type="submit"
+                    >
+                      {isLoading ? <CircularProgress size={20} color="inherit" /> : "Save"}
+
                     </Button>
                   </Box>
                 </Box>

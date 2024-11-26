@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, TableContainer, TableBody, TableRow, TableCell, Table } from '@mui/material';
+import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -31,15 +31,7 @@ const paperStyles = {
   boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
 };
 
-const buttonStyles = {
-  borderRadius: '8px',
-  padding: '10px 20px',
-  background: 'linear-gradient(45deg, #42a5f5, #007bb2)',
-  color: '#fff',
-  '&:hover': {
-    background: 'linear-gradient(45deg, #007bb2, #42a5f5)',
-  },
-};
+
 
 const Employment = ({ employmentData }) => {
   const { applicationProfile } = useStore();
@@ -48,7 +40,7 @@ const Employment = ({ employmentData }) => {
   const [columns, setColumns] = useState(null);
   const [isEditingEmployment, setIsEditingEmployment] = useState(false);
 
-  const [updatePersonalDetails, { data, isSuccess, isError, error }] = useUpdatePersonalDetailsMutation();
+  const [updatePersonalDetails, { data, isSuccess,isLoading, isError, error }] = useUpdatePersonalDetailsMutation();
 
   const defaultValues = {
     companyName: employmentData?.companyName || '',
@@ -112,6 +104,17 @@ const Employment = ({ employmentData }) => {
       ]);
     }
   }, [employmentData]);
+
+  const buttonStyles = {
+    borderRadius: '8px',
+    padding: '10px 20px',
+    backgroundColor: isLoading ? "#ccc" : "#1F2A40",
+    color: isLoading ? "#666" : "white",
+    cursor: isLoading ? "not-allowed" : "pointer",
+    "&:hover": {
+      backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+    },
+  };
 
   return (
     <Accordion style={accordionStyles}>
@@ -260,8 +263,8 @@ const Employment = ({ employmentData }) => {
                     <Button variant="outlined" onClick={handleEmploymentEditToggle}>
                       Cancel
                     </Button>
-                    <Button variant="contained" style={buttonStyles} type="submit">
-                      Save
+                    <Button style={buttonStyles} type="submit">
+                    {isLoading ? <CircularProgress size={20} color="inherit" /> : "Save"}
                     </Button>
                   </Box>
                 </Box>

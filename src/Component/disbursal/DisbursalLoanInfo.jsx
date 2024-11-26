@@ -27,7 +27,7 @@ const DisbursalLoanInfo = ({ disburse }) => {
         lead: { fName, mName, lName } = {} 
       } = {} 
     } = {} 
-  } = applicationProfile?.disbursal || {};
+  } = applicationProfile || {};
 
   const [recommendLoan, { data, isSuccess, isError, error }] = useRecommendLoanMutation()
 
@@ -48,13 +48,15 @@ const DisbursalLoanInfo = ({ disburse }) => {
     recommendLoan({ id: applicationProfile._id, remarks })
   }
 
+  console.log('disbursal',applicationProfile,sanction,application,)
+
 
   const info = [
     { label: "Loan No.", value: applicationProfile?.loanNo },
     { label: "Customer Name", value: `${fName}${mName ? ` ${mName}` : ``} ${lName}` },
     { label: "Processed By", value: `${application?.creditManagerId?.fName}${application?.creditManagerId?.mName ? ` ${application?.creditManagerId?.mName}` : ``} ${application?.creditManagerId?.lName}` },
     { label: "Processed On", value: "02-11-2024 15:39:38" },
-    { label: "Sanctioned By", value: `${sanction?.application?.approvedBy?.fName}${sanction?.application?.approvedBy?.mName ? ` ${sanction?.application?.approvedBy?.mName}` : ``} ${sanction?.application?.approvedBy?.lName}` },
+    { label: "Sanctioned By", value: `${application?.approvedBy?.fName}${application?.approvedBy?.mName ? ` ${application?.approvedBy?.mName}` : ``} ${application?.approvedBy?.lName}` },
     { label: "Sanctioned On", value: sanction?.sanctionDate && formatDate(sanction?.sanctionDate) },
     { label: "Loan Approved (Rs.)", value: cam?.details?.loanRecommended },
     { label: "ROI % (p.d.) Approved", value: cam?.details?.roi },
