@@ -45,7 +45,7 @@ const DisbursalLoanInfo = ({ disburse }) => {
         recommendLoan({ id: applicationProfile._id, remarks });
     };
 
-    console.log("disbursal", applicationProfile, sanction, application);
+    console.log("sanction", sanction.approvedBy);
 
     const info = [
         { label: "Loan No.", value: applicationProfile?.loanNo },
@@ -64,11 +64,11 @@ const DisbursalLoanInfo = ({ disburse }) => {
         { label: "Processed On", value: "02-11-2024 15:39:38" },
         {
             label: "Sanctioned By",
-            value: `${application?.approvedBy?.fName}${
-                application?.approvedBy?.mName
-                    ? ` ${application?.approvedBy?.mName}`
+            value: `${sanction?.approvedBy?.fName}${
+                sanction?.approvedBy?.mName
+                    ? ` ${sanction?.approvedBy?.mName}`
                     : ``
-            } ${application?.approvedBy?.lName}`,
+            } ${sanction?.approvedBy?.lName}`,
         },
         {
             label: "Sanctioned On",
@@ -88,7 +88,7 @@ const DisbursalLoanInfo = ({ disburse }) => {
         ...(applicationProfile.isDisbursed
             ? [
                   {
-                      label: "Disbursed From",
+                      label: "Disbursed From A/C",
                       value: applicationProfile?.payableAccount,
                   },
                   {
