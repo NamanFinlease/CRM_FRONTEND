@@ -61,7 +61,7 @@ const EditCam = ({ camData, setIsEditing }) => {
             }
 
             // Handle loan recommendation logic
-            if (name === 'loanRecommended') {
+            if (name === 'loanRecommended' || name === 'adminFeePercentage') {
                 const recommendedLoan = Number(updatedFormData?.loanRecommended);
                 const finalsalaryToIncomeRatioPercentage = prevFormData.actualNetSalary
                     ? (recommendedLoan / prevFormData.actualNetSalary) * 100
