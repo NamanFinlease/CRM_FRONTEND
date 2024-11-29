@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
-import { useAllDisbursalsQuery, useAllocateDisbursalMutation } from '../../Service/applicationQueries';
+import { saveAs } from "file-saver"; // For file downloads
+import * as Pap from "papaparse"; // For CSV conversion
+import { useAllDisbursalsQuery, useAllocateDisbursalMutation, useLazyExportSanctionedQuery } from '../../Service/applicationQueries';
 import Header from '../Header';
 import useAuthStore from '../store/authStore';
+import CustomToolbar from '../CustomToolbar';
 
 const DisburseNew = () => {
   const [applications, setApplications] = useState([]);
@@ -12,6 +15,7 @@ const DisburseNew = () => {
   const [selectedApplication, setSelectedApplication] = useState(null);
   const { empInfo,activeRole } = useAuthStore()
   const [allocateApplication, { data: updateApplication, isSuccess,isError:isAllocateError,error:allocateError }] = useAllocateDisbursalMutation();
+  const [exportSanctioned, { data: exportData,isLoading:isEXportLoading, isSuccess:isExportSuccess,isError:isExportErro,error:exportError }] = useLazyExportSanctionedQuery();
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
@@ -29,6 +33,29 @@ const DisburseNew = () => {
     allocateApplication(selectedApplication);
 
   };
+
+  const handleExportClick = () => {
+    try {
+        // Replace with your actual API call
+        
+
+       
+
+
+        // Convert JSON to CSV using PapaParse
+        const csv = Pap.unparse(data, {
+            header: true, // Include headers in the CSV
+        });
+
+        // Create a Blob for the CSV content
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+
+        // Use file-saver to download the file
+        saveAs(blob, "sanctioned_data.csv");
+    } catch (error) {
+        console.error('Export failed:', error);
+    }
+};
 
   const handleCheckboxChange = (id) => {
     setSelectedApplication(selectedApplication === id ? null : id);
@@ -148,6 +175,7 @@ const DisburseNew = () => {
           rows={rows}
           columns={columns}
           rowCount={totalApplications}
+          slots={{ toolbar: () => <CustomToolbar onExportClick={handleExportClick} /> }}
           // loading={isLoading}
           pageSizeOptions={[5]}
           paginationModel={paginationModel}
