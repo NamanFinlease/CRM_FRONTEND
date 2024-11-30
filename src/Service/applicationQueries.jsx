@@ -254,11 +254,11 @@ export const applicationApi = createApi({
       // providesTags:["getApplication"]
     }),
     allDisbursals: builder.query({
-      query: ({page,limit}) => `/disbursals/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ({page,limit}) => `/disbursals/?role=${role()}`,
       // providesTags:["getApplication"]
     }),
     allocatedDisbursals: builder.query({
-      query: ({page,limit}) => `/disbursals/allocated/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ({page,limit}) => `/disbursals/allocated/?role=${role()}`,
       providesTags:["getDisbursals"]
     }),
     disbursalProfile: builder.query({
