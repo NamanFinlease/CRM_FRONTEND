@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useSanctionedQuery } from '../../Service/applicationQueries'
 import { Alert } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridToolbar, GridToolbarExport } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
 import useAuthStore from '../store/authStore';
+import CustomToolbar from '../CustomToolbar';
 
 const Sanctioned = () => {
-    const {activeRole} = useAuthStore()
+    const { activeRole } = useAuthStore()
 
     const navigate = useNavigate()
 
@@ -19,7 +20,7 @@ const Sanctioned = () => {
     });
 
 
-    const { data, isSuccess,isLoading, isError, error,refetch } = useSanctionedQuery({page:paginationModel.page+1,limit:paginationModel.pageSize})
+    const { data, isSuccess, isLoading, isError, error, refetch } = useSanctionedQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     const handlePageChange = (newPaginationModel) => {
         // Fetch new data based on the new page
         setPaginationModel(newPaginationModel)
@@ -39,8 +40,8 @@ const Sanctioned = () => {
         { field: 'state', headerName: 'State', width: 150 },
         { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
         { field: 'salary', headerName: 'Salary', width: 150 },
-        ...((activeRole === "sanctionHead" || activeRole === "admin" ) ? 
-        [{ field: 'recommendedBy', headerName: 'Recommended By', width: 150 }]:[]),
+        ...((activeRole === "sanctionHead" || activeRole === "admin") ?
+            [{ field: 'recommendedBy', headerName: 'Recommended By', width: 150 }] : []),
         { field: 'source', headerName: 'Source', width: 150 },
     ];
 
@@ -54,8 +55,8 @@ const Sanctioned = () => {
         state: sanction?.application?.lead?.state,
         loanAmount: sanction?.application?.lead?.loanAmount,
         salary: sanction?.application?.lead?.salary,
-        ...((activeRole === "sanctionHead" || activeRole === "admin" ) &&
-         {recommendedBy: `${sanction?.application?.recommendedBy?.fName}${sanction?.application?.recommendedBy?.mName ? ` ${sanction?.application?.recommendedBy?.mName}`:``} ${sanction?.application?.recommendedBy?.lName}`}),
+        ...((activeRole === "sanctionHead" || activeRole === "admin") &&
+            { recommendedBy: `${sanction?.application?.recommendedBy?.fName}${sanction?.application?.recommendedBy?.mName ? ` ${sanction?.application?.recommendedBy?.mName}` : ``} ${sanction?.application?.recommendedBy?.lName}` }),
         source: sanction?.application?.lead?.source,
     }));
 
@@ -90,7 +91,7 @@ const Sanctioned = () => {
                         }}
                     >
                         {/* <h1>Sanctioned</h1> */}
-                        Total Applicattions: {totalApplications || 0} 
+                        Total Applicattions: {totalApplications || 0}
                     </div>
 
                 </div>
@@ -102,6 +103,7 @@ const Sanctioned = () => {
                             columns={columns}
                             rowCount={totalApplications}
                             loading={isLoading}
+                            // slots={{ toolbar: () => <CustomToolbar /> }}
                             pageSizeOptions={[5]}
                             paginationModel={paginationModel}
                             paginationMode="server"

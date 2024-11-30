@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Select, MenuItem, TextField, Box, Alert, Typography, FormControl, InputLabel } from '@mui/material';
+import { Button, Select, MenuItem, TextField, Box, Alert, Typography, FormControl, InputLabel, CircularProgress } from '@mui/material';
 
 import { useHoldLeadMutation, useRecommendLeadMutation, useRejectLeadMutation, useUnholdLeadMutation } from '../Service/Query';
 import Swal from 'sweetalert2';
@@ -28,7 +28,7 @@ const loanRejectReasons = [
     // { label: "Unclear Purpose of Loan", value: "unclear_loan_purpose" }
 ];
 
-const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
+const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRender }) => {
 
     const navigate = useNavigate()
     const { empInfo, activeRole } = useAuthStore()
@@ -60,8 +60,8 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
     const [sendBack, { data: sendBackData, isSuccess: SendBackSuccess, isError: isSendBackError, error: sendBackError }] = useSendBackMutation()
 
     // sanction Action mutation -------
-    const [sanctionSendBack, { data: sanctionSendBackData, isSuccess: sanctionSendBackSuccess, isError: isSanctionSendBackError, error: sanctionSendBackError }] = useSanctionSendBackMutation()
-    const [disbursalSendBack, { data: disbursalSendBackData, isSuccess: disbursalSendBackSuccess, isError: isdisbursalSendBackError, error: disbursalSendBackError }] = useDisbursalSendBackMutation()
+    const [sanctionSendBack, { data: sanctionSendBackData, isLoading: sanctionSendBackLoading, isSuccess: sanctionSendBackSuccess, isError: isSanctionSendBackError, error: sanctionSendBackError }] = useSanctionSendBackMutation()
+    const [disbursalSendBack, { data: disbursalSendBackData, isLoading: disbursalSendBackLoading, isSuccess: disbursalSendBackSuccess, isError: isdisbursalSendBackError, error: disbursalSendBackError }] = useDisbursalSendBackMutation()
     const [sanctionReject, { data: sanctionRejectData, isSuccess: sanctionRejectSuccess, isError: isSanctionRejectError, error: sanctionRejectError }] = useRejectLeadMutation();
 
 
@@ -134,7 +134,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 sendBack({ id: applicationProfile?.lead._id, reason: remarks, sendTo: selectedRecipient })
             } else if (activeRole === "sanctionHead") {
                 sanctionSendBack({ id: applicationProfile?.application?.lead._id, reason: remarks, sendTo: selectedRecipient })
-            } else if(activeRole==='disbursalHead'){
+            } else if (activeRole === 'disbursalHead') {
                 disbursalSendBack({ id: applicationProfile?.sanction?.application?.lead._id, reason: remarks, sendTo: selectedRecipient })
             }
 
@@ -215,7 +215,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 text: "Application successfully send back!",
                 icon: "success"
             });
-            navigate("/recommended-application")
+            navigate("/pending-sanctions")
         }
         if (disbursalSendBackSuccess && disbursalSendBackData) {
             Swal.fire({
@@ -261,12 +261,12 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 text: "Application Forwarded!",
                 icon: "success"
             });
-            navigate("/recommended-application")
+            navigate("/pending-sanctions")
         }
 
     }, [holdApplicationData, unholdApplicationData, rejectApplicationData, recommendApplicationData, sanctionRejectData])
 
-    useEffect(()=> {
+    useEffect(() => {
         if (unholdDisbursalData && unholdDisbursalSuccess) {
             Swal.fire({
                 text: "Disbursal Unhold!",
@@ -282,7 +282,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
             navigate("/rejected-disbursals")
         }
 
-    },[unholdDisbursalData, unholdDisbursalSuccess])
+    }, [unholdDisbursalData, unholdDisbursalSuccess])
 
 
 
@@ -310,15 +310,24 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 {(!actionType && !applicationProfile?.isApproved) && (
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 2 }}>
                         {activeRole === "sanctionHead" && <Button
-                            variant="contained"
+                            // variant="contained"
+                            disabled={previewLoading}
                             color="success"
                             onClick={() => handlePreview()}
+                            sx={{
+                                backgroundColor: previewLoading ? "#ccc" : "#1F2A40",
+                                color: previewLoading ? "#666" : "white",
+                                cursor: previewLoading ? "not-allowed" : "pointer",
+                                "&:hover": {
+                                    backgroundColor: previewLoading ? "#ccc" : "#3F4E64",
+                                },
+                            }}
                         >
-                            Preview
+                            {previewLoading ? <CircularProgress size={20} color="inherit" /> : "Preview"}
                         </Button>}
                         {(activeRole !== "sanctionHead" && activeRole !== "admin") &&
                             <>
-                                {!isHold &&
+                                {!isHold && activeRole !== "disbursalHead" &&
                                     <>
                                         {(activeRole === "disbursalManager") ?
                                             <Button
@@ -366,8 +375,6 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 )}
 
                 {/* Render dropdown, input, and submit/cancel buttons when Hold or Reject is selected */}
-
-
 
                 {(actionType === 'hold' || actionType === "unhold" || actionType === 'reject' || actionType === "sendBack" || actionType === "recommend") && (
                     <Box
@@ -487,18 +494,20 @@ const ActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                                 Cancel
                             </Button>
                             <Button
-                                variant="contained"
+                                // variant="contained"
                                 color="primary"
                                 onClick={handleSubmit}
                                 sx={{
-                                    padding: '10px 20px',
-                                    borderRadius: 2,
-                                    fontWeight: 'bold',
-                                    backgroundColor: '#1976d2',
-                                    ':hover': { backgroundColor: '#1565c0' },
-                                }}
+                                    backgroundColor: (sanctionSendBackLoading || disbursalSendBackLoading) ? "#95bdf0" : "#2a85f5",
+                                    color: (sanctionSendBackLoading || disbursalSendBackLoading) ? "#666" : "white",
+                                    cursor: (sanctionSendBackLoading || disbursalSendBackLoading) ? "not-allowed" : "pointer",
+                                    "&:hover": {
+                                      backgroundColor: (sanctionSendBackLoading || disbursalSendBackLoading) ? "#bff2d9" : "#95bdf0",
+                                      color:"#fafbfc" ,
+                                    },
+                                  }}
                             >
-                                Submit
+                                {(sanctionSendBackLoading || disbursalSendBackLoading) ? <CircularProgress size={20} color="inherit" /> : "Submit"}
                             </Button>
                         </Box>
                     </Box>

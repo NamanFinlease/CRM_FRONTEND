@@ -234,7 +234,7 @@ export const applicationApi = createApi({
       providesTags:["getApplication"]
     }),
     pendingSanctions: builder.query({
-      query: ({page,limit}) => `/sanction/pending/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ({page,limit}) => `/sanction/pending/?role=${role()}`,
       providesTags:["pendingSanctions"] 
     }),
     recommendedApplications: builder.query({
@@ -250,7 +250,7 @@ export const applicationApi = createApi({
       // providesTags:["getApplication"]
     }),
     sanctioned: builder.query({
-      query: ({page,limit}) => `/sanction/approved/?page=${page}&limit=${limit}&role=${role()}`,
+      query: ({page,limit}) => `/sanction/approved/?role=${role()}`,
       // providesTags:["getApplication"]
     }),
     allDisbursals: builder.query({
@@ -279,6 +279,10 @@ export const applicationApi = createApi({
     }),
     rejectedDisbursals: builder.query({
       query: () => `/disbursals/rejected/?role=${role()}`,
+      providesTags:["getApplication"]
+    }),
+    exportSanctioned: builder.query({
+      query: () => `/sanction/approved/report/?role=${role()}`,
       providesTags:["getApplication"]
     }),
     
@@ -325,5 +329,6 @@ export const {
     useDisbursedQuery,
     useFetchDisbursalHoldQuery,
     useRejectedDisbursalsQuery,
+    useLazyExportSanctionedQuery,
 
 } = applicationApi;

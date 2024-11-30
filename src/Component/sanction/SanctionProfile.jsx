@@ -51,7 +51,7 @@ const SanctionProfile = () => {
     }
 
   }, [previewSuccess,previewData,forceRender]);
-
+console.log('loading',previewLoading)
   return (
     <div className="crm-container" style={{ padding: '10px' }} key={forceRender}>
       {previewSanction ? previewLoading ? <h1> .....Loading data</h1>:
@@ -97,6 +97,7 @@ const SanctionProfile = () => {
                       <ActionButton
                         id={data._id}
                         isHold={data.onHold}
+                        previewLoading={previewLoading}
                         setPreviewSanction={setPreviewSanction}
                         sanctionPreview={sanctionPreview}
                         setForceRender={setForceRender}
