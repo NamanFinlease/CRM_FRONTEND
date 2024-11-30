@@ -272,10 +272,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                 }}
                             >
                                 <Typography variant="subtitle1">
-                                    <i
-                                        className="bi bi-check"
-                                        style={{ marginRight: "8px" }}
-                                    ></i>{" "}
+                                    
                                     Sanction
                                 </Typography>
                             </AccordionSummary>

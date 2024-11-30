@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import { saveAs } from "file-saver"; // For file downloads
 import * as Pap from "papaparse"; // For CSV conversion
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { useAllDisbursalsQuery, useAllocateDisbursalMutation, useLazyExportSanctionedQuery } from '../../Service/applicationQueries';
 import Header from '../Header';
 import useAuthStore from '../store/authStore';
@@ -35,26 +36,9 @@ const DisburseNew = () => {
   };
 
   const handleExportClick = () => {
-    try {
+        console.log("Export click");
         // Replace with your actual API call
-        
-
-       
-
-
-        // Convert JSON to CSV using PapaParse
-        const csv = Pap.unparse(data, {
-            header: true, // Include headers in the CSV
-        });
-
-        // Create a Blob for the CSV content
-        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-
-        // Use file-saver to download the file
-        saveAs(blob, "sanctioned_data.csv");
-    } catch (error) {
-        console.error('Export failed:', error);
-    }
+        exportSanctioned();
 };
 
   const handleCheckboxChange = (id) => {
@@ -64,7 +48,7 @@ const DisburseNew = () => {
 
   const handlePageChange = (newPaginationModel) => {
     setPaginationModel(newPaginationModel)
-    refetch(newPaginationModel); 
+    // refetch(newPaginationModel); 
   };
 
  
@@ -115,6 +99,30 @@ const DisburseNew = () => {
   }));
 
   console.log('rows',rows)
+
+  useEffect(()=>{
+    if(isExportSuccess && exportData){
+      // Preprocess the data to ensure accountNo is a string
+      const formattedData = exportData.data.map((row) => {
+        const csvData = {
+        ...row,
+        'Account No': `"${row.accountNo}"`, // Add a leading single quote to force it as a string
+    }
+    delete csvData.accountNo
+    return csvData
+  });
+      // Convert JSON to CSV using PapaParse
+      const csv = Pap.unparse(formattedData, {
+        header: true, // Include headers in the CSV
+    });
+
+    // Create a Blob for the CSV content
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+
+    // Use file-saver to download the file
+    saveAs(blob, "sanctioned_data.csv");
+    }
+  }, [isExportSuccess, exportData]);
 
   useEffect(() => {
     if (isSuccess) {

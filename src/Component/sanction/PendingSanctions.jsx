@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
+
 import { usePendingSanctionsQuery } from '../../Service/applicationQueries';
+import CustomToolbar from '../CustomToolbar';
 
 const PendingSanctions = () => {
   const [applications, setApplications] = useState([]); 
@@ -24,6 +26,10 @@ const PendingSanctions = () => {
     }
 
   }, [page,allApplication,applicationSuccess]);
+
+
+
+
 
   
 
@@ -96,6 +102,7 @@ const handleLeadClick = (lead) => {
           rows={rows}
           columns={columns}
           rowCount={totalApplications}
+          
           // loading={isLoading}
           pageSizeOptions={[5]}
           paginationModel={paginationModel}

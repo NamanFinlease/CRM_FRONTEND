@@ -215,7 +215,7 @@ const LMSActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 text: "Application successfully send back!",
                 icon: "success"
             });
-            navigate("/recommended-application")
+            navigate("/pending-sanctions")
         }
         if (disbursalSendBackSuccess && disbursalSendBackData) {
             Swal.fire({
@@ -261,7 +261,7 @@ const LMSActionButton = ({ id, isHold, sanctionPreview, setForceRender }) => {
                 text: "Application Forwarded!",
                 icon: "success"
             });
-            navigate("/recommended-application")
+            navigate("/pending-sanctions")
         }
 
     }, [holdApplicationData, unholdApplicationData, rejectApplicationData, recommendApplicationData, sanctionRejectData])

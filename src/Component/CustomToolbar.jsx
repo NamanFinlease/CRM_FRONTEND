@@ -1,5 +1,6 @@
 import { GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import {Button} from '@mui/material'
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 const CustomToolbar = ({onExportClick}) => {
     return (
@@ -7,14 +8,14 @@ const CustomToolbar = ({onExportClick}) => {
              <Button
                 variant="contained"
                 color="primary"
-                // onClick={onExportClick}
+                onClick={onExportClick}
                 sx={{
                     fontSize: '12px',
                     padding: '6px 12px',
                     marginBottom:'2px'
                 }}
             >
-                Export
+              <FileDownloadIcon />  CSV
             </Button>
         </GridToolbarContainer>
     );

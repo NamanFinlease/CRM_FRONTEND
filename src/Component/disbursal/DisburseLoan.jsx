@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Box, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material';
+import { Button, Box, FormControl, InputLabel, Select, MenuItem, TextField, Typography, Alert, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DisbursalLoanInfo from './DisbursalLoanInfo'; // Ensure the path is correct
 import useAuthStore from '../store/authStore';
@@ -21,10 +21,10 @@ const DisburseLoan = ({ disburse }) => {
   const { activeRole } = useAuthStore()
   const { applicationProfile } = useStore()
   const navigate = useNavigate()
-  console.log('disbursal date',disburse?.sanction)
+  console.log('disbursal date', disburse?.sanction)
 
   const { disbursalDate, netDisbursalAmount } = disburse?.application?.cam?.details
-  const [disburseLoan, { data, isSuccess, isError, error }] = useDisburseLoanMutation()
+  const [disburseLoan, { data, isSuccess, isLoading, isError, error }] = useDisburseLoanMutation()
 
   const defaultValues = {
     payableAccount: "",
@@ -114,7 +114,7 @@ const DisburseLoan = ({ disburse }) => {
                 padding: '20px',
                 border: '1px solid #ddd',
                 borderRadius: '8px',
-                backgroundColor: '#f9f9f9',
+                backgroundColor: '#b0aeae',
                 fontSize: '12px',
                 lineHeight: '1.5',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -127,11 +127,11 @@ const DisburseLoan = ({ disburse }) => {
                   control={control}
                   render={({ field, fieldState }) => (
                     <FormControl fullWidth variant="outlined" error={!!fieldState.error}>
-                      <InputLabel sx={{ color: '#9e9e9e' }}>Payable Account</InputLabel>
+                      <InputLabel sx={{ color: '#fafafa' }}>Payable Account</InputLabel>
                       <Select
                         {...field}
                         label="Payable Account *"
-                        sx={{ backgroundColor: '#f5f5f5', borderRadius: '8px', color: '#363535' }}
+                        sx={{ backgroundColor: '#8a8988', borderRadius: '8px', color: '#fafafa' }}
                       >
                         <MenuItem value="">
                           <em>Select Account</em>
@@ -166,17 +166,17 @@ const DisburseLoan = ({ disburse }) => {
                       helperText={fieldState?.error ? fieldState?.error?.message : ''}
                       inputProps={{
                         placeholder: "Enter amount",
-                        style: { color: '#363535' },
+                        style: { color: '#fafafa' },
                       }}
                       sx={{
-                        backgroundColor: '#f5f5f5',
+                        backgroundColor: '#8a8988',
                         borderRadius: '8px',
-                        color: '#5a5a5a',
+                        color: '#fafafa',
                         '& .MuiInputBase-input::placeholder': {
-                          color: '#363535', // Placeholder color
+                          color: '#fafafa', // Placeholder color
                         },
                         '& .MuiInputLabel-root': {
-                          color: '#9e9e9e', // Label color
+                          color: '#fafafa', // Label color
                         },
                         '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
                           borderColor: '#ccc', // Border color
@@ -189,9 +189,9 @@ const DisburseLoan = ({ disburse }) => {
                         },
                         '&.Mui-disabled': {
                           backgroundColor: '#e0e0e0', // Background color when disabled
-                          color: '#9e9e9e', // Label color when disabled
+                          color: '#fafafa', // Label color when disabled
                           '& .MuiInputBase-input': {
-                            color: '#9e9e9e', // Text color when disabled
+                            color: '#fafafa', // Text color when disabled
                           },
                           '& .MuiOutlinedInput-notchedOutline': {
                             borderColor: '#bdbdbd', // Border color when disabled
@@ -209,12 +209,12 @@ const DisburseLoan = ({ disburse }) => {
                   render={({ field, fieldState }) => (
 
                     <FormControl fullWidth variant="outlined">
-                      <InputLabel sx={{ color: '#9e9e9e' }}>Payment Mode</InputLabel>
+                      <InputLabel sx={{ color: '#fafafa' }}>Payment Mode</InputLabel>
                       <Select
                         {...field}
                         label="Payment Mode"
                         required
-                        sx={{ backgroundColor: '#f5f5f5', borderRadius: '8px', color: '#363535' }}
+                        sx={{ backgroundColor: '#8a8988', borderRadius: '8px', color: '#fafafa' }}
                       >
                         <MenuItem value="">
                           <em>Select</em>
@@ -234,12 +234,12 @@ const DisburseLoan = ({ disburse }) => {
                   render={({ field, fieldState }) => (
 
                     <FormControl fullWidth variant="outlined">
-                      <InputLabel sx={{ color: '#9e9e9e' }}>Channel</InputLabel>
+                      <InputLabel sx={{ color: '#fafafa' }}>Channel</InputLabel>
                       <Select
                         {...field}
                         label="Channel"
                         required
-                        sx={{ backgroundColor: '#f5f5f5', borderRadius: '8px', color: '#363535' }}
+                        sx={{ backgroundColor: '#8a8988', borderRadius: '8px', color: '#fafafa' }}
                       >
                         <MenuItem value="">
                           <em>Select</em>
@@ -279,17 +279,17 @@ const DisburseLoan = ({ disburse }) => {
                         )}
 
                         sx={{
-                          backgroundColor: '#f5f5f5',
+                          backgroundColor: '#8a8988',
                           borderRadius: '8px',
                           '& .MuiOutlinedInput-input': {
-                            color: '#363535', // Input text color
+                            color: '#fafafa', // Input text color
                           },
                           '& .MuiInputBase-input::placeholder': {
-                            color: '#5a5a5a', // Placeholder color
+                            color: '#fafafa', // Placeholder color
                             opacity: 1, // Ensures placeholder color is not transparent
                           },
                           '& .MuiInputLabel-root': {
-                            color: '#9e9e9e', // Label color
+                            color: '#fafafa', // Label color
                           },
                           '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
                             borderColor: '#ccc', // Border color
@@ -322,14 +322,14 @@ const DisburseLoan = ({ disburse }) => {
                       error={!!fieldState?.error}
                       helperText={fieldState?.error ? fieldState?.error?.message : ''}
                       sx={{
-                        backgroundColor: '#f5f5f5',
+                        backgroundColor: '#8a8988',
                         borderRadius: '8px',
-                        color: '#5a5a5a',
+                        color: '#fafafa',
                         '& .MuiInputBase-input::placeholder': {
-                          color: '#363535', // Placeholder color
+                          color: '#fafafa', // Placeholder color
                         },
                         '& .MuiInputLabel-root': {
-                          color: '#9e9e9e', // Label color
+                          color: '#fafafa', // Label color
                         },
                         '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
                           borderColor: '#ccc', // Border color
@@ -354,23 +354,28 @@ const DisburseLoan = ({ disburse }) => {
 
               <Button
                 type='submit'
-                variant="contained"
                 color="primary"
+                disabled={isLoading}
                 sx={{
-                  marginTop: '20px',
-                  width: '100%',
-                  backgroundColor: '#3f51b5', // Custom button color
-                  '&:hover': {
-                    backgroundColor: '#1e88e5', // Hover effect
+                  backgroundColor: isLoading ? "#ccc" : "#1F2A40",
+                  color: isLoading ? "#666" : "white",
+                  cursor: isLoading ? "not-allowed" : "pointer",
+                  "&:hover": {
+                    backgroundColor: isLoading ? "#ccc" : "#3F4E64",
                   },
                 }}
               >
-                Disburse
+                {isLoading ? <CircularProgress size={20} color="inherit" /> : "Disburse"}
               </Button>
             </Box>
           )}
           {/* Submit button */}
         </>}
+      {isError && (
+        <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+          {error?.data?.message}
+        </Alert>
+      )}
 
       {
         !applicationProfile.isRejected &&
