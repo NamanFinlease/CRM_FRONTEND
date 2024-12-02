@@ -10,7 +10,9 @@ const EditCam = ({ camData, setIsEditing }) => {
     const { id } = useParams();
 
     const [formData, setFormData] = useState(camData)
-    const [errorMessage, setErrorMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState({
+        recommendedLoanError:null
+    })
 
 
 
@@ -46,6 +48,19 @@ const EditCam = ({ camData, setIsEditing }) => {
 
     }
 
+    const validateSanctionAmount = (loan) => {
+        if (loan > 100000) {
+            setErrorMessage((prev) => ({
+                ...prev,
+                recommendedLoanError: "Amount mustn't be greater than 100000",
+            }));
+            return false;
+        } else {
+            setErrorMessage((prev) => ({ ...prev, recommendedLoanError: null }));
+            return true;
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         // Update form data with the new value
@@ -63,6 +78,7 @@ const EditCam = ({ camData, setIsEditing }) => {
             // Handle loan recommendation logic
             if (name === 'loanRecommended' || name === 'adminFeePercentage') {
                 const recommendedLoan = Number(updatedFormData?.loanRecommended);
+                if(!validateSanctionAmount(recommendedLoan)) return prevFormData
                 const finalsalaryToIncomeRatioPercentage = prevFormData.actualNetSalary
                     ? (recommendedLoan / prevFormData.actualNetSalary) * 100
                     : 0;
@@ -229,16 +245,6 @@ const EditCam = ({ camData, setIsEditing }) => {
                     // Makes the field read-only
                     />
                 </div>
-                {/* <div style={{ flex: '1 1 46%' }}> */}
-                {/* <TextField
-          label="Loan No"
-          name="loanNo"
-          fullWidth
-          value={formData.loanNo}
-          onChange={handleChange}
-          disabled
-        /> */}
-                {/* </div> */}
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
                         label="Salary Date 1"
@@ -481,15 +487,21 @@ const EditCam = ({ camData, setIsEditing }) => {
                     />
                 </div>
                 <div style={{ flex: '1 1 46%' }}>
-                    <TextField
-                        label="Loan Recommended"
-                        name="loanRecommended"
-                        type="number"
-                        fullWidth
-                        value={formData.loanRecommended}
-                        onChange={handleChange}
-                    />
-                </div>
+    <TextField
+        label="Loan Recommended"
+        name="loanRecommended"
+        type="number"
+        fullWidth
+        value={formData.loanRecommended}
+        onChange={handleChange}
+    />
+    {errorMessage.recommendedLoanError && (
+        <p style={{ color: 'red', fontSize: '12px', margin: '4px 0' }}>
+            {errorMessage.recommendedLoanError}
+        </p>
+    )}
+</div>
+
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
                         label="Final salary To Income Ratio"

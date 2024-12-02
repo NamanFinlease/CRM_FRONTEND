@@ -41,10 +41,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     const [remarks, setRemarks] = useState('');
 
     // Application Action component API-----------
-    const [holdApplication, { data: holdApplicationData, isSuccess: holdApplicationSuccess, isError: isApplicationHoldError, error: applicationHoldError }] = useHoldApplicationMutation();
-    const [unholdApplication, { data: unholdApplicationData, isSuccess: unholdApplicationSuccess, isError: isApplicationUnHoldError, error: unHoldApplicationError }] = useUnholdApplicationMutation();
-    const [recommendApplication, { data: recommendApplicationData, isSuccess: recommendApplicationSuccess, isError: isApplicationRecommendError, error: recommendApplicationError }] = useRecommendApplicationMutation();
-    const [rejectApplication, { data: rejectApplicationData, isSuccess: rejectApplicationSuccess, isError: isApplicationRejectError, error: rejectApplicationError }] = useRejectApplicationMutation();
+    const [holdApplication, { data: holdApplicationData, isLoading: holdApplicationLoading, isSuccess: holdApplicationSuccess, isError: isApplicationHoldError, error: applicationHoldError }] = useHoldApplicationMutation();
+    const [unholdApplication, { data: unholdApplicationData, isLoading: unholdApplicationLoading, isSuccess: unholdApplicationSuccess, isError: isApplicationUnHoldError, error: unHoldApplicationError }] = useUnholdApplicationMutation();
+    const [recommendApplication, { data: recommendApplicationData, isLoading: recommendApplicationLoading, isSuccess: recommendApplicationSuccess, isError: isApplicationRecommendError, error: recommendApplicationError }] = useRecommendApplicationMutation();
+    const [rejectApplication, { data: rejectApplicationData, isLoading: rejectApplicationLoading, isSuccess: rejectApplicationSuccess, isError: isApplicationRejectError, error: rejectApplicationError }] = useRejectApplicationMutation();
 
     // Disbursal Action component API-----------
     const [holdDisbursal, { data: holdDisbursalData, isSuccess: IsholdDisbursalSuccess, isError: isDisbursalHoldError, error: disbursalHoldError }] = useHoldDisbursalMutation();
@@ -53,10 +53,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     const [rejectDisbursal, { data: rejectDisbursalData, isSuccess: rejectDisbursalSuccess, isError: isRejectDisbursalError, error: rejectDisbursalError }] = useRejectDisbursalMutation();
 
     // Lead Action component API ----------------------
-    const [holdLead, { data: holdLeadData, isSuccess: holdLeadSuccess, isError: isHoldError, error: leadHoldError }] = useHoldLeadMutation();
-    const [unholdLead, { data: unholdLeadData, isSuccess: unholdLeadSuccess, isError: isUnHoldError, error: unHoldleadError }] = useUnholdLeadMutation();
-    const [recommendLead, { data: recommendLeadData, isSuccess: recommendLeadSuccess, isError: isRecommendLeadError, error: recommendLeadError }] = useRecommendLeadMutation();
-    const [rejectLead, { data: rejectLeadData, isSuccess: rejectLeadSuccess, isError: isRejectError, error: rejectLeadError }] = useRejectLeadMutation();
+    const [holdLead, { data: holdLeadData, isLoading: holdLeadLoading, isSuccess: holdLeadSuccess, isError: isHoldError, error: leadHoldError }] = useHoldLeadMutation();
+    const [unholdLead, { data: unholdLeadData, isLoading: unholdLeadLoading, isSuccess: unholdLeadSuccess, isError: isUnHoldError, error: unHoldleadError }] = useUnholdLeadMutation();
+    const [recommendLead, { data: recommendLeadData, isLoading: recommendLeadloading, isSuccess: recommendLeadSuccess, isError: isRecommendLeadError, error: recommendLeadError }] = useRecommendLeadMutation();
+    const [rejectLead, { data: rejectLeadData, isLoading: rejectLeadLoading, isSuccess: rejectLeadSuccess, isError: isRejectError, error: rejectLeadError }] = useRejectLeadMutation();
     const [sendBack, { data: sendBackData, isSuccess: SendBackSuccess, isError: isSendBackError, error: sendBackError }] = useSendBackMutation()
 
     // sanction Action mutation -------
@@ -91,7 +91,6 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     const handleReasonChange = (event) => {
         const reason = event.target.value;
         setSelectedReason(reason);
-
         setRemarks(reason); // Clear remarks if 'Other' is not selected
 
     };
@@ -100,6 +99,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
         // Submit logic for hold/reject based on actionType
         if (actionType === 'hold') {
             if (activeRole === "screener") {
+                console.log('screener submit')
 
                 holdLead({ id, reason: remarks })
             } else if (activeRole === "creditManager") {
@@ -148,9 +148,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
         }
 
         // Reset state after submission
-        setActionType('');
-        setSelectedReason('');
-        setRemarks('');
+       
     };
 
     const handlePreview = () => {
@@ -200,6 +198,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             });
             navigate("/lead-process")
         }
+        setActionType('');
+        setSelectedReason('');
+        setRemarks('');
 
     }, [holdLeadData, holdDisbursalData, unholdLeadData, rejectLeadData, recommendLeadData])
     useEffect(() => {
@@ -224,6 +225,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             });
             navigate("/disbursal-process")
         }
+        setActionType('');
+        setSelectedReason('');
+        setRemarks('');
 
 
     }, [sendBackData, sanctionSendBackData, disbursalSendBackSuccess, disbursalSendBackData])
@@ -263,6 +267,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             });
             navigate("/pending-sanctions")
         }
+        setActionType('');
+        setSelectedReason('');
+        setRemarks('');
 
     }, [holdApplicationData, unholdApplicationData, rejectApplicationData, recommendApplicationData, sanctionRejectData])
 
@@ -281,6 +288,9 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             });
             navigate("/rejected-disbursals")
         }
+        setActionType('');
+        setSelectedReason('');
+        setRemarks('');
 
     }, [unholdDisbursalData, unholdDisbursalSuccess])
 
@@ -315,11 +325,11 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                             color="success"
                             onClick={() => handlePreview()}
                             sx={{
-                                backgroundColor: previewLoading ? "#ccc" : "#1F2A40",
+                                backgroundColor: previewLoading ? "#ccc" : "#04c93f",
                                 color: previewLoading ? "#666" : "white",
                                 cursor: previewLoading ? "not-allowed" : "pointer",
                                 "&:hover": {
-                                    backgroundColor: previewLoading ? "#ccc" : "#3F4E64",
+                                    backgroundColor: previewLoading ? "#ccc" : "#8bf7ab",
                                 },
                             }}
                         >
@@ -331,7 +341,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     <>
                                         {(activeRole === "disbursalManager") ?
                                             <Button
-                                                variant="contained"
+                                                // variant="contained"
                                                 color="success"
                                                 onClick={() => handleActionClick('recommend')}
                                             >
@@ -339,11 +349,19 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             </Button>
                                             :
                                             <Button
-                                                variant="contained"
+                                                // variant="contained"
                                                 color="success"
                                                 onClick={() => handleApprove('')}
+                                                sx={{
+                                                    backgroundColor: (recommendApplicationLoading || recommendLeadloading) ? "#ccc" : "#04c93f",
+                                                    color: (recommendApplicationLoading || recommendLeadloading) ? "#666" : "white",
+                                                    cursor: (recommendApplicationLoading || recommendLeadloading) ? "not-allowed" : "pointer",
+                                                    "&:hover": {
+                                                        backgroundColor: (recommendApplicationLoading || recommendLeadloading) ? "#ccc" : "#8bf7ab",
+                                                    },
+                                                }}
                                             >
-                                                Forward
+                                                {(recommendApplicationLoading || recommendLeadloading) ? <CircularProgress size={20} color="inherit" /> : "Forward"}
                                             </Button>}
                                     </>
                                 }
@@ -351,6 +369,11 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     variant="contained"
                                     color="warning"
                                     onClick={() => handleActionClick(isHold ? "unhold" : 'hold')}
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: isHold ? '#ffcccb' : '#ffc107', // Set hover colors based on `isHold`
+                                        },
+                                    }}
                                 >
                                     {isHold ? "Unhold" : "Hold"}
                                 </Button>
@@ -360,10 +383,15 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                             variant="contained"
                             color="error"
                             onClick={() => handleActionClick('reject')}
+                            sx={{
+                                '&:hover': {
+                                    backgroundColor: '#f7adab', // Set hover colors based on `isHold`
+                                },
+                            }}
                         >
                             Reject
                         </Button>
-                        {(activeRole !== "screener" && activeRole !== "disbursalManager") &&
+                        {(activeRole !== "screener" && activeRole !== "disbursalManager" && !isHold) &&
                             <Button
                                 variant="contained"
                                 color="secondary"
@@ -381,7 +409,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         sx={{
                             marginTop: 3,
                             padding: 4,
-                            backgroundColor: '#f9f9f9', // Light background for the entire form
+                            backgroundColor: '#a3a0a0', // Light background for the entire form
                             borderRadius: 2,
                             boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
                         }}
@@ -399,15 +427,15 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                         sx={{
                                             borderRadius: 1,
                                             color: '#000',              // Ensure text is black or dark
-                                            backgroundColor: '#f0f0f0', // Light background for better contrast
+                                            backgroundColor: '#bfbdbd', // Light background for better contrast
                                             '& .MuiOutlinedInput-notchedOutline': { borderColor: '#c4c4c4' }, // Border color
                                             '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#1976d2' }, // Border on hover
                                             '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#1976d2' }, // Border on focus
                                         }}
                                     >
-                                        <MenuItem value="" disabled>
+                                        {/* <MenuItem value="" disabled>
                                             Select a reason
-                                        </MenuItem>
+                                        </MenuItem> */}
                                         {reasonList && reasonList.length > 0 && reasonList.map((reason, index) => (
                                             <MenuItem key={index} value={reason.label}>
                                                 {reason.label}
@@ -498,16 +526,16 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                 color="primary"
                                 onClick={handleSubmit}
                                 sx={{
-                                    backgroundColor: (sanctionSendBackLoading || disbursalSendBackLoading) ? "#95bdf0" : "#2a85f5",
-                                    color: (sanctionSendBackLoading || disbursalSendBackLoading) ? "#666" : "white",
-                                    cursor: (sanctionSendBackLoading || disbursalSendBackLoading) ? "not-allowed" : "pointer",
+                                    backgroundColor: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#95bdf0" : "#2a85f5",
+                                    color: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#666" : "white",
+                                    cursor: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "not-allowed" : "pointer",
                                     "&:hover": {
-                                      backgroundColor: (sanctionSendBackLoading || disbursalSendBackLoading) ? "#bff2d9" : "#95bdf0",
-                                      color:"#fafbfc" ,
+                                        backgroundColor: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#95bdf0" : "#95bdf0",
+                                        color: "#fafbfc",
                                     },
-                                  }}
+                                }}
                             >
-                                {(sanctionSendBackLoading || disbursalSendBackLoading) ? <CircularProgress size={20} color="inherit" /> : "Submit"}
+                                {(sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? <CircularProgress size={20} color="inherit" /> : "Submit"}
                             </Button>
                         </Box>
                     </Box>

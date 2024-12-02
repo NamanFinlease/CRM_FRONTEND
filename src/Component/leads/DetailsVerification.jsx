@@ -12,7 +12,7 @@ import useAuthStore from '../store/authStore';
 
 const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified, isPanVerified }) => {
   const { id } = useParams()
-  const {setCodeVerifier,setFwdp} = useAuthStore()
+  const {setCodeVerifier,setFwdp,activeRole} = useAuthStore()
   const navigate = useNavigate()
   const [otp, setOtp] = useState(false)
   const [otpAadhaar, setOtpAadhaar] = useState(false)
@@ -146,7 +146,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                   </span>
                 </Typography>
 
-                <Button
+                {(activeRole === "screener" && !isAadhaarVerified ) && <Button
                   // variant="contained" 
                   onClick={handleAadhaarVerification}
                   sx={{
@@ -159,8 +159,8 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                 }}
                   disabled={isAadhaarVerified}
                 >
-                  {aadhaarRes.isLoading ? <CircularProgress /> : `Verify Aadhaar`}
-                </Button>
+                  {aadhaarRes.isLoading ? <CircularProgress size={20} color="inherit" /> : `Verify Aadhaar`}
+                </Button>}
               </Box>
               {/* Pan Verification Section */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -172,18 +172,21 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                 </Typography>
 
 
-                <Button
-                  variant="contained"
+                {(activeRole === "screener" && !isPanVerified) && <Button
+                  // variant="contained"
                   onClick={handlePanVerification}
                   sx={{
-                    backgroundColor: isPanVerified ? '#ccc' : '#4caf50',
-                    '&:hover': { backgroundColor: isPanVerified ? '#ccc' : '#388e3c' },
-                    transition: 'background-color 0.3s'
-                  }}
-                  disabled={isPanVerified} // Disable button if already verified
+                    backgroundColor: panRes?.isLoading ? "#ccc" : "#1F2A40",
+                    color: panRes?.isLoading ? "#666" : "white",
+                    cursor: panRes?.isLoading ? "not-allowed" : "pointer",
+                    "&:hover": {
+                        backgroundColor: panRes?.isLoading ? "#ccc" : "#3F4E64",
+                    },
+                }}
+                  disabled={panRes?.isLoading}
                 >
-                  Verify Pan
-                </Button>
+                  {panRes?.isLoading ? <CircularProgress size={20} color="inherit" /> : `Verify Pan`}
+                </Button>}
               </Box>
               {(panRes.isError || aadhaarRes.isError || isEmailError) && <Typography variant="body1">
                 <span style={{ color: 'red' }}>
