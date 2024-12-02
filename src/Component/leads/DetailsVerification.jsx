@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Swal from 'sweetalert2';
 import { useGetEmailOtpMutation, useLazyAadhaarOtpQuery, useLazyGetPanDetailsQuery } from '../../Service/Query';
@@ -8,9 +8,11 @@ import EmailVerification from './OtpVerification';
 import AadhaarOtpVerification from './AadhaarOtpVerification';
 import PanCompare from './PanCompare';
 import Loader from '../loader';
+import useAuthStore from '../store/authStore';
 
 const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified, isPanVerified }) => {
   const { id } = useParams()
+  const {setCodeVerifier,setFwdp} = useAuthStore()
   const navigate = useNavigate()
   const [otp, setOtp] = useState(false)
   const [otpAadhaar, setOtpAadhaar] = useState(false)
@@ -56,8 +58,10 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
   }, [emailOtp, emailOtpSuccess])
   useEffect(() => {
     if (aadhaarRes?.isSuccess && aadhaarRes) {
+      setCodeVerifier(aadhaarRes?.data?.codeVerifier)
+      setFwdp(aadhaarRes?.data?.fwdp)
       // setOtpAadhaar(true)
-      navigate(`/aadhaar-verification/${aadhaarRes?.data?.trx_id}`)
+      navigate(`/aadhaar-verification/${aadhaarRes?.data?.transactionId}`)
     }
   }, [aadhaarRes.data, aadhaarRes?.isSuccess])
 
@@ -69,7 +73,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
   return (
     <>
       {otp && <EmailVerification open={otp} setOpen={setOtp} />}
-      {<PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data?.result} />}
+      {<PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
       <Box sx={{ maxWidth: 700, margin: '0 auto', mt: 4 }}>
         {/* Single Accordion for Mobile and Email Verification */}
         <Accordion sx={{ borderRadius: '15px', boxShadow: 3 }}>
@@ -134,7 +138,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                 </Button>
               </Box> */}
               {/* Aadhaar Verification Section */}
-              {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="body1" sx={{ color: '#898b8c' }}>
                   Adhaar:
                   <span style={{ color: isAadhaarVerified ? 'green' : 'red' }}>
@@ -143,18 +147,21 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                 </Typography>
 
                 <Button
-                  variant="contained"
+                  // variant="contained" 
                   onClick={handleAadhaarVerification}
                   sx={{
-                    backgroundColor: isAadhaarVerified ? '#ccc' : '#4caf50',
-                    '&:hover': { backgroundColor: isAadhaarVerified ? '#ccc' : '#388e3c' },
-                    transition: 'background-color 0.3s'
-                  }}
+                    backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#1F2A40",
+                    color: aadhaarRes.isLoading ? "#666" : "white",
+                    cursor: aadhaarRes.isLoading ? "not-allowed" : "pointer",
+                    "&:hover": {
+                        backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#3F4E64",
+                    },
+                }}
                   disabled={isAadhaarVerified}
                 >
-                  {aadhaarRes.isLoading ? <Loader /> : `Verify Aadhaar`}
+                  {aadhaarRes.isLoading ? <CircularProgress /> : `Verify Aadhaar`}
                 </Button>
-              </Box> */}
+              </Box>
               {/* Pan Verification Section */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="body1" sx={{ color: '#898b8c' }}>

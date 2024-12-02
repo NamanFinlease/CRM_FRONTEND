@@ -127,10 +127,10 @@ export const leadsApi = createApi({
       invalidatesTags: ["leadProfile"],
     }),
     verifyAadhaarOtp: builder.mutation({
-      query: ({ id, trx_id, otp }) => ({
-        url: `verify/aadhaar-otp/?id=${id}&trx_id=${trx_id}&role=${role()}`,
+      query: ({ id, transactionId, otp,codeVerifier,fwdp }) => ({
+        url: `verify/aadhaar-otp/?id=${id}&role=${role()}`,
         method: "POST",
-        body: { otp },
+        body: { otp,codeVerifier,fwdp,transactionId },
       }),
       invalidatesTags: ["leadProfile"],
     }),

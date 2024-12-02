@@ -5,9 +5,11 @@ import Swal from 'sweetalert2';
 import { useLazyAadhaarOtpQuery, useVerifyAadhaarOtpMutation } from '../../Service/Query';
 import useStore from '../../Store';
 import AadhaarCompare from './AadhaarCompare';
+import useAuthStore from '../store/authStore';
 
 const AadhaarOtpVerification = () => {
   const [aadhaarModal, setAadhaarModal] = useState(false)
+  const { setCodeVerifier,setFwdp,codeVerifier,fwdp} = useAuthStore()
 
   const { id } = useParams();
   const navigate = useNavigate()
@@ -62,13 +64,15 @@ const AadhaarOtpVerification = () => {
   // Handle form submit
   const handleSubmit = () => {
     const data = otp.join('');
-    verifyAadhaarOtp({id:lead?._id,trx_id:id,otp:data});
+    verifyAadhaarOtp({id:lead?._id,transactionId:id,otp:data,codeVerifier,fwdp});
   };
 
   useEffect(() => {
     if (isSuccess) {
       setAadhaarModal(true)
       setAadhaarDetails(data?.details)
+      setCodeVerifier(null)
+      setFwdp(null)
       
     }
   }, [isSuccess, data]);
@@ -79,11 +83,12 @@ const AadhaarOtpVerification = () => {
         icon: 'success',
       });
       setOtp(Array(6).fill(''))
-      navigate(`/aadhaar-verification/${aadhaarRes?.data?.trx_id}`)
+      navigate(`/aadhaar-verification/${aadhaarRes?.data?.transactionId}`)
       setTimeLeft(30); 
       
     }
   }, [aadhaarRes.isSuccess, aadhaarRes.data]);
+  console.log('edit',lead)
 
 
   return (

@@ -22,6 +22,7 @@ import { useVerifyPanMutation } from "../../Service/Query";
 import { compareDates, formatDate } from "../../utils/helper";
 
 const PanCompare = ({ open, setOpen, panDetails }) => {
+  console.log('pan details',panDetails)
 
   const { lead } = useStore()
 
@@ -60,8 +61,8 @@ const PanCompare = ({ open, setOpen, panDetails }) => {
 
   // Fields to be compared
   const comparisonFields = [
-    { label: "Name", leadValue: `${lead?.fName}${lead?.mName ? ` ${lead?.mName}` : ""} ${lead?.lName}`, panValue: panDetails?.FULLNAME },
-    { label: "DOB", leadValue:lead?.dob && formatDate(lead?.dob), panValue: panDetails?.DOB  },
+    { label: "Name", leadValue: `${lead?.fName}${lead?.mName ? ` ${lead?.mName}` : ""} ${lead?.lName}`, panValue: panDetails?.fullname },
+    { label: "DOB", leadValue:lead?.dob && formatDate(lead?.dob), panValue: panDetails?.dob  },
   ];
   const handleClose = () => {
     setOpen(false);
