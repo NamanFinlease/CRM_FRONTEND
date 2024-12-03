@@ -1,95 +1,171 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './LoginPageCss.css';
-import useStore from '../Store';
-import { useGetEmployeesQuery, useLoginUserMutation } from '../Service/Query';
+import { TextField, Button, Typography, Box, IconButton, CircularProgress, Alert } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Swal from 'sweetalert2';
 import useAuthStore from './store/authStore';
+import { useLoginUserMutation } from '../Service/Query';
 
 const LoginPage = () => {
-  // const setLogin = useStore((state) => state.setLogin);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loginUser, { data: loginData, isSuccess: loginSuccess, isLoading: loginLoading, isError: loginError, error }] = useLoginUserMutation()
+  const [formError,setFormError] = useState(null)
+  const [showPass, setShowPass] = useState(false);
+  const [loginUser, { data: loginData, isSuccess: loginSuccess, isLoading, isError, error }] = useLoginUserMutation();
   const navigate = useNavigate();
-  const { isLoggedIn, setLogin,empInfo, setEmpInfo,setActiveRole } = useAuthStore()
+  const { isLoggedIn, setLogin, empInfo, setEmpInfo, setActiveRole } = useAuthStore();
 
   if (isLoggedIn && empInfo) {
-    // Redirect to dashboard or homepage if the user is already logged in
     return <Navigate to="/" />;
   }
 
+  const handleShowPass = () => {
+    setShowPass(!showPass);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setFormError(null)
     if (!email || !password) {
-      setError('Please enter both email and password');
+      setFormError('Please enter both email and password');
       return;
     }
 
     try {
-      await loginUser({ email, password })
-
+      await loginUser({ email, password });
     } catch (error) {
       console.error('Error during login:', error);
-      setError('Something went wrong. Please try again later.');
+      setFormError('Something went wrong. Please try again later.');
     }
   };
 
   useEffect(() => {
     if (loginSuccess) {
-      setLogin(true)
-      setEmpInfo(loginData)
-      setActiveRole(loginData?.empRole[0])
-
-      navigate('/')
-
+      setLogin(true);
+      setEmpInfo(loginData);
+      setActiveRole(loginData?.empRole[0]);
+      navigate('/');
     }
-
-
-  }, [loginSuccess, loginData])
-
-
+  }, [loginSuccess, loginData]);
 
   const handleForgotPassword = () => {
     navigate('/forgot-password');
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2 className='loginH2'>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#2c2c2c',
+      }}
+    >
+      <Box
+        sx={{
+          width: 400,
+          padding: 4,
+          backgroundColor: '#424242',
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
+        <Typography variant="h4" gutterBottom color="white" align="center">
+          Login
+        </Typography>
+        <form noValidate onSubmit={handleSubmit}>
+          <Box sx={{ mb: 2 }}>
+            <TextField
+              fullWidth
+              label="Email"
               type="email"
-              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder='Email'
+              InputLabelProps={{ style: { color: '#fff' }, shrink: true, }}
+              InputProps={{ style: { color: '#fff' } }}
+              sx={{
+                '& input:-webkit-autofill': {
+                  WebkitBoxShadow: '0 0 0 100px #424242 inset',
+                  WebkitTextFillColor: '#fff',
+                  transition: 'background-color 5000s ease-in-out 0s',
+                },
+              }}
+
             />
-          </div>
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
+          </Box>
+          <Box sx={{ mb: 2, position: 'relative' }}>
+            <TextField
+              fullWidth
+              label="Password"
+              type={showPass ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder='Password'
+              InputLabelProps={{ style: { color: '#fff' }, shrink: true, }}
+              sx={{
+                '& input:-webkit-autofill': {
+                  WebkitBoxShadow: '0 0 0 100px #424242 inset',
+                  WebkitTextFillColor: '#fff',
+                  transition: 'background-color 5000s ease-in-out 0s',
+                },
+              }}
+              InputProps={{
+                style: { color: '#fff' },
+                endAdornment: (
+                  <IconButton
+                    edge="end"
+                    onClick={handleShowPass}
+                    sx={{ color: '#fff' }}
+                  >
+                    {showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                ),
+              }}
             />
-          </div>
-          <button type="submit" className="btn" >Login</button>
+          </Box>
+         
+          <Button
+            type="submit"
+            fullWidth
+            color="primary"
+            disabled={isLoading}
+            sx={{
+              backgroundColor: (isLoading) ? "#f2c491" : "#f29d41",
+              color: (isLoading) ? "#666" : "white",
+              cursor: (isLoading) ? "not-allowed" : "pointer",
+              "&:hover": {
+                backgroundColor: "#f2c491",
+              },
+            }}
+          >
+            {(isLoading) ? <CircularProgress size={20} color="inherit" /> : "Login"}
+          </Button>
+
         </form>
-        {error && <p className="error">{error?.data?.message}</p>}
-        <p className="forgot-password" onClick={handleForgotPassword}>Forgot Password?</p>
-      </div>
-    </div>
+        {isError &&
+            <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+              {error?.data?.message}
+            </Alert>
+          }
+        {formError && <p className="error" style={{color:'#fc4c6f'}}>{formError}</p>}
+        <Typography
+          onClick={handleForgotPassword}
+          sx={{
+            color: '#fff',
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            textAlign: 'center',
+            mt: 1,
+          }}
+        >
+
+          Forgot Password?
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 

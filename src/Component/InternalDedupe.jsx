@@ -112,7 +112,7 @@ const InternalDedupe = ({id}) => {
                     aria-controls="internal-dedupe-content"
                     id="internal-dedupe-header"
                     sx={{
-                        backgroundColor: '#0366fc',
+                        backgroundColor: '#424242',
                         color: '#fff',
                         fontWeight: 'bold',
                         borderRadius: '5px',

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import {
     Accordion,
@@ -56,7 +55,7 @@ const ApplicationLogHistory = ({ id }) => {
                     aria-controls="application-log-content"
                     id="application-log-header"
                     sx={{
-                        backgroundColor: '#0366fc',
+                        backgroundColor: '#424242',
                         color: '#fff',
                         fontWeight: 'bold',
                         borderRadius: '5px',
