@@ -49,7 +49,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     // Disbursal Action component API-----------
     const [holdDisbursal, { data: holdDisbursalData, isSuccess: IsholdDisbursalSuccess, isError: isDisbursalHoldError, error: disbursalHoldError }] = useHoldDisbursalMutation();
     const [unholdDisbursal, { data: unholdDisbursalData, isSuccess: unholdDisbursalSuccess, isError: isUnholdDisbursalError, error: unHoldDisbursalError }] = useUnholdDisbursalMutation();
-    const [recommendLoan, { data: RecommendLoan, isSuccess: isLoanRecommend, isError: isRecommendError, error: recommendLoanError }] = useRecommendLoanMutation()
+    const [recommendLoan, { data: recommendLoanData, isSuccess: isLoanRecommendSuccess,isLoading:recommendLoanLoading, isError: isRecommendError, error: recommendLoanError }] = useRecommendLoanMutation()
     const [rejectDisbursal, { data: rejectDisbursalData, isSuccess: rejectDisbursalSuccess, isError: isRejectDisbursalError, error: rejectDisbursalError }] = useRejectDisbursalMutation();
 
     // Lead Action component API ----------------------
@@ -148,7 +148,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
         }
 
         // Reset state after submission
-       
+
     };
 
     const handlePreview = () => {
@@ -225,12 +225,19 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             });
             navigate("/disbursal-process")
         }
+        if (recommendLoanData && isLoanRecommendSuccess) {
+            Swal.fire({
+                text: "Lead recommended for disbursal!",
+                icon: "success"
+            });
+            navigate("/disbursal-process")
+        }
         setActionType('');
         setSelectedReason('');
         setRemarks('');
 
 
-    }, [sendBackData, sanctionSendBackData, disbursalSendBackSuccess, disbursalSendBackData])
+    }, [sendBackData, sanctionSendBackData, disbursalSendBackSuccess, disbursalSendBackData, recommendLoanData, isLoanRecommendSuccess])
     useEffect(() => {
         if (holdApplicationSuccess && holdApplicationData) {
             Swal.fire({
@@ -281,18 +288,21 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
             });
             navigate("/")
         }
-        if (rejectApplicationSuccess && rejectApplicationData) {
+        if (rejectDisbursalSuccess && rejectDisbursalData) {
             Swal.fire({
                 text: "Disbursal Rejected!",
                 icon: "success"
             });
             navigate("/rejected-disbursals")
         }
+
         setActionType('');
         setSelectedReason('');
         setRemarks('');
 
-    }, [unholdDisbursalData, unholdDisbursalSuccess])
+    }, [unholdDisbursalData, unholdDisbursalSuccess, rejectApplicationSuccess, rejectDisbursalData])
+
+    const isReadyForSubmit = sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading || recommendLoanLoading
 
 
 
@@ -309,10 +319,12 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                         {recommendApplicationError?.data?.message} {applicationHoldError?.data?.message} {rejectApplicationError?.data?.message} {unHoldApplicationError?.data?.message}
                     </Alert>
                 }
-                {(isSanctionSendBackError || isdisbursalSendBackError) &&
+                {(isSanctionSendBackError || isdisbursalSendBackError || isRecommendError || isRejectDisbursalError) &&
                     <Alert severity="error" style={{ marginTop: "10px" }}>
                         {sanctionSendBackError?.data?.message}
                         {disbursalSendBackError?.data?.message}
+                        {recommendLoanError?.data?.message}
+                        {rejectDisbursalError?.data?.message}
                     </Alert>
                 }
 
@@ -341,9 +353,17 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                     <>
                                         {(activeRole === "disbursalManager") ?
                                             <Button
-                                                // variant="contained"
+                                                variant="contained"
                                                 color="success"
                                                 onClick={() => handleActionClick('recommend')}
+                                                sx={{
+                                                    backgroundColor: "#04c93f",
+                                                    color:  "white",
+                                                    cursor: "pointer",
+                                                    "&:hover": {
+                                                        backgroundColor:  "#8bf7ab",
+                                                    },
+                                                }}
                                             >
                                                 Recommend
                                             </Button>
@@ -352,6 +372,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                                 // variant="contained"
                                                 color="success"
                                                 onClick={() => handleApprove('')}
+                                                disabled={recommendApplicationLoading || recommendLeadloading}
                                                 sx={{
                                                     backgroundColor: (recommendApplicationLoading || recommendLeadloading) ? "#ccc" : "#04c93f",
                                                     color: (recommendApplicationLoading || recommendLeadloading) ? "#666" : "white",
@@ -525,6 +546,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                 // variant="contained"
                                 color="primary"
                                 onClick={handleSubmit}
+                                disabled={sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading}
                                 sx={{
                                     backgroundColor: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#95bdf0" : "#2a85f5",
                                     color: (sanctionSendBackLoading || disbursalSendBackLoading || holdLeadLoading || unholdLeadLoading || holdApplicationLoading || unholdApplicationLoading || rejectApplicationLoading || rejectLeadLoading) ? "#666" : "white",
