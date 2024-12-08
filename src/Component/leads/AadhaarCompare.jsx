@@ -74,8 +74,11 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   // Function to render table rows dynamically
   useEffect(() => {
     if (isSuccess)
+      setOpen(false)
       navigate(`/lead-profile/${lead._id}`)
-  }, [isSuccess, data])
+  }, [isSuccess])
+
+
   const renderRow = ({ label, leadValue, aadhaarValue }) => {
     const result = compareValues(label, leadValue, aadhaarValue);
     const textColor = getTextColor(result);

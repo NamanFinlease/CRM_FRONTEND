@@ -127,6 +127,7 @@ const LeadProfile = () => {
                                         isMobileVerified={leadData?.isMobileVerified}
                                         isEmailVerified={leadData?.isEmailVerified}
                                         isAadhaarVerified={leadData?.isAadhaarVerified}
+                                        isAadhaarDetailsSaved={leadData?.isAadhaarDetailsSaved}
                                         isPanVerified={leadData?.isPanVerified}
                                     />
                                 }

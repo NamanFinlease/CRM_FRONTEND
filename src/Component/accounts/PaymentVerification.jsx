@@ -102,6 +102,7 @@ function PaymentVerification() {
                                 isMobileVerified={lead?.isMobileVerified}
                                 isEmailVerified={lead?.isEmailVerified}
                                 isAadhaarVerified={lead?.isAadhaarVerified}
+                                isAadhaarDetailsSaved={lead?.isAadhaarDetailsSaved}
                                 isPanVerified={lead?.isPanVerified}
                             />
                         )}

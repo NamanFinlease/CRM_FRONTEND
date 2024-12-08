@@ -2,27 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Swal from 'sweetalert2';
-import { useGetEmailOtpMutation, useLazyAadhaarOtpQuery, useLazyGetPanDetailsQuery } from '../../Service/Query';
+import { useGetEmailOtpMutation, useLazyAadhaarOtpQuery, useLazyCheckDetailsQuery, useLazyGenerateAadhaarLinkQuery, useLazyGetPanDetailsQuery } from '../../Service/Query';
 import { useNavigate, useParams } from 'react-router-dom';
 import EmailVerification from './OtpVerification';
 import AadhaarOtpVerification from './AadhaarOtpVerification';
 import PanCompare from './PanCompare';
 import Loader from '../loader';
 import useAuthStore from '../store/authStore';
+import AadhaarCompare from './AadhaarCompare';
 
-const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified, isPanVerified }) => {
+const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified,isAadhaarDetailsSaved, isPanVerified }) => {
   const { id } = useParams()
   const {setCodeVerifier,setFwdp,activeRole} = useAuthStore()
   const navigate = useNavigate()
   const [otp, setOtp] = useState(false)
+  const [openAadhaarCompare,setOpenAadhaarCompare] = useState()
+  const [aadhaarData,setAadhaarData] = useState()
   const [otpAadhaar, setOtpAadhaar] = useState(false)
   const [panModal, setPanModal] = useState(false)
   const [otpPan, setOtpPan] = useState(false)
   const [mobileVerified, setMobileVerified] = useState(false);
 
   const [getEmailOtp, { data: emailOtp, isSuccess: emailOtpSuccess, isError: isEmailError, error: emailError }] = useGetEmailOtpMutation()
+  const [checkDetails, { data: aadhaarDetails, isSuccess: aadhaarDetailsSuccess,isLoading:aadhaarDetailsLoading, isError: isAadhaarDetailError, error: aadhaarDetailsError }] = useLazyCheckDetailsQuery()
   const [getPanDetails, panRes] = useLazyGetPanDetailsQuery()
-  const [aadhaarOtp, aadhaarRes] = useLazyAadhaarOtpQuery()
+  const [sendAadhaarLink, aadhaarRes] = useLazyGenerateAadhaarLinkQuery()
 
   const handleMobileVerification = () => {
     // Logic for mobile verification
@@ -40,8 +44,13 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
   const handlePanVerification = () => {
     getPanDetails(id)
   }
+  const handleSendAadhaarLink = () => {
+    sendAadhaarLink(id)
+  }
+
   const handleAadhaarVerification = () => {
-    aadhaarOtp(id)
+    checkDetails(id)
+
   }
 
   useEffect(() => {
@@ -58,20 +67,23 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
   }, [emailOtp, emailOtpSuccess])
   useEffect(() => {
     if (aadhaarRes?.isSuccess && aadhaarRes) {
-      setCodeVerifier(aadhaarRes?.data?.codeVerifier)
-      setFwdp(aadhaarRes?.data?.fwdp)
-      // setOtpAadhaar(true)
-      navigate(`/aadhaar-verification/${aadhaarRes?.data?.transactionId}`)
+      navigate(`/lead-process`)
     }
-  }, [aadhaarRes.data, aadhaarRes?.isSuccess])
+    if (aadhaarDetails && aadhaarDetailsSuccess) {
+      setOpenAadhaarCompare(true)
+      setAadhaarData(aadhaarDetails?.data?.details)
+    }
+  }, [aadhaarRes.data, aadhaarRes?.isSuccess,aadhaarDetails,aadhaarDetailsSuccess])
 
-  console.log('loader', aadhaarRes)
+  console.log('aadhaar data',aadhaarData)
+
 
 
 
 
   return (
     <>
+    {<AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} />}
       {otp && <EmailVerification open={otp} setOpen={setOtp} />}
       {<PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
       <Box sx={{ maxWidth: 700, margin: '0 auto', mt: 4 }}>
@@ -146,7 +158,11 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                   </span>
                 </Typography>
 
-                {(activeRole === "screener" && !isAadhaarVerified ) && <Button
+                {(activeRole === "screener" && !isAadhaarVerified ) && 
+                <>
+                {
+                  isAadhaarDetailsSaved ? 
+                <Button
                   // variant="contained" 
                   onClick={handleAadhaarVerification}
                   sx={{
@@ -160,8 +176,29 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                   disabled={isAadhaarVerified}
                 >
                   {aadhaarRes.isLoading ? <CircularProgress size={20} color="inherit" /> : `Verify Aadhaar`}
-                </Button>}
+                </Button>
+                :
+                <Button
+                  // variant="contained" 
+                  onClick={handleSendAadhaarLink}
+                  sx={{
+                    backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#1F2A40",
+                    color: aadhaarRes.isLoading ? "#666" : "white",
+                    cursor: aadhaarRes.isLoading ? "not-allowed" : "pointer",
+                    "&:hover": {
+                        backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#3F4E64",
+                    },
+                }}
+                  disabled={isAadhaarVerified}
+                >
+                  {aadhaarRes.isLoading ? <CircularProgress size={20} color="inherit" /> : `Send Link`}
+                </Button>
+                }
+                </>
+                }
               </Box>
+
+
               {/* Pan Verification Section */}
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="body1" sx={{ color: '#898b8c' }}>

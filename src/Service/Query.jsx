@@ -136,9 +136,9 @@ export const leadsApi = createApi({
     }),
     verifyAadhaar: builder.mutation({
       query: ({ id, details }) => ({
-        url: `verify/aadhaar/${id}/?role=${role()}`,
-        method: "POST",
-        body: { details },
+        url: `verify/verifyAadhaar/${id}/?role=${role()}`,
+        method: "PATCH",
+       
       }),
       invalidatesTags: ["leadProfile"],
     }),
@@ -208,6 +208,17 @@ export const leadsApi = createApi({
         query: () => `leads/totalRecordsForSupervisor/`
       }
     ),
+    // get the totalRecordsForSupervisor
+    generateAadhaarLink: builder.query(
+      {
+        query: (id) => `verify/generate-link/${id}/?role=${role()}`
+      }
+    ),
+    checkDetails: builder.query(
+      {
+        query: (id) => `verify/verifyAadhaar/${id}/?role=${role()}`
+      }
+    ),
   }),
 });
 
@@ -246,4 +257,7 @@ export const {
   useFetchAllRejectedLeadsQuery,
   useGetLeadTotalRecordsQuery,
   useGetTotalRecordsForSupervisorQuery,
+  useLazyGenerateAadhaarLinkQuery,
+  useLazyCheckDetailsQuery,
+
 } = leadsApi;

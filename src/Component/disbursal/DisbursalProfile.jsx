@@ -83,6 +83,7 @@ const DisbursalProfile = () => {
                 isMobileVerified={disbursalData?.application?.lead?.isMobileVerified}
                 isEmailVerified={disbursalData?.application?.lead?.isEmailVerified}
                 isAadhaarVerified={disbursalData?.application?.lead?.isAadhaarVerified}
+                isAadhaarDetailsSaved={disbursalData?.applicationData?.lead?.isAadhaarDetailsSaved}
                 isPanVerified={disbursalData?.application?.lead?.isPanVerified}
               />
             }

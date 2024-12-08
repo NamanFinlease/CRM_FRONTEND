@@ -102,6 +102,7 @@ const ApplicationProfile = () => {
                     isMobileVerified={applicationData?.lead?.isMobileVerified}
                     isEmailVerified={applicationData?.lead?.isEmailVerified}
                     isAadhaarVerified={applicationData?.lead?.isAadhaarVerified}
+                    isAadhaarDetailsSaved={applicationData?.lead?.isAadhaarDetailsSaved}
                     isPanVerified={applicationData?.lead?.isPanVerified}
                   />
                 }
