@@ -21,6 +21,7 @@ const AadhaarOtpVerification = () => {
 
   const [verifyAadhaarOtp, { data, isSuccess, isError, error }] = useVerifyAadhaarOtpMutation();
   const [aadhaarOtp,aadhaarRes] = useLazyAadhaarOtpQuery()
+  // console.log("lead",lead)
 
   // Handle OTP input
   const handleChange = (e, index) => {

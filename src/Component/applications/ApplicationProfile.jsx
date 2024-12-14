@@ -104,6 +104,7 @@ const ApplicationProfile = () => {
                     isAadhaarVerified={applicationData?.lead?.isAadhaarVerified}
                     isAadhaarDetailsSaved={applicationData?.lead?.isAadhaarDetailsSaved}
                     isPanVerified={applicationData?.lead?.isPanVerified}
+                    lead={applicationData?.lead}
                   />
                 }
                 {currentPage === "documents" &&

@@ -5,9 +5,7 @@ import Swal from 'sweetalert2';
 import { useGetEmailOtpMutation, useLazyAadhaarOtpQuery, useLazyCheckDetailsQuery, useLazyGenerateAadhaarLinkQuery, useLazyGetPanDetailsQuery } from '../../Service/Query';
 import { useNavigate, useParams } from 'react-router-dom';
 import EmailVerification from './OtpVerification';
-import AadhaarOtpVerification from './AadhaarOtpVerification';
 import PanCompare from './PanCompare';
-import Loader from '../loader';
 import useAuthStore from '../store/authStore';
 import AadhaarCompare from './AadhaarCompare';
 
@@ -16,7 +14,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
   const {setCodeVerifier,setFwdp,activeRole} = useAuthStore()
   const navigate = useNavigate()
   const [otp, setOtp] = useState(false)
-  const [openAadhaarCompare,setOpenAadhaarCompare] = useState()
+  const [openAadhaarCompare,setOpenAadhaarCompare] = useState(false)
   const [aadhaarData,setAadhaarData] = useState()
   const [otpAadhaar, setOtpAadhaar] = useState(false)
   const [panModal, setPanModal] = useState(false)
@@ -24,7 +22,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
   const [mobileVerified, setMobileVerified] = useState(false);
 
   const [getEmailOtp, { data: emailOtp, isSuccess: emailOtpSuccess, isError: isEmailError, error: emailError }] = useGetEmailOtpMutation()
-  const [checkDetails, { data: aadhaarDetails, isSuccess: aadhaarDetailsSuccess,isLoading:aadhaarDetailsLoading, isError: isAadhaarDetailError, error: aadhaarDetailsError }] = useLazyCheckDetailsQuery()
+  const [checkDetails, { data: aadhaarDetails, isSuccess: aadhaarDetailsSuccess,isLoading:aadhaarDetailsLoading, isError: isAadhaarDetailError, error: aadhaarDetailsError,isFetching:isAadhaarDetailFetching }] = useLazyCheckDetailsQuery()
   const [getPanDetails, panRes] = useLazyGetPanDetailsQuery()
   const [sendAadhaarLink, aadhaarRes] = useLazyGenerateAadhaarLinkQuery()
 
@@ -54,11 +52,11 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
   }
 
   useEffect(() => {
-    if (panRes?.isSuccess && panRes?.data) {
+    if (panRes?.isSuccess && panRes?.data && !panRes?.isFetching) {
       setPanModal(true)
 
     }
-  }, [panRes?.data, panRes?.isSuccess])
+  }, [panRes?.data, panRes?.isSuccess, panRes?.isFetching])
 
   useEffect(() => {
     if (emailOtpSuccess) {
@@ -66,16 +64,16 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
     }
   }, [emailOtp, emailOtpSuccess])
   useEffect(() => {
-    if (aadhaarRes?.isSuccess && aadhaarRes) {
+    if (aadhaarRes?.isSuccess && aadhaarRes?.data && aadhaarRes?.isFetching) {
       navigate(`/lead-process`)
     }
-    if (aadhaarDetails && aadhaarDetailsSuccess) {
+    if (aadhaarDetails && aadhaarDetailsSuccess && !isAadhaarDetailFetching) {
       setOpenAadhaarCompare(true)
       setAadhaarData(aadhaarDetails?.data?.details)
-    }
-  }, [aadhaarRes.data, aadhaarRes?.isSuccess,aadhaarDetails,aadhaarDetailsSuccess])
 
-  console.log('aadhaar data',aadhaarData)
+    }
+  }, [aadhaarRes,aadhaarDetails,aadhaarDetailsSuccess,isAadhaarDetailFetching])
+
 
 
 
@@ -83,8 +81,8 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
 
   return (
     <>
-    {<AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} />}
-      {otp && <EmailVerification open={otp} setOpen={setOtp} />}
+    {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} lead={lead} />}
+    {/* {otp && <EmailVerification open={otp} setOpen={setOtp} />} */}
       {<PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
       <Box sx={{ maxWidth: 700, margin: '0 auto', mt: 4 }}>
         {/* Single Accordion for Mobile and Email Verification */}
@@ -166,32 +164,32 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                   // variant="contained" 
                   onClick={handleAadhaarVerification}
                   sx={{
-                    backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#1F2A40",
-                    color: aadhaarRes.isLoading ? "#666" : "white",
-                    cursor: aadhaarRes.isLoading ? "not-allowed" : "pointer",
+                    backgroundColor: (aadhaarDetailsLoading || isAadhaarDetailFetching) ? "#ccc" : "#1F2A40",
+                    color: (aadhaarDetailsLoading || isAadhaarDetailFetching) ? "#666" : "white",
+                    cursor: (aadhaarDetailsLoading || isAadhaarDetailFetching) ? "not-allowed" : "pointer",
                     "&:hover": {
-                        backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#3F4E64",
+                        backgroundColor: (aadhaarDetailsLoading || isAadhaarDetailFetching) ? "#ccc" : "#3F4E64",
                     },
                 }}
                   disabled={isAadhaarVerified}
                 >
-                  {aadhaarRes.isLoading ? <CircularProgress size={20} color="inherit" /> : `Verify Aadhaar`}
+                  {(aadhaarDetailsLoading || isAadhaarDetailFetching) ? <CircularProgress size={20} color="inherit" /> : `Verify Aadhaar`}
                 </Button>
                 :
                 <Button
                   // variant="contained" 
                   onClick={handleSendAadhaarLink}
                   sx={{
-                    backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#1F2A40",
-                    color: aadhaarRes.isLoading ? "#666" : "white",
-                    cursor: aadhaarRes.isLoading ? "not-allowed" : "pointer",
+                    backgroundColor: (aadhaarRes.isLoading || aadhaarRes?.isFetching) ? "#ccc" : "#1F2A40",
+                    color: (aadhaarRes.isLoading || aadhaarRes?.isFetching) ? "#666" : "white",
+                    cursor: (aadhaarRes.isLoading || aadhaarRes?.isFetching) ? "not-allowed" : "pointer",
                     "&:hover": {
-                        backgroundColor: aadhaarRes.isLoading ? "#ccc" : "#3F4E64",
+                        backgroundColor: (aadhaarRes.isLoading || aadhaarRes?.isFetching) ? "#ccc" : "#3F4E64",
                     },
                 }}
                   disabled={isAadhaarVerified}
                 >
-                  {aadhaarRes.isLoading ? <CircularProgress size={20} color="inherit" /> : `Send Link`}
+                  {(aadhaarRes.isLoading || aadhaarRes?.isFetching) ? <CircularProgress size={20} color="inherit" /> : `Send Link`}
                 </Button>
                 }
                 </>
@@ -222,7 +220,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
                 }}
                   disabled={panRes?.isLoading}
                 >
-                  {panRes?.isLoading ? <CircularProgress size={20} color="inherit" /> : `Verify Pan`}
+                  {(panRes?.isLoading || panRes?.isFetching) ? <CircularProgress size={20} color="inherit" /> : `Verify Pan`}
                 </Button>}
               </Box>
               {(panRes.isError || aadhaarRes.isError || isEmailError) && <Typography variant="body1">

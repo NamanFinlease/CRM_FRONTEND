@@ -22,9 +22,8 @@ import { useVerifyAadhaarMutation } from "../../Service/Query";
 import { useNavigate } from "react-router-dom";
 import { compareDates, formatDate } from "../../utils/helper";
 
-const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
+const AadhaarCompare = ({ open, setOpen, aadhaarDetails,lead }) => {
   const navigate = useNavigate()
-  const { lead } = useStore();
   const [verifyAadhaar, { data, isSuccess, isError, error }] = useVerifyAadhaarMutation()
 
   // Handle close modal

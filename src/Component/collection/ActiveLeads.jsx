@@ -62,11 +62,11 @@ const ActiveLeads = () => {
             salary: lead?.salary,
             source: lead?.source,
             ...((activeRole === "collectionHead" || activeRole === "admin") && {
-                disbursalHead: `${active?.data?.disbursal?.disbursedBy?.fName}${
-                    active?.data?.disbursal?.disbursedBy?.mName
-                        ? ` ${active?.data?.disbursal?.disbursedBy?.mName}`
+                disbursalHead: `${activeLead?.data?.disbursal?.disbursedBy?.fName}${
+                    activeLead?.data?.disbursal?.disbursedBy?.mName
+                        ? ` ${activeLead?.data?.disbursal?.disbursedBy?.mName}`
                         : ``
-                } ${active?.data?.disbursal?.disbursedBy?.lName}`,
+                } ${activeLead?.data?.disbursal?.disbursedBy?.lName}`,
             }),
         };
     });

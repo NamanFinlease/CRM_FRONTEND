@@ -129,6 +129,7 @@ const LeadProfile = () => {
                                         isAadhaarVerified={leadData?.isAadhaarVerified}
                                         isAadhaarDetailsSaved={leadData?.isAadhaarDetailsSaved}
                                         isPanVerified={leadData?.isPanVerified}
+                                        lead={leadData}
                                     />
                                 }
                                 {currentPage === "documents" &&

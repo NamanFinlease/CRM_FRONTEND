@@ -17,16 +17,13 @@ const LoanInfo = ({ disburse }) => {
   console.log('profile',applicationProfile)
 
   const { 
-    sanction, 
     sanction: { 
-      application, 
       application: { 
         cam, 
-        lead, 
         lead: { fName, mName, lName } = {} 
       } = {} 
     } = {} 
-  } = applicationProfile?.disbursal || {};
+  } = applicationProfile || {};
 
 
   const handleCancel = () => {
