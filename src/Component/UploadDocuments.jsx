@@ -115,12 +115,43 @@ const UploadDocuments = ({ leadData }) => {
                 salarySlip: [],
                 bankStatement: [],
             });
-            console.log('uploadeddddddddd')
             setFileInputs([{ file: null, remarks: '' }]); // Reset file inputs
             setSelectedDocType(null)
 
         } catch (error) {
-            Swal.fire('Error!', 'Failed to upload documents. Please try again.', 'error');
+            Swal.fire({
+                title: "Error!",
+                text: error?.data?.message,
+                icon: "error",
+                customClass: {
+                  popup: 'custom-swal-popup',
+                  title: 'custom-swal-title',
+                  htmlContainer: 'custom-swal-content',
+                  confirmButton: 'custom-swal-button'
+                },
+                willOpen: (popup) => {
+                  popup.style.color = "#721c24"; // Dark red text
+                  popup.style.borderRadius = "8px"; // Rounded corners
+                  popup.style.fontFamily = "Arial, sans-serif"; // Font style
+                },
+                didRender: () => {
+                  document.querySelector('.custom-swal-title').style.fontSize = "1.5rem";
+                  document.querySelector('.custom-swal-title').style.color = "#721c24";
+              
+                  document.querySelector('.custom-swal-content').style.fontSize = "1rem";
+                  document.querySelector('.custom-swal-content').style.color = "#f71945";
+              
+                  const confirmButton = document.querySelector('.custom-swal-button');
+                  confirmButton.style.backgroundColor = "#f56481";
+                  confirmButton.style.border = "none";
+                  confirmButton.style.padding = "10px 20px";
+                  confirmButton.style.fontSize = "1rem";
+                  confirmButton.style.borderRadius = "5px";
+                  confirmButton.style.cursor = "pointer";
+              
+                }
+              });
+              
             console.error('Upload error:', error); // Log error for debugging
         }
     };
