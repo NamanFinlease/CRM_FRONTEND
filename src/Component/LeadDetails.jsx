@@ -9,6 +9,7 @@ import {
   Typography,
   OutlinedInput,
   Box,
+  Alert,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -21,18 +22,37 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import _ from "lodash"
 
 
 const LeadDetails = ({ leadData, setLeadEdit }) => {
   const { id } = useParams();
-  const [updateLead, { data, isSuccess, isError, error }] = useUpdateLeadMutation();
+  const [updateLead, { data,isLoading, isSuccess, isError, error }] = useUpdateLeadMutation();
 
-  const { handleSubmit, control, setValue } = useForm({
+
+  const { handleSubmit, control, setValue, watch } = useForm({
     resolver: yupResolver(leadUpdateSchema),
     defaultValues: leadData,
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
+
+  const allFields = watch()
+
+  const getUpdatedFields = () => {
+    const updatedFields = {};
+    for (const key in allFields) {
+      if (!_.isEqual(allFields[key],leadData[key])) {
+        updatedFields[key] = allFields[key];
+      }
+    }
+    return updatedFields;
+  };
+
+  const onSubmit = (formData) => {
+    const updatedFields = getUpdatedFields()
+    updateLead({ id, updatedFields });
+  };
 
   useEffect(() => {
     if (leadData && Object.keys(leadData).length > 0) {
@@ -42,10 +62,15 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
     }
   }, [leadData, setValue]);
 
-  const onSubmit = (formData) => {
-    setLeadEdit(false);
-    updateLead({ id, formData });
-  };
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      setLeadEdit(false);
+    }
+
+  }, [isSuccess, data]);
+
+
 
   return (
     <Box sx={{ padding: '40px', backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
@@ -392,6 +417,11 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
           />
         </Box>
 
+          {isError &&
+            <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+              {error?.data?.message}
+            </Alert>
+          }
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', width: '100%' }}>
           <Button
             variant="outlined"
