@@ -156,7 +156,7 @@ export const leadsApi = createApi({
     }),
     fetchAllocatedLeads: builder.query({
       query: ({ page, limit }) =>
-        `/leads/allocated/?page=${page}&limit=${limit}&role=${role()}`,
+        `/leads/allocated/?role=${role()}`,
     }),
     fetchAllLeads: builder.query({
       query: ({ page, limit }) =>
