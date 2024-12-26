@@ -113,7 +113,7 @@ export const disburseSchema = Yup.object().shape({
   payableAccount: Yup.string().required('Payable Account is required'),
   amount: Yup
     .string()
-    .matches(/^\d+$/, 'Amount must be a numeric string')
+    .matches(/^\d+(\.\d+)?$/, 'Amount must be a numeric string')
     .required('Amount is required'),
   paymentMode: Yup.string().required('Payment Mode is required'),
   channel: Yup.string().required('Channel is required'),
