@@ -16,24 +16,63 @@ import useAuthStore from './store/authStore';
 import useStore from '../Store';
 import Header from "./Header";
 import {useGetEmployeesQuery, useGetLeadTotalRecordsQuery , useGetTotalRecordsForSupervisorQuery} from '../Service/Query';
+
 const Dashboard = ({ isSidebarOpen }) => {
   const { login, setEmployeeDetails } = useStore();
-  const { empInfo,activeRole } = useAuthStore();
-  const navigate = useNavigate(); // React Router hook for navigation
+  const { empInfo, activeRole } = useAuthStore();
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // API Queries
   const { data: employeeDetails, isSuccess: empDetailsSuccess, refetch } = useGetEmployeesQuery();
-  const { data}  = useGetLeadTotalRecordsQuery();
-  const { data: supData, isSuccess: supSuccess } = useGetTotalRecordsForSupervisorQuery();
+  const { data, refetch: refetchTotalRecords } = useGetLeadTotalRecordsQuery();  // Add refetch method for total records API
+  const { data: supData, isSuccess: supSuccess, refetch: supRefetch } = useGetTotalRecordsForSupervisorQuery();
 
-  console.log("The active log is ",activeRole);
-  if( activeRole === 'supervisor'){
-    const  data = useGetTotalRecordsForSupervisorQuery();
-    console.log("The data is ",data)
-    if( data.isSuccess){
+  console.log("The active role is", activeRole);
 
+  // Refetch the total records API whenever the role changes or when the dashboard is accessed
+  useEffect(() => {
+    if (activeRole) {
+      console.log("Refetching lead total records...");
+      refetchTotalRecords();  // Call the refetch method to get total records
     }
-  }
+  }, [activeRole, refetchTotalRecords]);  // Trigger when activeRole changes
+
+  // Refetching data when supervisor role is selected or employee data is refetched
+  useEffect(() => {
+    if (activeRole) {
+      if (activeRole === 'supervisor') {
+        console.log("Refetching supervisor data...");
+        supRefetch().then(response => {
+          console.log("Supervisor data refetched:", response);
+        }).catch(error => {
+          console.error("Error refetching supervisor data:", error);
+        });
+      } else if (empDetailsSuccess) {
+        console.log("Refetching employee data...");
+        refetch().then(response => {
+          console.log("Employee data refetched:", response);
+        }).catch(error => {
+          console.error("Error refetching employee data:", error);
+        });
+      }
+    }
+  }, [activeRole, empDetailsSuccess, supRefetch, refetch]);
+
+  // Additional useEffect to handle refetching employee data if needed
+  useEffect(() => {
+    if (empDetailsSuccess) {
+      console.log("Refetching employee data...");
+      refetch().then(response => {
+        console.log("Employee refetch response:", response);
+      }).catch(error => {
+        console.error("Error refetching employee data:", error);
+      });
+    }
+  }, [empDetailsSuccess, refetch]);
+  
+
    // Define Employee roles with icons and paths
    const Employee = {
     admin: {
@@ -96,7 +135,7 @@ const Dashboard = ({ isSidebarOpen }) => {
         path: "/rejected-applications",
         title: 'Applications Rejected',
         no : data?.leads?.
-        rejectedApplications
+        rejectedLeads
          || 0
       },
     },
@@ -238,8 +277,7 @@ const Dashboard = ({ isSidebarOpen }) => {
         sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
         path: "/disbursal-new",
         title: 'New ',
-        no : data?.disbursal?.
-        newDisbursals || 0
+        no : data?.disbursal?.newDisbursals || 0
       },
       leadProcess: {
         icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
@@ -332,9 +370,12 @@ const Dashboard = ({ isSidebarOpen }) => {
           title: 'Leads Rejected',
           no : supData?.inProcessTodayCount
         },
+       
       }
+      
     
   };
+  
 
   // Fetch and set employee details on component load
   useEffect(() => {
@@ -399,6 +440,7 @@ const Dashboard = ({ isSidebarOpen }) => {
                 fontWeight: "bold",
                 padding: "10px 20px",
               }}
+              
             >
               <DownloadOutlinedIcon sx={{ mr: "10px" }} />
               Download Reports
