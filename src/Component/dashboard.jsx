@@ -42,50 +42,62 @@ const Dashboard = ({ isSidebarOpen }) => {
         sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
         path: "/lead-new",
         title: 'New Leads',
-        no : 10
+        no : data?.leads?.
+        newLeads || 0
       },
       leadProcess: {
         icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/lead-process",
         title: 'Leads In Process',
-        no : 10
+        no : data?.leads?.
+        allocatedLeads
+         || 0
       },
       leadHold: {
         icon: <PauseIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/lead-hold",
         title: 'Leads Held',
-        no : 10
+        no : data?.leads?.
+        heldLeads || 0
       },
       leadRejected: {
         icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/rejected-leads",
         title: 'Leads Rejected',
-        no : 10
+        no : data?.leads?.
+        rejectedLeads
+         || 0
       },
       newApplication: {
         icon: <NewReleasesIcon className='mt-3'
         sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
         path: "/new-applications",
         title: 'New Applications',
-        no : 10
+        no : data?.leads?.
+        newApplications
+         || 0
       },
       applicationProcess: {
         icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/application-process",
         title: 'Applications In Process',
-        no : 10
+        no : data?.leads?.
+        allocatedApplications || 0
       },
       applicationHold: {
         icon: <PauseIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/applications-held",
         title: 'Applications Held',
-        no : 10
+        no : data?.leads?.
+        heldApplications || 0
       },
       applicationRejected: {
         icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/rejected-applications",
         title: 'Applications Rejected',
-        no : 10
+        no : data?.leads?.
+        rejectedApplications
+         || 0
       },
     },
     screener: {
@@ -123,7 +135,9 @@ const Dashboard = ({ isSidebarOpen }) => {
         sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
         path: "/new-applications",
         title: 'New Applications',
-        no : data?.applications?.newApplications || 0
+        no : data?.applications?.
+        newApplications
+         || 0
 
       },
       applicationProcess: {
@@ -143,7 +157,8 @@ const Dashboard = ({ isSidebarOpen }) => {
         icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/rejected-applications",
         title: 'Applications Rejected',
-        no : data?.applications?.rejectedApplications || 0
+        no : data?.applications?.
+        rejectedApplications || 0
       },
     },
     sanctionHead: {
@@ -172,7 +187,7 @@ const Dashboard = ({ isSidebarOpen }) => {
         path: "/rejected-leads",
         title: 'Leads Rejected',
         no : data?.leads?.
-        rejectedLeads || 0
+        rejectedLeads|| 0
       },
       newApplication: {
         icon: <NewReleasesIcon className='mt-3'
@@ -205,13 +220,16 @@ const Dashboard = ({ isSidebarOpen }) => {
         icon: <NewReleasesIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/pending-sanctions",
         title: 'Pending Sanction',
-        no : data?.sanction?.newSanctions || 0
+        no : data?.sanction?.
+        newSanctions
+         || 0
       },
       sanctioned: {
         icon: <NewReleasesIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
         path: "/sanctioned",
         title: 'Sanctioned',
-        no : data?.sanction?.sanctioned || 0
+        no : data?.sanction?.
+        sanctioned || 0
       },
     },
     disbursalManager: {
@@ -220,7 +238,8 @@ const Dashboard = ({ isSidebarOpen }) => {
         sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
         path: "/disbursal-new",
         title: 'New ',
-        no : data?.disbursal?.newDisbursals || 0
+        no : data?.disbursal?.
+        newDisbursals || 0
       },
       leadProcess: {
         icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
@@ -287,7 +306,7 @@ const Dashboard = ({ isSidebarOpen }) => {
           icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
           path: "/rejected-leads",
           title: 'Leads Rejected',
-          no : 10
+          no : supData?.sanctionedTodayCount
         },
       },
 
@@ -311,7 +330,7 @@ const Dashboard = ({ isSidebarOpen }) => {
           icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
           path: "/rejected-leads",
           title: 'Leads Rejected',
-          no : 10
+          no : supData?.inProcessTodayCount
         },
       }
     
