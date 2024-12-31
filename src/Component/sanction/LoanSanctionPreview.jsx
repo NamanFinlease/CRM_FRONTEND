@@ -92,7 +92,7 @@ const LoanSanctionPreview = ({
 
             {/* Date Section */}
             <Box textAlign="right" mb={2}>
-              <Typography variant="h6" sx={{ color: '#0363a3' }}>
+              <Typography variant="h6" sx={{ color: '#e38710' }}>
                 Date: {sanctionDate}
               </Typography>
             </Box>
@@ -130,57 +130,57 @@ const LoanSanctionPreview = ({
 
             {/* Loan Terms Table */}
             <TableContainer component={Paper}>
-              <Table>
+              <Table sx={{border:"2px solid rgb(227, 93, 16)", background:"#f0f0f6", color:'#000000',}}>
                 <TableBody>
                   {/* Add Table Rows as needed */}
                   <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                    <TableCell sx={{ color: 'rgb(240, 123, 55)', fontWeight: 'bold' }}>
                       Customer Name
                     </TableCell>
-                    <TableCell>{fullname}</TableCell>
+                    <TableCell sx={{ color: '#fff', backgroundColor:"rgb(240, 123, 55)" }}>{fullname}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                    <TableCell sx={{ color: 'rgb(240, 123, 55)', fontWeight: 'bold' }}>
                       Mobile
                     </TableCell>
-                    <TableCell>{mobile}</TableCell>
+                    <TableCell sx={{ color: '#fff', backgroundColor:"rgb(240, 123, 55)" }}>{mobile}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                    <TableCell sx={{ color: 'rgb(240, 123, 55)', fontWeight: 'bold' }}>
                       Disbursal Date
                     </TableCell>
-                    <TableCell>{disbursalDate}</TableCell>
+                    <TableCell sx={{ color: '#fff', backgroundColor:"rgb(240, 123, 55)" }}>{disbursalDate}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                    <TableCell sx={{ color: 'rgb(240, 123, 55)', fontWeight: 'bold' }}>
                       Processing Fee
                     </TableCell>
-                    <TableCell>{processingFee}</TableCell>
+                    <TableCell sx={{ color: '#fff', backgroundColor:"rgb(240, 123, 55)" }}>{processingFee}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                    <TableCell sx={{ color: 'rgb(240, 123, 55)', fontWeight: 'bold' }}>
                       ROI
                     </TableCell>
-                    <TableCell>{roi}%</TableCell>
+                    <TableCell sx={{ color: '#fff', backgroundColor:"rgb(240, 123, 55)" }}>{roi}%</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                    <TableCell sx={{ color: 'rgb(240, 123, 55)', fontWeight: 'bold' }}>
                       Sanctioned Loan Amount (Rs.)
                     </TableCell>
                     {/* <TableCell sx={{ color: '#d9534f' }}>{new Intl.NumberFormat().format((loanAmount))} /-</TableCell> */}
-                    <TableCell sx={{ color: '#d9534f' }}>{loanAmount} /-</TableCell>
+                    <TableCell sx={{ color: '#fff', backgroundColor:"rgb(240, 123, 55)", fontWeight:"bold" }}>{loanAmount} /-</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                    <TableCell sx={{ color: 'rgb(240, 123, 55)', fontWeight: 'bold' }}>
                       Repayment Amount
                     </TableCell>
-                    <TableCell sx={{ color: '#d9534f' }}>{repaymentAmount} /-</TableCell>
+                    <TableCell sx={{ color: '#fff', backgroundColor:"rgb(240, 123, 55)",fontWeight: 'bold' }}>{repaymentAmount} /-</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ backgroundColor: '#0363a3', color: '#FFF', fontWeight: 'bold' }}>
+                    <TableCell sx={{ color: 'rgb(240, 123, 55)', fontWeight: 'bold' }}>
                       Repayment Date
                     </TableCell>
-                    <TableCell sx={{ color: '#d9534f' }}>{repaymentDate} </TableCell>
+                    <TableCell sx={{ color: '#fff', backgroundColor:"rgb(240, 123, 55)",fontWeight: 'bold' }}>{repaymentDate} </TableCell>
                   </TableRow>
                   {/* Add more rows... */}
                 </TableBody>
