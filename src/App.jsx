@@ -57,11 +57,11 @@ import PaymentVerification from "./Component/accounts/PaymentVerification";
 
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [theme, colorMode] = useMode();
+    // const [theme, colorMode] = useMode();
     return (
         <Router>
-            <ColorModeContext.Provider value={colorMode}>
-                <ThemeProvider theme={theme}>
+            {/* <ColorModeContext.Provider >
+                <ThemeProvider > */}
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
 
@@ -78,6 +78,7 @@ function App() {
                     <>
                         <ProtectedRoute>
                             <Navbar />
+                            <div style={{paddingTop:"70px", background:"#fff"}}></div>
 
                             <Sidebar
                                 isSidebarOpen={isSidebarOpen}
@@ -1299,8 +1300,8 @@ function App() {
                         </ProtectedRoute>
                         {/* <Navbar /> */}
                     </>
-                </ThemeProvider>
-            </ColorModeContext.Provider>
+                {/* </ThemeProvider>
+            </ColorModeContext.Provider> */}
         </Router>
     );
 }

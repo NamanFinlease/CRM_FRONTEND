@@ -62,15 +62,15 @@ const LeadProfile = () => {
                                         padding: '20px',
                                         marginTop: '20px',
                                         borderRadius: '10px',
-                                        color: '#1F2A40',  // Default text color for rows
-                                        '& .MuiDataGrid-columnHeaders': {
-                                            backgroundColor: '#1F2A40',  // Optional: Header background color
-                                            color: 'white',  // White text for the headers
-                                        },
-                                        '& .MuiDataGrid-footerContainer': {
-                                            backgroundColor: '#1F2A40',  // Footer background color
-                                            color: 'white',  // White text for the footer
-                                        },
+                                        // color: '#fd6800',  // Default text color for rows
+                                        // '& .MuiDataGrid-columnHeaders': {
+                                        //     backgroundColor: '#fff',  // Optional: Header background color
+                                        //     color: 'white',  // White text for the headers
+                                        // },
+                                        // '& .MuiDataGrid-footerContainer': {
+                                        //     backgroundColor: '#1F2A40',  // Footer background color
+                                        //     color: 'white',  // White text for the footer
+                                        // },
                                         '& .MuiDataGrid-row:hover': {
                                             backgroundColor: 'white',
                                             cursor: 'pointer',
@@ -92,11 +92,14 @@ const LeadProfile = () => {
                                             variant="outlined"
                                             onClick={() => setLeadEdit(true)}
                                             sx={{
-                                                backgroundColor: 'primary.main',
-                                                color: 'white',
+                                                border:"3px solid #e38710",
+                                                backgroundColor: 'transparent',
+                                                color: '#e38710',
                                                 padding: '10px 20px',
+                                                transition: "all 0.3s ease",
                                                 '&:hover': {
-                                                    backgroundColor: 'darkPrimary',
+                                                    backgroundColor: '#e38710',
+                                                    color:"white"
                                                 },
                                             }}
                                         >

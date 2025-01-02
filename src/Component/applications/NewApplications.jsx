@@ -119,14 +119,16 @@ const NewApplications = () => {
           style={{
             padding: '10px 20px',
             fontWeight: 'bold',
-            backgroundColor: '#007bff',
-            color: '#fff',
+            background: '#transparent',
+            color: '#e38710',
+            marginLeft:"60px",
+            border:"1px solid #e38710",
             borderRadius: '5px',
             boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
             cursor: 'pointer',
           }}
         >
-          Total Applicattion: {totalApplications || 0} {/* Defaults to 0 if no leads */}
+          New Applications : {totalApplications || 0} {/* Defaults to 0 if no leads */}
         </div>
 
         {/* Action button for selected leads */}
@@ -134,11 +136,13 @@ const NewApplications = () => {
           onClick={handleAllocate}
           style={{
             marginLeft: '20px',
+            fontWeight:"bold",
             padding: '10px 20px',
-            backgroundColor: '#28a745',
-            color: '#fff',
-            border: 'none',
+            backgroundColor: 'transparent',
+            color: '#18de26',
+            border: '1px solid #18de26',
             borderRadius: '5px',
+            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
             cursor: 'pointer',
           }}
         >
@@ -148,7 +152,7 @@ const NewApplications = () => {
 
       <Header />
 
-      {columns && <div style={{ height: 400, width: '100%' }}>
+      {columns && <div style={{ height: 500, width: '90%', display:"flex", justifyContent:"center", margin: "0px 20px", boxShadow:"0px 0px 20px 10px rgba(0,0,0,0.1)" }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -159,13 +163,13 @@ const NewApplications = () => {
           paginationMode="server"
           onPaginationModelChange={handlePageChange}
           sx={{
-            color: '#1F2A40',  // Default text color for rows
-            '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: '#1F2A40',  // Optional: Header background color
+            color: '#000',  // Default text color for rows
+            '& .MuiDataGrid-columnHeaders .css-yrdy0g-MuiDataGrid-columnHeaderRow': {
+              backgroundColor: '#e38710',  // Optional: Header background color
               color: 'white'  // White text for the headers
             },
             '& .MuiDataGrid-footerContainer': {
-              backgroundColor: '#1F2A40',  // Footer background color
+              backgroundColor: '#e38710',  // Footer background color
               color: 'white',  // White text for the footer
             },
             '& .MuiDataGrid-row:hover': {

@@ -76,7 +76,7 @@ const handleLeadClick = (lead) => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          marginTop: '70px',
+          marginTop: '20px',
           marginLeft: '20px',
         }}
       >
@@ -92,12 +92,12 @@ const handleLeadClick = (lead) => {
             marginBottom:"15px"
           }}
         >
-          Total Applicattion: {totalApplications || 0} {/* Defaults to 0 if no leads */}
+          Pending Sanctions : {totalApplications || 0} {/* Defaults to 0 if no leads */}
         </div>
 
       </div>
 
-      {columns && <div style={{ height: 400, width: '100%' }}>
+      {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
         <DataGrid
           rows={rows}
           columns={columns}

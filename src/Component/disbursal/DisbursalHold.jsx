@@ -81,10 +81,10 @@ const DisbursalHold = () => {
                         marginBottom:"15px"
                     }}
                 >
-                    Total Applicattion: {totalHoldApplications || 0} {/* Defaults to 0 if no leads */}
+                    Hold Disbursals : {totalHoldApplications || 0} {/* Defaults to 0 if no leads */}
                 </div>
                 </div>
-                {columns && <div style={{ height: 400, width: '100%' }}>
+                {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
                     <DataGrid
                         rows={rows}
                         columns={columns}

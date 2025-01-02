@@ -156,7 +156,7 @@ const DisburseNew = () => {
             cursor: 'pointer',
           }}
         >
-          Total Applicattion: {totalApplications || 0} {/* Defaults to 0 if no leads */}
+          New Disbursals : {totalApplications || 0} {/* Defaults to 0 if no leads */}
         </div>
 
         {/* Action button for selected leads */}
@@ -178,7 +178,7 @@ const DisburseNew = () => {
 
       <Header />
 
-      {columns && <div style={{ height: 400, width: '100%' }}>
+      {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
         <DataGrid
           rows={rows}
           columns={columns}

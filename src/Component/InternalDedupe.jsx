@@ -105,23 +105,25 @@ const InternalDedupe = ({id}) => {
     }));
 
     return (
-        <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3, borderRadius: '15px' }}>
+        <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3, borderRadius: '5px', background:"#fff" }}>
             <Accordion>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon sx={{color:"#000"}} />}
                     aria-controls="internal-dedupe-content"
                     id="internal-dedupe-header"
                     sx={{
-                        backgroundColor: '#424242',
-                        color: '#fff',
-                        fontWeight: 'bold',
+                        backgroundColor: '#fff',
+                        color: '#fd6800',
+                        fontWeight: '400',
+                        fontSize:'16px !important',
                         borderRadius: '5px',
+                        boxShadow: '0px 0px 10px #d1d5db, -5px -5px 10px #ffffff'
                     }}
                 >
                     <Typography variant="h6">Internal Dedupe</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Box sx={{ height: 400, width: '100%' }}>
+                    <Box sx={{ height: 400, width: '100%',background:"#fff" }}>
                         <DataGrid
                             rows={rows}
                             columns={columns}

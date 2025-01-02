@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { tokens } from "../theme";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import {
@@ -13,12 +14,15 @@ import {
     InputLabel,
     Select,
     Box,
+    useTheme
 } from "@mui/material";
 import { Logout, Person } from "@mui/icons-material";
 import useStore from "../Store";
 import { useLogoutMutation } from "../Service/Query";
 import useAuthStore from "../Component/store/authStore";
 import Swal from "sweetalert2";
+
+
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -29,6 +33,10 @@ const Navbar = () => {
 
     const [logout, { isSuccess, isError, error }] = useLogoutMutation();
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+
+    //color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const handleLogout = async () => {
         try {
@@ -46,7 +54,7 @@ const Navbar = () => {
             text: `Do you want to switch to the ${selectedRole} role?`,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: `${colors.primary["primaryshade"]}`,
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, switch role",
         }).then((result) => {
@@ -118,12 +126,16 @@ const Navbar = () => {
     ];
 
     return (
+        <div>
         <AppBar
-            position="static"
+            position="fixed"
             sx={{
-                backgroundColor: "#001f3f",
-                color: "#fff",
-                boxShadow: "none",
+                background: `linear-gradient(180deg, ${colors.white["whiteshade"]} 1%, ${colors.primary["primaryshadeopacity"]} 250%), ${colors.white["whiteshade"]}`,
+                borderBottom:`3px solid ${colors.primary["primaryshade"]}`,
+                borderBottomLeftRadius:"10px",
+                borderBottomRightRadius:"10px",
+                boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.1)",
+                height:"70px",
             }}
         >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -131,21 +143,21 @@ const Navbar = () => {
                     variant="h6"
                     component={Link}
                     to="/"
-                    sx={{
-                        textDecoration: "none",
-                        color: "inherit",
-                        ml: 5,
-                        fontWeight: "bold",
-                        "&:hover": { color: "#f0f0f0" },
-                    }}
+                    sx={{ ml: 5,}}
                 >
-                    Speedoloan
+                    {/* Speedoloan */}
+                    <Box 
+                        component="img" 
+                        src="../src/assets/image/speedo_logo.png"
+                        background="transparent"
+                        sx={{ width: 100, height: 100, margin: "10px" }} 
+                    />
                 </Typography>
 
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2, }}>
                     <FormControl
-                        variant="standard"
-                        sx={{ m: 1, minWidth: 120 }}
+                        variant="outlined"
+                        sx={{ m: 0, minWidth: 150,}}
                     >
                         {/* <InputLabel id="demo-simple-select-standard-label">Age</InputLabel> */}
                         <Select
@@ -153,11 +165,29 @@ const Navbar = () => {
                             id="demo-simple-select-standard"
                             value={activeRole}
                             onChange={(e) => handleRoleChange(e)}
+                            sx={{
+                                background:`${colors.primary["primaryshade"]}`, 
+                                borderRadius:"5px", 
+                                color:`${colors.white["whiteshade"]}`, 
+                                height:"40px",
+                                boxShadow:"0px 0px 5px 1px rgb(0,0,0,0.2)"
+                            }}
                         // label="Age"
                         >
                             {empInfo.empRole &&
                                 empInfo.empRole.map((role, i) => (
-                                    <MenuItem key={i} value={role}>
+                                    <MenuItem 
+                                        key={i} 
+                                        value={role} 
+                                        sx={{
+                                            background:`${colors.white["whiteshade"]}`, 
+                                            color:`${colors.primary["primaryshade"]}`,
+                                            '&:hover':{
+                                                background:`${colors.primary["primaryshade"]}`,
+                                                color:`${colors.white["whiteshade"]}`
+                                            }
+                                        }}
+                                    >
                                         {splitCamelCase(role)}
                                     </MenuItem>
                                 ))}
@@ -166,7 +196,7 @@ const Navbar = () => {
 
                     <IconButton color="inherit" onClick={handleMenuClick}>
                         <Avatar
-                            sx={{ backgroundColor: "#fff", color: "#001f3f" }}
+                            sx={{ backgroundColor: `${colors.black["grayshade"]}`, color: `${colors.black["blackshade"]}` }}
                         >
                             {empInitials} {/* Replace with dynamic initials */}
                         </Avatar>
@@ -177,8 +207,8 @@ const Navbar = () => {
                         onClose={handleMenuClose}
                         sx={{
                             ".MuiPaper-root": {
-                                backgroundColor: "#001f3f",
-                                color: "#fff",
+                                backgroundColor: `${colors.white["whiteshade"]}`,
+                                color: `${colors.primary["primaryshade"]}`,
                             },
                         }}
                     >
@@ -188,8 +218,8 @@ const Navbar = () => {
                                 to={link.path}
                                 key={link.text}
                                 sx={{
-                                    color: "#fff",
-                                    "&:hover": { backgroundColor: "#002f6c" },
+                                    color: `${colors.primary["primaryshade"]}`,
+                                    "&:hover": { backgroundColor: `${colors.primary["primaryshade"]}`, color:`${colors.white["whiteshade"]}` },
                                 }}
                             >
                                 {link.text}
@@ -197,7 +227,7 @@ const Navbar = () => {
                         ))}
                         <MenuItem
                             onClick={handleLogout}
-                            sx={{ color: "#ff4d4d", fontWeight: "bold" }}
+                            sx={{ color: "#ff4d4d", fontWeight: "bold", "&:hover": { backgroundColor: "#ff4d4d", color:"#fff" } }}
                         >
                             Logout
                         </MenuItem>
@@ -205,6 +235,7 @@ const Navbar = () => {
                 </Box>
             </Toolbar>
         </AppBar>
+        </div>
     );
 };
 

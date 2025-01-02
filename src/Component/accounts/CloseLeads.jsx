@@ -3,6 +3,7 @@ import useAuthStore from "../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useClosedLeadsQuery } from "../../Service/LMSQueries";
 import { DataGrid } from "@mui/x-data-grid";
+import { Alert} from '@mui/material';
 
 function CloseLeads() {
     const [closedLeads, setClosedLeads] = useState();
@@ -97,13 +98,13 @@ function CloseLeads() {
                         marginBottom: "15px",
                     }}
                 >
-                    Total Closed Leads: {totalClosedLeads || 0}{" "}
+                    Closed Leads : {totalClosedLeads || 0}{" "}
                     {/* Defaults to 0 if no leads */}
                 </div>
             </div>
 
             {columns && (
-                <div style={{ height: 400, width: "100%" }}>
+                <div style={{ height: 400, width: "100%", padding:"0px 20px" }}>
                     <DataGrid
                         rows={subrows}
                         columns={columns}

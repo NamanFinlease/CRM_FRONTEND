@@ -16,14 +16,15 @@ const BarButtons = ({barButtonOptions,currentPage,setCurrentPage}) => {
                 //   color={status.toLowerCase() === currentPage.toLowerCase() ? "primary" : "success"}
                   onClick={() => handleBarButtons(status.toLowerCase())}
                   sx={{
-                    margin: "5px",
-                    backgroundColor: status.toLowerCase() === currentPage.toLowerCase() ? '#3f51b5' : '#4caf50', // Active: Indigo, Inactive: Green
-                    color: 'white',
-                    borderRadius: '8px',
+                    margin: "0px 5px",
+                    padding:"10px 10px",
+                    backgroundColor: status.toLowerCase() === currentPage.toLowerCase() ? '#fd6800' : '#4caf50', // Active: Indigo, Inactive: Green
+                    color: '#fff',
+                    borderRadius: '5px',
                     boxShadow: status.toLowerCase() === currentPage.toLowerCase() ? '0px 4px 20px rgba(63, 81, 181, 0.4)' : 'none', // Subtle shadow for active
                     transition: 'background-color 0.3s, box-shadow 0.3s', // Smooth transition
                     '&:hover': {
-                      backgroundColor: status.toLowerCase() === currentPage.toLowerCase() ? '#303f9f' : '#388e3c', // Darker shade on hover
+                      backgroundColor: status.toLowerCase() === currentPage.toLowerCase() ? '#fd6800' : '#388e3c', // Darker shade on hover
                       boxShadow: status.toLowerCase() === currentPage.toLowerCase() ? '0px 6px 24px rgba(63, 81, 181, 0.5)' : 'none',
                     },
                   }}

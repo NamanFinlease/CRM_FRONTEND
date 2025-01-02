@@ -7,17 +7,18 @@ import { useLazyFetchCibilScoreQuery, useLazyGetLeadDocsQuery } from '../../Serv
 import { useParams } from 'react-router-dom';
 
 const accordionStyles = {
-  borderRadius: '12px',
-  background: 'linear-gradient(145deg, #36cfc9, #ffffff)',
-  boxShadow: '5px 5px 10px #d1d5db, -5px -5px 10px #ffffff',
+  borderRadius: '5px',
+  background: '#fff',
+  boxShadow: '0px 0px 10px #d1d5db, -5px -5px 10px #ffffff',
   marginBottom: '20px',
 };
 
 const paperStyles = {
   padding: '20px',
-  borderRadius: '15px',
-  backgroundColor: '#c8c9c7',
-  boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
+  borderRadius: '5px',
+  border:"1px solid #fd6800",
+  backgroundColor: '#fff',
+  boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
 };
 
 const CibilScore = ({ id }) => {
@@ -87,8 +88,8 @@ const CibilScore = ({ id }) => {
   return (
     <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3 }}>
       <Accordion style={accordionStyles}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#007bb2' }} />}>
-          <Typography variant="h6" style={{ fontWeight: '600', color: "#ffffff" }}>Fetch CIBIL Score</Typography>
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#000' }} />}>
+          <Typography variant="h6" style={{ fontWeight: '600', color: "#fd6800", fontSize:'16px' }}>Fetch CIBIL Score</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Paper elevation={3} style={paperStyles}>
@@ -98,12 +99,14 @@ const CibilScore = ({ id }) => {
                 onClick={submitCibil}
                 disabled={loading}
                 sx={{
-                  borderRadius: '8px',
+                  borderRadius: '5px',
                   padding: '10px 20px',
-                  background: 'linear-gradient(45deg, #42a5f5, #007bb2)',
-                  color: '#fff',
+                  fontWeight:'700',
+                  background: '#fff',
+                  color: '#000',
                   '&:hover': {
-                    background: 'linear-gradient(45deg, #007bb2, #42a5f5)',
+                    background: '#fd6800',
+                    color:"#fff"
                   },
                 }}
               >
