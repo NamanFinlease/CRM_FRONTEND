@@ -18,11 +18,29 @@ const ApplicantProfileData = ({leadData}) => {
     ];
     return (
         <>
-            <TableContainer component={Paper} sx={{ borderRadius: '8px' }}>
+            <TableContainer component={Paper} sx={{
+    borderRadius: '8px',
+    backgroundColor: '#fff', // Background color for the container
+    '& .MuiTableCell-root': {
+      color: 'white', // Text color for table cells
+      borderBottom: '1px solid rgba(255, 255, 255, 0.2)', // Optional: Customize cell borders
+    },
+    '& .MuiTableRow-root:nth-of-type(odd)': {
+      backgroundColor: 'rgb(253, 104, 0)', // Odd rows
+    },
+    '& .MuiTableRow-root:nth-of-type(even)': {
+      backgroundColor: 'rgba(253, 104, 0, 0.8)', // Even rows
+    },
+  }}>
                 <Table aria-label="application details table">
                     <TableBody>
                         {columns.map((row, index) => (
-                            <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#141b2d' } }}>
+                            <TableRow key={index} 
+                                sx={{ 
+                                    '&:nth-of-type(odd)': { background: 'rgb(253, 104, 0)' },
+                                    '&:nth-of-type(even)': { background: 'rgb(253,104,0,0.8)',}    
+                                }}
+                            >
                                 <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label}</TableCell>
                                 <TableCell align="left">{row.value || ''}</TableCell>
                                 <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label2}</TableCell>

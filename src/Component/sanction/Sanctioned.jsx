@@ -74,7 +74,7 @@ const Sanctioned = () => {
                     style={{
                         display: 'flex',
                         alignItems: 'center',
-                        marginTop: '70px',
+                        marginTop: '20px',
                         marginLeft: '20px',
                     }}
                 >
@@ -91,13 +91,13 @@ const Sanctioned = () => {
                         }}
                     >
                         {/* <h1>Sanctioned</h1> */}
-                        Total Applicattions: {totalApplications || 0}
+                        Total Sanctioned : {totalApplications || 0}
                     </div>
 
                 </div>
 
                 {columns &&
-                    <div style={{ height: 400, width: '100%' }}>
+                    <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
                         <DataGrid
                             rows={rows}
                             columns={columns}

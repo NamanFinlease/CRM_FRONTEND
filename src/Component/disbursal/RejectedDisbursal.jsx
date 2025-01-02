@@ -76,10 +76,10 @@ const RejectedDisbursal = () => {
                         marginBottom:"15px"
                     }}
                 >
-                    Total Applicattion: {totalRejectedApplcations || 0} {/* Defaults to 0 if no leads */}
+                    Rejected Disbursals : {totalRejectedApplcations || 0} {/* Defaults to 0 if no leads */}
                 </div>
                 </div>
-                {columns && <div style={{ height: 400, width: '100%' }}>
+                {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
                     <DataGrid
                         rows={rows}
                         columns={columns}

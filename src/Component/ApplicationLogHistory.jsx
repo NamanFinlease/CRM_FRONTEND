@@ -77,10 +77,15 @@ const ApplicationLogHistory = ({ id }) => {
                             //         cursor: 'pointer',
                             //     },
                             // }}
+                           
                             sx={{
                                 color: '#1F2A40',  // Default text color for rows
+                                '& .css-1a50cv0-MuiPaper-root': {
+                                    backgroundColor: '#1F2A40 !important',
+                                    color: 'white !important',
+                                  },
                                     '& .MuiDataGrid-columnHeaders': {
-                                      backgroundColor: '#1F2A40',  // Optional: Header background color
+                                      backgroundColor: '#fff',  // Optional: Header background color
                                       color: 'white'  // White text for the headers
                                     },
                                     '& .MuiDataGrid-footerContainer': {

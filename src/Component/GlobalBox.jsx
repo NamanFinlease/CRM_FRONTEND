@@ -1,5 +1,4 @@
 import { Box, Typography, useTheme } from "@mui/material";
-// import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
 import { tokens } from "../theme";
 
@@ -13,14 +12,14 @@ const GlobalBox = ({ title, subtitle, icon, progress, increase }) => {
         <Box >
           {icon}
           <Typography className="mt-3"
-            variant="h4"
+            variant="h6"
             fontWeight="bold"
-            sx={{ color: colors.grey[100] }}
+            sx={{ color: "#e38710" }}
           >
             {title}
           </Typography>
         </Box>
-        <Box className="mt-3" sx={{color: 'white', textAlign: 'center'}}>
+        <Box className="mt-3" sx={{color: '#000', textAlign: 'center'}}>
           <ProgressCircle progress={progress}/>
           <Typography fontWeight="bold" sx={{marginTop: '12px'}}>{increase}</Typography>
         </Box>

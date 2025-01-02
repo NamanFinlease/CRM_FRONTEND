@@ -6,6 +6,7 @@ import {
     useVerifyPendingLeadMutation,
 } from "../../Service/LMSQueries";
 import { DataGrid } from "@mui/x-data-grid";
+import { Alert} from '@mui/material';
 
 function PendingVerification() {
     const [pendingLeads, setPendingLeads] = useState();
@@ -105,13 +106,13 @@ function PendingVerification() {
                         marginBottom: "15px",
                     }}
                 >
-                    Total Pending Verifications: {totalPendingLeads || 0}{" "}
+                    Pending Verifications : {totalPendingLeads || 0}{" "}
                     {/* Defaults to 0 if no leads */}
                 </div>
             </div>
 
             {columns && (
-                <div style={{ height: 400, width: "100%" }}>
+                <div style={{ height: 400, width: "100%", padding:"0px 20px" }}>
                     <DataGrid
                         rows={rows}
                         columns={columns}

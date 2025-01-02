@@ -101,13 +101,13 @@ const ActiveLeads = () => {
                         marginBottom: "15px",
                     }}
                 >
-                    Total Applicattion: {totalActiveLeads || 0}{" "}
+                    Active Leads : {totalActiveLeads || 0}{" "}
                     {/* Defaults to 0 if no leads */}
                 </div>
             </div>
 
             {columns && (
-                <div style={{ height: 400, width: "100%" }}>
+                <div style={{ height: 400, width: "100%", padding:"0px 20px" }}>
                     <DataGrid
                         rows={rows}
                         columns={columns}

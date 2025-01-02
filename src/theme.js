@@ -117,6 +117,23 @@ export const tokens = (mode) => ({
           800: "#c3c6fd",
           900: "#e1e2fe",
         },
+        primary: {
+          primaryshade : "#e38710",
+          primaryshadeopacity : "rgba(227,135,16, 0.3)",
+        },
+        secondary:{
+          secondaryshade:"#e39e44",
+        },
+        white: {
+          whiteshade: "#fff",
+        },
+        black:{
+          blackshade: "#000000",
+          grayshade : "#b8b3ad"
+        },
+        green:{
+          greenshade:"#18de26"
+        },
       }),
 });
 
@@ -187,7 +204,7 @@ export const themeSettings = (mode) => {
       },
       h6: {
         fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 14,
+        fontSize: 16,
       },
     },
   };

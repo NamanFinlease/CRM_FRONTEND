@@ -73,8 +73,8 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
 
 
   return (
-    <Box sx={{ padding: '40px', backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
-      <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+    <Box sx={{padding:"0px 20px", backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
+      <Typography variant="h4" align="center" gutterBottom sx={{padding: '20px', fontWeight: 'bold', color: '#e38710' }}>
         Lead Details
       </Typography>
 
@@ -83,16 +83,18 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
         noValidate
         onSubmit={handleSubmit(onSubmit)}
         sx={{
-          backgroundColor: '#9c9b98',
+          backgroundColor: '#000',
+          color:"#000",
           padding: '30px',
           borderRadius: '10px',
+          border:"2px solid #e38710",
           boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
           display: 'flex',
           flexWrap: 'wrap',
           gap: '20px',
         }}
       >
-        <Box sx={{ flex: '1 1 45%' }}>
+        <Box sx={{ flex: '1 1 45%', color:"#000"}}>
           <Controller
             name="fName"
             control={control}
@@ -428,12 +430,13 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
             color="gray"
             onClick={() => setLeadEdit(false)}
             sx={{
-              backgroundColor: 'gray',
-              color: 'white',
-              borderColor: 'gray',
+              backgroundColor: '#fff',
+              color: 'red',
+              border: '2px solid red',
               padding: '10px 20px',
               '&:hover': {
-                backgroundColor: 'darkgray',
+                backgroundColor: 'red',
+                color:"#fff"
               },
             }}
           >
@@ -443,11 +446,13 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
             type="submit"
             variant="contained"
             sx={{
-              backgroundColor: '#3f51b5',
-              color: 'white',
+              backgroundColor: '#fff',
+              color: '#e38710',
+              border:"2px solid #e38710",
               padding: '10px 20px',
               '&:hover': {
-                backgroundColor: '#303f9f',
+                backgroundColor: '#e38710',
+                color:"#fff"
               },
             }}
           >

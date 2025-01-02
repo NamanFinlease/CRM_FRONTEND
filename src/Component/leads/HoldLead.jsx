@@ -78,18 +78,19 @@ const HoldLead = () => {
                     style={{
                         padding: '10px 20px',
                         fontWeight: 'bold',
-                        backgroundColor: '#007bff',
-                        color: '#fff',
+                        background: '#transparent',
+                        color: '#e38710',
+                        margin:"20px 0px",
+                        border:"1px solid #e38710",
                         borderRadius: '5px',
                         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                         cursor: 'pointer',
-                        marginBottom:"15px"
                     }}
                 >
-                    Total Applicattion: {totalHoldLeads || 0} {/* Defaults to 0 if no leads */}
+                    Leads Hold : {totalHoldLeads || 0} {/* Defaults to 0 if no leads */}
                 </div>
                 </div>
-                {columns && <div style={{ height: 400, width: '100%' }}>
+                {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px", }}>
                     <DataGrid
                         rows={rows}
                         columns={columns}
@@ -106,13 +107,13 @@ const HoldLead = () => {
                         //     },
                         // }}
                         sx={{
-                            color: '#1F2A40',  // Default text color for rows
-                                '& .MuiDataGrid-columnHeaders': {
-                                  backgroundColor: '#1F2A40',  // Optional: Header background color
+                            color: '#000',  // Default text color for rows
+                                '& .MuiDataGrid-columnHeaders .css-yrdy0g-MuiDataGrid-columnHeaderRow': {
+                                  backgroundColor: '#e38710',  // Optional: Header background color
                                   color: 'white'  // White text for the headers
                                 },
                                 '& .MuiDataGrid-footerContainer': {
-                                  backgroundColor: '#1F2A40',  // Footer background color
+                                  backgroundColor: '#e38710',  // Footer background color
                                   color: 'white',  // White text for the footer
                                 },
                             '& .MuiDataGrid-row:hover': {
