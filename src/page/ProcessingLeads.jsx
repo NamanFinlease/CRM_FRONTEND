@@ -4,32 +4,16 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../Store';
 import useAuthStore from '../Component/store/authStore';
+import CommonTable from '../Component/CommonTable';
 
 
 const ProcessingLeads = () => {
     const [processingLeads, setProcessingLeads] = useState()
     const [totalLeads, setTotalLeads] = useState()
-    const [id, setId] = useState(null)
-    const {empInfo,activeRole} = useAuthStore()
-    const navigate = useNavigate()
-    const [paginationModel, setPaginationModel] = useState({
-        page: 0,
-        pageSize: 5,
-    });
+    const { empInfo, activeRole } = useAuthStore()
+    const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 5, });
     const { data, isSuccess, refetch } = useFetchAllocatedLeadsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
-    const { data: LeadData, isSuccess: leadSuccess } = useFetchSingleLeadQuery(id, { skip: id === null })
-    const handlePageChange = (newPaginationModel) => {
-        setPaginationModel(newPaginationModel)
-
-    }
-
-    const handleLeadClick = (lead) => {
-        setId(lead.id)
-        navigate(`/lead-profile/${lead.id}`)
-    }
-
-    
-
+    // const { data: LeadData, isSuccess: leadSuccess } = useFetchSingleLeadQuery(id, { skip: id === null })
 
     const columns = [
         { field: 'name', headerName: 'Full Name', width: 200 },
@@ -41,8 +25,8 @@ const ProcessingLeads = () => {
         { field: 'loanAmount', headerName: 'Loan Amount', width: 150 },
         { field: 'salary', headerName: 'Salary', width: 150 },
         { field: 'source', headerName: 'Source', width: 150 },
-        ...(activeRole === "sanctionHead" || activeRole === "admin" 
-            ? [{ field: 'screener', headerName: 'Screener', width: 150 }] 
+        ...(activeRole === "sanctionHead" || activeRole === "admin"
+            ? [{ field: 'screener', headerName: 'Screener', width: 150 }]
             : [])
 
     ];
@@ -59,7 +43,7 @@ const ProcessingLeads = () => {
         salary: lead?.salary,
         source: lead?.source,
         ...((activeRole === "sanctionHead" || activeRole === "admin") &&
-        { screener: `${lead?.screenerId?.fName}${lead?.screenerId?.mName ? ` ${lead?.screenerId?.mName}` :``} ${lead?.screenerId?.lName}`,})
+            { screener: `${lead?.screenerId?.fName}${lead?.screenerId?.mName ? ` ${lead?.screenerId?.mName}` : ``} ${lead?.screenerId?.lName}`, })
     }));
 
     useEffect(() => {
@@ -76,52 +60,17 @@ const ProcessingLeads = () => {
 
     return (
         <>
-            <div className="crm-container">
-                <div
-                    style={{
-                        padding: '10px 20px',
-                        fontWeight: 'bold',
-                        background: '#transparent',
-                        color: '#e38710',
-                        margin:"20px 0px",
-                        border:"1px solid #e38710",
-                        borderRadius: '5px',
-                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                        cursor: 'pointer',
-                    }}
+            
+            {columns &&
+                <CommonTable
+                    columns={columns}
+                    rows={rows}
+                    totalLeads={totalLeads}
+                    paginationModel={paginationModel}
+                    setPaginationModel={setPaginationModel}
+                />
 
-                >
-                    Leads In Process : {totalLeads || 0} {/* Defaults to 0 if no leads */}
-                </div>
-                </div>
-                {columns && <div style={{ height: 500, width: '100%', padding:"0px 20px" }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        rowCount={totalLeads}
-                        // loading={isLoading}
-                        pageSizeOptions={[5]}
-                        paginationModel={paginationModel}
-                        paginationMode="server"
-                        onPaginationModelChange={handlePageChange}
-                        onRowClick={(params) => handleLeadClick(params)}
-                        sx={{
-                            color: '#000',  // Default text color for rows
-                                '& .MuiDataGrid-columnHeaders .css-yrdy0g-MuiDataGrid-columnHeaderRow': {
-                                  backgroundColor: '#e38710',  // Optional: Header background color
-                                  color: 'white'  // White text for the headers
-                                },
-                                '& .MuiDataGrid-footerContainer': {
-                                  backgroundColor: '#e38710',  // Footer background color
-                                  color: 'white',  // White text for the footer
-                                },
-                            '& .MuiDataGrid-row:hover': {
-                                cursor: 'pointer',
-                            },
-                        }}
-                    />
-                </div>}
-            {/* </div> */}
+            }
 
         </>
     )
