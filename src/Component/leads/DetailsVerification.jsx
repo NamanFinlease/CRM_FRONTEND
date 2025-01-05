@@ -9,7 +9,7 @@ import PanCompare from './PanCompare';
 import useAuthStore from '../store/authStore';
 import AadhaarCompare from './AadhaarCompare';
 
-const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified,isAadhaarDetailsSaved, isPanVerified }) => {
+const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified,isAadhaarDetailsSaved, isPanVerified,lead }) => {
   const { id } = useParams()
   const {setCodeVerifier,setFwdp,activeRole} = useAuthStore()
   const navigate = useNavigate()
@@ -81,9 +81,9 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
 
   return (
     <>
-    {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} lead={lead} />}
+    {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} />}
     {/* {otp && <EmailVerification open={otp} setOpen={setOtp} />} */}
-      {<PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
+      {panModal && <PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
       <Box sx={{ maxWidth: 700, margin: '0 auto', mt: 4 }}>
         {/* Single Accordion for Mobile and Email Verification */}
         <Accordion sx={{ borderRadius: '15px', boxShadow: 3 }}>

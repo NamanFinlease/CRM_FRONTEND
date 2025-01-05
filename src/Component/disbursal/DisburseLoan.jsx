@@ -53,7 +53,13 @@ const DisburseLoan = ({ disburse }) => {
   });
 
   const onSubmit = (data) => {
+    const userConfirmed = window.confirm("Are you sure you want to proceed?");
+  
+  if (userConfirmed) {
     disburseLoan({ id, data });
+  } else {
+    console.log("Disburse loan action was canceled by the user.");
+  }
   };
 
   const handleToggleForm = () => {
