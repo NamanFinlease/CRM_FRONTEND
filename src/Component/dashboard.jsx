@@ -289,6 +289,29 @@ const Dashboard = ({ isSidebarOpen }) => {
         },
       },
 
+      collectionExecutive : {
+      
+        activeLeads: {
+          icon: <NewReleasesIcon className='mt-3'
+          sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+          path: "/activeLeads",
+          title: 'Active Leads',
+          no : supData?.leadsGeneratedToday
+        },
+        pendingVerification: {
+          icon: <PlayArrowIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/pending-verification",
+          title: 'Pending Verification',
+          no : supData?.inProcessTodayCount
+        },
+        closedLeads: {
+          
+          icon: <CancelIcon className='mt-3' sx={{ color: '#4caf50', width:'100%', height:'30%' }} />,
+          path: "/closed-leads",
+          title: 'Closed Leads',
+          no : 10
+        },
+      },
       accountExecutive : {
       
         leadNew: {

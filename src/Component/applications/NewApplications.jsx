@@ -68,10 +68,10 @@ const NewApplications = () => {
 
   }, [allApplication]);
   const columns = [
-    {
+    ...(activeRole === "creditManager" ? [ {
       field: 'select',
-      headerName: '',
-      width: 50,
+      headerName: 'Check Box',
+      width: 100,
       renderCell: (params) => (
         activeRole === "creditManager" &&
         <input
@@ -81,7 +81,7 @@ const NewApplications = () => {
           onChange={() => handleCheckboxChange(params.row.id)}
         />
       ),
-    },
+    }]:[]),
     { field: 'name', headerName: 'Full Name', width: 200 },
     { field: 'mobile', headerName: 'Mobile', width: 150 },
     { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },

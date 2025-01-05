@@ -54,6 +54,8 @@ import PendingVerification from "./Component/accounts/PendingVerification";
 import CloseLeads from "./Component/accounts/CloseLeads";
 import CollectionProfile from "./Component/collection/CollectionProfile";
 import PaymentVerification from "./Component/accounts/PaymentVerification";
+import PreCollection from "./Component/collection/PreCollection";
+import Collection from "./Component/collection/Collection";
 
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -239,11 +241,11 @@ function App() {
                                     />
                                     {/* Accounts Routes */}
                                     <Route
-                                        path="pending-verification"
+                                        path="/pending-verification"
                                         element={<PendingVerification />}
                                     />
                                     <Route
-                                        path="closed-leads"
+                                        path="/closed-leads"
                                         element={<CloseLeads />}
                                     />
                                     <Route
@@ -253,159 +255,13 @@ function App() {
                                     <Route
                                         path="/pre-collection"
                                         element={
-                                            <DynamicTable
-                                                header={[
-                                                    "Lead Id",
-                                                    "Action",
-                                                    "Applied On",
-                                                    "Source",
-                                                    "Name",
-                                                    "State",
-                                                    "City",
-                                                    "Branch",
-                                                    "Mobile",
-                                                    "Pan",
-                                                    "UserType",
-                                                    "Status",
-                                                ]}
-                                                rows={[
-                                                    [
-                                                        "1501",
-                                                        "Pre-Collection",
-                                                        "2024-09-09",
-                                                        "Online",
-                                                        "Liam Wilson",
-                                                        "California",
-                                                        "Sacramento",
-                                                        "Branch WW",
-                                                        "555-9999",
-                                                        "EFG123456U",
-                                                        "Individual",
-                                                        "Pre-Collection",
-                                                    ],
-                                                    [
-                                                        "1502",
-                                                        "Pre-Collection",
-                                                        "2024-09-08",
-                                                        "Offline",
-                                                        "Sophia Taylor",
-                                                        "New York",
-                                                        "Queens",
-                                                        "Branch XX",
-                                                        "555-0000",
-                                                        "HIJ789012V",
-                                                        "Business",
-                                                        "Pre-Collection",
-                                                    ],
-                                                    [
-                                                        "1503",
-                                                        "Pre-Collection",
-                                                        "2024-09-07",
-                                                        "Referral",
-                                                        "Noah Anderson",
-                                                        "Texas",
-                                                        "Houston",
-                                                        "Branch YY",
-                                                        "555-1111",
-                                                        "KLM345678W",
-                                                        "Individual",
-                                                        "Pre-Collection",
-                                                    ],
-                                                    [
-                                                        "1504",
-                                                        "Pre-Collection",
-                                                        "2024-09-06",
-                                                        "Online",
-                                                        "Emma Thomas",
-                                                        "Florida",
-                                                        "Tampa",
-                                                        "Branch ZZ",
-                                                        "555-2222",
-                                                        "NOP901234X",
-                                                        "Business",
-                                                        "Pre-Collection",
-                                                    ],
-                                                ]}
-                                            />
+                                            <PreCollection />
                                         }
                                     />
                                     <Route
-                                        path="/collection-pending"
+                                        path="/collection"
                                         element={
-                                            <DynamicTable
-                                                header={[
-                                                    "Lead Id",
-                                                    "Action",
-                                                    "Applied On",
-                                                    "Source",
-                                                    "Name",
-                                                    "State",
-                                                    "City",
-                                                    "Branch",
-                                                    "Mobile",
-                                                    "Pan",
-                                                    "UserType",
-                                                    "Status",
-                                                ]}
-                                                rows={[
-                                                    [
-                                                        "1601",
-                                                        "Pending Collection",
-                                                        "2024-09-09",
-                                                        "Online",
-                                                        "Oliver Harris",
-                                                        "California",
-                                                        "San Diego",
-                                                        "Branch AAA",
-                                                        "555-3333",
-                                                        "QRS123456Y",
-                                                        "Individual",
-                                                        "Pending Collection",
-                                                    ],
-                                                    [
-                                                        "1602",
-                                                        "Pending Collection",
-                                                        "2024-09-08",
-                                                        "Offline",
-                                                        "Mia Clark",
-                                                        "New York",
-                                                        "Bronx",
-                                                        "Branch BBB",
-                                                        "555-4444",
-                                                        "TUV789012Z",
-                                                        "Business",
-                                                        "Pending Collection",
-                                                    ],
-                                                    [
-                                                        "1603",
-                                                        "Pending Collection",
-                                                        "2024-09-07",
-                                                        "Referral",
-                                                        "Elijah Lewis",
-                                                        "Texas",
-                                                        "Dallas",
-                                                        "Branch CCC",
-                                                        "555-5555",
-                                                        "WXY345678A",
-                                                        "Individual",
-                                                        "Pending Collection",
-                                                    ],
-                                                    [
-                                                        "1604",
-                                                        "Pending Collection",
-                                                        "2024-09-06",
-                                                        "Online",
-                                                        "Isabella Walker",
-                                                        "Florida",
-                                                        "Miami",
-                                                        "Branch DDD",
-                                                        "555-6666",
-                                                        "ZAB901234B",
-                                                        "Business",
-                                                        "Pending Collection",
-                                                    ],
-                                                ]}
-                                            />
+                                            <Collection />
                                         }
                                     />
                                     <Route
