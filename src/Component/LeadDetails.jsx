@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { tokens } from '../theme';
 import {
   TextField,
   FormControl,
@@ -10,6 +11,7 @@ import {
   OutlinedInput,
   Box,
   Alert,
+  useTheme
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -29,6 +31,9 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
   const { id } = useParams();
   const [updateLead, { data,isLoading, isSuccess, isError, error }] = useUpdateLeadMutation();
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const { handleSubmit, control, setValue, watch } = useForm({
     resolver: yupResolver(leadUpdateSchema),
@@ -73,9 +78,9 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
 
 
   return (
-    <Box sx={{padding:"0px 20px", backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
-      <Typography variant="h4" align="center" gutterBottom sx={{padding: '20px', fontWeight: 'bold', color: '#e38710' }}>
-        Lead Details
+    <Box sx={{padding:"0px 20px", backgroundColor: colors.white["whiteshade"], minHeight: '100vh' }}>
+      <Typography variant="h6" align="center" gutterBottom sx={{padding: '20px', fontWeight: 'bold', color: colors.primary["primaryshade"] }}>
+       Edit Lead Details
       </Typography>
 
       <Box
@@ -83,18 +88,19 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
         noValidate
         onSubmit={handleSubmit(onSubmit)}
         sx={{
-          backgroundColor: '#000',
-          color:"#000",
+          backgroundColor: colors.white["whiteshade"],
+          color:colors.black["blackshade"],
           padding: '30px',
+          marginBottom:"20px",
           borderRadius: '10px',
-          border:"2px solid #e38710",
+          border:`2px solid ${colors.primary["primaryshade"]}` ,
           boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
           display: 'flex',
           flexWrap: 'wrap',
           gap: '20px',
         }}
       >
-        <Box sx={{ flex: '1 1 45%', color:"#000"}}>
+        <Box sx={{ flex: '1 1 45%'}}>
           <Controller
             name="fName"
             control={control}
@@ -430,13 +436,13 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
             color="gray"
             onClick={() => setLeadEdit(false)}
             sx={{
-              backgroundColor: '#fff',
+              backgroundColor: colors.white["whiteshade"],
               color: 'red',
               border: '2px solid red',
               padding: '10px 20px',
               '&:hover': {
                 backgroundColor: 'red',
-                color:"#fff"
+                color:colors.white["whiteshade"]
               },
             }}
           >
@@ -446,13 +452,13 @@ const LeadDetails = ({ leadData, setLeadEdit }) => {
             type="submit"
             variant="contained"
             sx={{
-              backgroundColor: '#fff',
-              color: '#e38710',
-              border:"2px solid #e38710",
+              backgroundColor: colors.white["whiteshade"],
+              color: colors.primary["primaryshade"],
+              border:`2px solid ${colors.primary["primaryshade"]}`,
               padding: '10px 20px',
               '&:hover': {
-                backgroundColor: '#e38710',
-                color:"#fff"
+                backgroundColor: colors.primary["primaryshade"],
+                color: colors.white["whiteshade"]
               },
             }}
           >

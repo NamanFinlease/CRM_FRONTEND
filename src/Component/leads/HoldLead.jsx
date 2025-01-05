@@ -5,11 +5,13 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import OTPVerificationUI from './OtpVerification';
 import useAuthStore from '../store/authStore';
+import CommonTable from '../CommonTable';
 
 
 const HoldLead = () => {
     const [holdLeads, setHoldLeads] = useState()
     const [totalHoldLeads, setTotalHoldLeads] = useState()
+    const [page, setPage] = useState(1); // Current page
     const [id, setId] = useState(null)
     const {empInfo,activeRole} = useAuthStore()
     const navigate = useNavigate()
@@ -17,27 +19,32 @@ const HoldLead = () => {
         page: 0,
         pageSize: 5,
     });
-    const {data,isSuccess,isError,error} = useFetchAllHoldLeadsQuery()
+    const {data,isSuccess,isError,error, refetch} = useFetchAllHoldLeadsQuery()
+    const handleRowClick = (params) => {
+        if (onRowClick) {
+          onRowClick(params);
+        }
+    };
+
     const handlePageChange = (newPaginationModel) => {
+        setPage(newPaginationModel);
+        // Fetch new data based on the new page
         setPaginationModel(newPaginationModel)
-    }
+        refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); // Adjust this according to your data fetching logic
+    };
 
-    const handleLeadClick = (lead) => {
-        setId(lead.id)
-        navigate(`/lead-profile/${lead.id}`)
-    }
-
-
-    // useEffect(() => {
-    //     refetch({ page: paginationModel.page + 1, limit: paginationModel.pageSize });
-    // }, [paginationModel]);
+    useEffect(() => {
+        refetch({ page: paginationModel.page + 1, limit: paginationModel.pageSize });
+    }, [paginationModel]);
 
     useEffect(() => {
         if (data) {
             setHoldLeads(data?.heldLeads)
-        setTotalHoldLeads(data?.heldLeads?.totalRecords)
+            setTotalHoldLeads(data?.heldLeads?.totalRecords)
         }
     }, [isSuccess, data])
+
+
     const columns = [
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
@@ -73,8 +80,8 @@ const HoldLead = () => {
 
     return (
         <>
-            <div className="crm-container">
-            <div
+            {/* <div className="crm-container">
+                <div
                     style={{
                         padding: '10px 20px',
                         fontWeight: 'bold',
@@ -88,42 +95,52 @@ const HoldLead = () => {
                     }}
                 >
                     Leads Hold : {totalHoldLeads || 0} {/* Defaults to 0 if no leads */}
-                </div>
-                </div>
-                {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px", }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        rowCount={totalHoldLeads}
-                        // loading={isLoading}
-                        pageSizeOptions={[5]}
-                        paginationModel={paginationModel}
-                        paginationMode="server"
-                        onPaginationModelChange={handlePageChange}
-                        onRowClick={(params) => handleLeadClick(params)}
-                        // sx={{
-                        //     '& .MuiDataGrid-row:hover': {
-                        //         cursor: 'pointer',
-                        //     },
-                        // }}
-                        sx={{
-                            color: '#000',  // Default text color for rows
-                                '& .MuiDataGrid-columnHeaders .css-yrdy0g-MuiDataGrid-columnHeaderRow': {
-                                  backgroundColor: '#e38710',  // Optional: Header background color
-                                  color: 'white'  // White text for the headers
-                                },
-                                '& .MuiDataGrid-footerContainer': {
-                                  backgroundColor: '#e38710',  // Footer background color
-                                  color: 'white',  // White text for the footer
-                                },
-                            '& .MuiDataGrid-row:hover': {
-                                cursor: 'pointer',
+                {/* </div> */}
+            {/* // </div> */} 
+            {/* {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px", }}>
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    rowCount={totalHoldLeads}
+                    // loading={isLoading}
+                    pageSizeOptions={[5]}
+                    paginationModel={paginationModel}
+                    paginationMode="server"
+                    onPaginationModelChange={handlePageChange}
+                    onRowClick={(params) => handleLeadClick(params)}
+                    // sx={{
+                    //     '& .MuiDataGrid-row:hover': {
+                    //         cursor: 'pointer',
+                    //     },
+                    // }}
+                    sx={{
+                        color: '#000',  // Default text color for rows
+                            '& .MuiDataGrid-columnHeaders .css-yrdy0g-MuiDataGrid-columnHeaderRow': {
+                                backgroundColor: '#e38710',  // Optional: Header background color
+                                color: 'white'  // White text for the headers
                             },
-                        }}
-                    />
-                </div>}
-            {/* </div> */}
-
+                            '& .MuiDataGrid-footerContainer': {
+                                backgroundColor: '#e38710',  // Footer background color
+                                color: 'white',  // White text for the footer
+                            },
+                        '& .MuiDataGrid-row:hover': {
+                            cursor: 'pointer',
+                        },
+                    }}
+                />
+            </div>} */}
+            <CommonTable
+                columns={columns}
+                rows={rows}
+                totalRows={totalHoldLeads}
+                paginationModel={{ page: 1, pageSize: 10 }}
+                onPageChange={handlePageChange}
+                onRowClick={handleRowClick}
+                title="Leads Hold"
+                // actionButton={true}
+                // actionButtonText="Allocate Leads"
+                // onActionButtonClick={handleActionButtonClick}
+            />
         </>
     )
 }

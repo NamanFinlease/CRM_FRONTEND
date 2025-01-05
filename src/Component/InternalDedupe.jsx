@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { tokens } from '../theme';
 import { useGetInternalDedupeQuery } from '../Service/Query';
 import { useParams } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
@@ -9,8 +10,10 @@ import {
     Typography,
     Box,
     Alert,
+    useTheme,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CommonTable from './CommonTable';
 
 const columns = [
     { field: 'sr', headerName: '#', width: 50 },
@@ -31,27 +34,30 @@ const InternalDedupe = ({id}) => {
 
     const { data, isSuccess, isError,error } = useGetInternalDedupeQuery(id, { skip: id === null });
 
-      
-      const mergeLeadsAndApplications = (leads, applications) => {
-        // Step 1: Create a merged array by checking for matches
-        const mergedLeads = leads.map(lead => {
-          const application = applications.find(app => app.leadDetails._id === lead._id);
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    
+    const mergeLeadsAndApplications = (leads, applications) => {
+    // Step 1: Create a merged array by checking for matches
+    const mergedLeads = leads.map(lead => {
+    const application = applications.find(app => app.leadDetails._id === lead._id);
           
-          // If matching application exists, merge data
-          if (application) {
-            return {
-              ...application.leadDetails,
-              isApproved: application.isApproved,
-              isRecommended: application.isRecommended,
-              isRejected: application.isRejected,
-              onHold: application.onHold,
-            };
-          }
-      
-          return lead;
-        });
+    // If matching application exists, merge data
+    if (application) {
+        return {
+            ...application.leadDetails,
+            isApproved: application.isApproved,
+            isRecommended: application.isRecommended,
+            isRejected: application.isRejected,
+            onHold: application.onHold,
+        };
+    }
+    
+        return lead;
+    });
 
-        console.log('merge leads',mergedLeads)
+    console.log('merge leads',mergedLeads)
       
         // Step 2: Add applications without corresponding leads
         applications.forEach(application => {
@@ -108,48 +114,30 @@ const InternalDedupe = ({id}) => {
         <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3, borderRadius: '5px', background:"#fff" }}>
             <Accordion>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon sx={{color:"#000"}} />}
+                    expandIcon={<ExpandMoreIcon sx={{color:colors.black["blackshade"]}} />}
                     aria-controls="internal-dedupe-content"
                     id="internal-dedupe-header"
                     sx={{
-                        backgroundColor: '#fff',
-                        color: '#fd6800',
-                        fontWeight: '400',
+                        backgroundColor: colors.white["whiteshade"],
+                        color: colors.primary["primaryshade"],
+                        fontWeight: '600',
                         fontSize:'16px !important',
                         borderRadius: '5px',
                         boxShadow: '0px 0px 10px #d1d5db, -5px -5px 10px #ffffff'
                     }}
                 >
-                    <Typography variant="h6">Internal Dedupe</Typography>
+                    <Typography>Internal Dedupe</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Box sx={{ height: 400, width: '100%',background:"#fff" }}>
-                        <DataGrid
-                            rows={rows}
+                    <Box sx={{ height: 500, width: '100%',background: colors.white["whiteshade"], overflowY:"scroll" }}>
+                        <CommonTable    
                             columns={columns}
+                            rows={rows}
                             rowCount={data?.relatedLeads.length}
-                            pageSizeOptions={[5]}
-                            paginationModel={paginationModel}
-                            paginationMode="server"
-                            onPaginationModelChange={handlePageChange}
+                            paginationModel={{ page: 1, pageSize: 10 }}
+                            onPageChange={handlePageChange}
                             sx={{
-                                color: '#1F2A40',  // Default text color for rows
-                                    '& .MuiDataGrid-columnHeaders': {
-                                      backgroundColor: '#1F2A40',  // Optional: Header background color
-                                      color: 'white'  // White text for the headers
-                                    },
-                                    '& .MuiDataGrid-footerContainer': {
-                                      backgroundColor: '#1F2A40',  // Footer background color
-                                      color: 'white',  // White text for the footer
-                                    },
-                                '& .MuiDataGrid-row:hover': {
-                                    backgroundColor: 'white',
-                                    cursor: 'pointer',
-                                },
-                                '& .MuiDataGrid-row': {
-                                    backgroundColor: 'white',
-                                    // cursor: 'pointer',
-                                },
+                                height:"300px !important",
                             }}
                         />
                     </Box>

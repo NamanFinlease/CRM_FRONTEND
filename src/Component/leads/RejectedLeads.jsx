@@ -4,11 +4,13 @@ import { useFetchAllHoldLeadsQuery, useFetchAllRejectedLeadsQuery, useFetchSingl
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
+import CommonTable from '../CommonTable';
 
 
 const RejectedLeads = () => {
     const [rejectedLeads, setRejectedLeads] = useState()
     const [totalRejectedLeads, setTotalRejectedLeads] = useState()
+    const [page, setPage] = useState(1); // Current page
     const { empInfo,activeRole } = useAuthStore()
     const [id, setId] = useState(null)
     const navigate = useNavigate()
@@ -16,18 +18,19 @@ const RejectedLeads = () => {
         page: 0,
         pageSize: 5,
     });
-    const { data, isSuccess, isError } = useFetchAllRejectedLeadsQuery()
+    const { data, isSuccess, isError,refetch } = useFetchAllRejectedLeadsQuery()
     // const { data: LeadData, isSuccess: leadSuccess } = useFetchSingleLeadQuery(id, { skip: id === null })
+    const handleRowClick = (params) => {
+        if (onRowClick) {
+          onRowClick(params);
+        }
+    };
     const handlePageChange = (newPaginationModel) => {
+        setPage(newPaginationModel);
+        // Fetch new data based on the new page
         setPaginationModel(newPaginationModel)
-
-    }
-
-    const handleLeadClick = (lead) => {
-        setId(lead.id)
-        navigate(`/lead-profile/${lead.id}`)
-    }
-
+        refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); // Adjust this according to your data fetching logic
+    };
 
     useEffect(() => {
         if (data) {
@@ -65,9 +68,13 @@ const RejectedLeads = () => {
             { rejectedBy: `${lead?.rejectedBy?.fName}${lead?.rejectedBy?.mName ? ` ${lead?.rejectedBy?.mName}` : ``} ${lead?.rejectedBy?.lName}`, })
     }));
 
+    useEffect(() => {
+        refetch({ page: paginationModel.page + 1, limit: paginationModel.pageSize });
+    }, [paginationModel]);
+
     return (
         <>
-            <div className="crm-container">
+            {/* <div className="crm-container">
                 <div
                     style={{
                         padding: '10px 20px',
@@ -80,11 +87,11 @@ const RejectedLeads = () => {
                         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                         cursor: 'pointer',
                     }}
-                >
-                    Leads Rejected : {totalRejectedLeads || 0} {/* Defaults to 0 if no leads */}
-                </div>
-            </div>
-            {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
+                > */}
+                    {/* Leads Rejected : {totalRejectedLeads || 0} Defaults to 0 if no leads */}
+                {/* </div> */}
+            {/* // </div> */}
+            {/* {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
@@ -115,9 +122,20 @@ const RejectedLeads = () => {
                         },
                     }}
                 />
-            </div>}
+            </div>} */}
             {/* </div> */}
-
+            <CommonTable
+                columns={columns}
+                rows={rows}
+                totalRows={totalRejectedLeads}
+                paginationModel={{ page: 1, pageSize: 10 }}
+                onPageChange={handlePageChange}
+                onRowClick={handleRowClick}
+                title="Rejected Leads"
+                // actionButton={true}
+                // actionButtonText="Allocate Leads"
+                // onActionButtonClick={handleActionButtonClick}
+            />
         </>
     )
 }

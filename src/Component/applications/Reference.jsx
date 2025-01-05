@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, Alert, Select, MenuItem, FormControl, InputLabel, FormHelperText, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress } from '@mui/material';
+import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, Alert, Select, MenuItem, FormControl, InputLabel, FormHelperText, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress, useTheme } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useUpdatePersonalDetailsMutation } from '../../Service/applicationQueries';
@@ -7,20 +7,7 @@ import useStore from '../../Store';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { referenceSchema } from '../../utils/validations';
 import useAuthStore from '../store/authStore';
-
-const accordionStyles = {
-  borderRadius: '12px',
-  background: 'linear-gradient(145deg, #8cb4f5, #474e59)',
-  boxShadow: '5px 5px 10px #d1d5db, -5px -5px 10px #ffffff',
-  marginBottom: '20px'
-};
-
-const paperStyles = {
-  padding: '30px',
-  borderRadius: '15px',
-  backgroundColor: '#918f8e',
-  boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
-};
+import { tokens } from '../../theme'
 
 const Reference = ({ reference }) => {
   const { applicationProfile } = useStore();
@@ -32,6 +19,25 @@ const Reference = ({ reference }) => {
   // const defaultValues = {
 
   // }
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  const accordionStyles = {
+    borderRadius: '5px',
+    background: colors.white["whiteshade"],
+    boxShadow: '0px 0px 15px rgb(0,0,0,0.1)',
+    marginBottom: '20px'
+  };
+  
+  const paperStyles = {
+    padding: '30px',
+    borderRadius: '15px',
+    border:`2px solid ${colors.primary["primaryshade"]}`,
+    backgroundColor: colors.white["whiteshade"],
+    boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
+  };
 
   const [updatePersonalDetails, { data, isSuccess, isLoading, isError, error }] = useUpdatePersonalDetailsMutation();
 
@@ -62,11 +68,22 @@ const Reference = ({ reference }) => {
   }, [reference])
   console.log('reference details',referenceDetails)
 
+  const buttonStyles = {
+    borderRadius: '5px',
+    padding: '10px 20px',
+    background: isLoading ? "#ccc" : colors.primary["primaryshade"],
+    color: isLoading ? "#666" : colors.white["whiteshade"],
+    cursor: isLoading ? "not-allowed" : "pointer",
+    "&:hover": {
+      backgroundColor: isLoading ? "#ccc" : colors.secondary["secondaryshade"],
+    },
+  };
+
   return (
     <>
       <Accordion style={accordionStyles}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon sx={{ color: '#007bb2' }} />}
+          expandIcon={<ExpandMoreIcon sx={{ color: colors.black["blackshade"] }} />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
@@ -202,18 +219,20 @@ const Reference = ({ reference }) => {
 
                   {/* Submit Button */}
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
-                    <Button variant="outlined" onClick={() => reset()}>Cancel</Button>
-                    <Button
-                      type="submit"
+                    <Button 
+                      variant="outlined" 
                       sx={{
-
-                        backgroundColor: isLoading ? "#ccc" : "#1F2A40",
-                        color: isLoading ? "#666" : "white",
-                        cursor: isLoading ? "not-allowed" : "pointer",
+                        border:"2px solid red",
+                        color: "red",
                         "&:hover": {
-                          backgroundColor: isLoading ? "#ccc" : "#3F4E64",
-                        },
-                      }}>
+                          backgroundColor: "red",
+                          color: "white",
+                        }
+                      }}
+                      onClick={() => reset()}>
+                      Cancel
+                    </Button>
+                    <Button type="submit" style={buttonStyles}>
                       {isLoading ? <CircularProgress size={20} color="inherit" /> : "Save"}
                     </Button>
                   </Box>
@@ -237,18 +256,11 @@ const Reference = ({ reference }) => {
                 <Divider sx={{ my: 2 }} />
                 {(activeRole === "creditManager") && <Box display="flex" justifyContent="flex-end" sx={{ my: 2 }}>
                   <Button
-                    variant="outlined"
+                    variant="contained"
+                    style={buttonStyles}
                     onClick={() => setOpenEdit(true)}
-                    sx={{
-                      backgroundColor: 'primary.main',
-                      color: 'white',
-                      padding: '10px 20px',
-                      '&:hover': {
-                        backgroundColor: 'darkPrimary',
-                      },
-                    }}
                   >
-                    Edit
+                    Edit 
                   </Button>
                 </Box>}
               </>

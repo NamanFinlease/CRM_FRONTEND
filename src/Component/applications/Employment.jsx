@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress } from '@mui/material';
+import { Typography, Button, Accordion, AccordionSummary, AccordionDetails, Paper, Divider, TextField, Box, TableContainer, TableBody, TableRow, TableCell, Table, CircularProgress, useTheme  } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -14,24 +14,9 @@ import dayjs from 'dayjs';
 import useAuthStore from '../store/authStore';
 import { formatDate } from '../../utils/helper';
 import utc from 'dayjs/plugin/utc';
+import { tokens } from '../../theme'
 
 dayjs.extend(utc); // Enable the utc plugin
-
-const accordionStyles = {
-  borderRadius: '12px',
-  background: 'linear-gradient(145deg, #8cb4f5, #474e59)',
-  boxShadow: '5px 5px 10px #d1d5db, -5px -5px 10px #ffffff',
-  marginBottom: '20px'
-};
-
-const paperStyles = {
-  padding: '30px',
-  borderRadius: '15px',
-  backgroundColor: '#918f8e',
-  boxShadow: '5px 5px 15px rgba(0, 0, 0, 0.1)',
-};
-
-
 
 const Employment = ({ employmentData }) => {
   const { applicationProfile } = useStore();
@@ -39,6 +24,25 @@ const Employment = ({ employmentData }) => {
   const id = applicationProfile._id;
   const [columns, setColumns] = useState(null);
   const [isEditingEmployment, setIsEditingEmployment] = useState(false);
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  const accordionStyles = {
+    borderRadius: '5px',
+    background: colors.white["whiteshade"],
+    boxShadow: '0px 0px 15px rgb(0,0,0,0.1)',
+    marginBottom: '20px'
+  };
+  
+  const paperStyles = {
+    padding: '30px',
+    borderRadius: '15px',
+    border:`2px solid ${colors.primary["primaryshade"]}`,
+    backgroundColor: colors.white["whiteshade"],
+    boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
+  };
 
   const [updatePersonalDetails, { data, isSuccess,isLoading, isError, error }] = useUpdatePersonalDetailsMutation();
 
@@ -106,20 +110,20 @@ const Employment = ({ employmentData }) => {
   }, [employmentData]);
 
   const buttonStyles = {
-    borderRadius: '8px',
+    borderRadius: '5px',
     padding: '10px 20px',
-    backgroundColor: isLoading ? "#ccc" : "#1F2A40",
-    color: isLoading ? "#666" : "white",
+    background: isLoading ? "#ccc" : colors.primary["primaryshade"],
+    color: isLoading ? "#666" : colors.white["whiteshade"],
     cursor: isLoading ? "not-allowed" : "pointer",
     "&:hover": {
-      backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+      backgroundColor: isLoading ? "#ccc" : colors.secondary["secondaryshade"],
     },
   };
 
   return (
     <Accordion style={accordionStyles}>
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon sx={{ color: '#007bb2' }} />}
+        expandIcon={<ExpandMoreIcon sx={{ color: colors.black["blackshade"] }} />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
@@ -260,7 +264,17 @@ const Employment = ({ employmentData }) => {
                   )}
 
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
-                    <Button variant="outlined" onClick={handleEmploymentEditToggle}>
+                    <Button 
+                      variant="outlined" 
+                      sx={{
+                        border:"2px solid red",
+                        color: "red",
+                        "&:hover": {
+                          backgroundColor: "red",
+                          color: "white",
+                        }
+                      }}
+                      onClick={handleEmploymentEditToggle}>
                       Cancel
                     </Button>
                     <Button style={buttonStyles} type="submit">

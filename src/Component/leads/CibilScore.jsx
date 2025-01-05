@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, Paper, Tooltip } from '@mui/material';
+import { tokens } from '../../theme'
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, Paper, Tooltip, useTheme } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PreviewIcon from '@mui/icons-material/Preview';
 import Swal from 'sweetalert2';
@@ -30,6 +31,9 @@ const CibilScore = ({ id }) => {
   const [fetchCibilScore, cibilRes] = useLazyFetchCibilScoreQuery()
   const [getLeadDocs, { data: docsData, isSuccess: docsSuccess, isError: isDocsError, error: docsError }] = useLazyGetLeadDocsQuery();
 
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   // Placeholder function for fetching CIBIL score
   const submitCibil = async () => {
@@ -88,8 +92,8 @@ const CibilScore = ({ id }) => {
   return (
     <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3 }}>
       <Accordion style={accordionStyles}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#000' }} />}>
-          <Typography variant="h6" style={{ fontWeight: '600', color: "#fd6800", fontSize:'16px' }}>Fetch CIBIL Score</Typography>
+        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: colors.black["blackshade"] }} />}>
+          <Typography variant="h6" style={{ fontWeight: '600', color: colors.primary["primaryshade"], fontSize:'16px' }}>Fetch CIBIL Score</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Paper elevation={3} style={paperStyles}>
@@ -102,11 +106,11 @@ const CibilScore = ({ id }) => {
                   borderRadius: '5px',
                   padding: '10px 20px',
                   fontWeight:'700',
-                  background: '#fff',
-                  color: '#000',
+                  background: colors.white["whiteshade"],
+                  color: colors.black["blackshade"],
                   '&:hover': {
-                    background: '#fd6800',
-                    color:"#fff"
+                    background: colors.primary["primaryshade"],
+                    color: colors.white["whiteshade"],
                   },
                 }}
               >
@@ -135,7 +139,7 @@ const CibilScore = ({ id }) => {
                     {/* CIBIL Score Section */}
                     <Box
                       sx={{
-                        bgcolor: '#e0f7e0', // Light green background for CIBIL score
+                        background: colors.primary["primaryshade"], // Light green background for CIBIL score
                         borderRadius: 1,
                         px: 1,
                       }}
@@ -145,7 +149,7 @@ const CibilScore = ({ id }) => {
                         sx={{
                           fontWeight: 500,
                           fontSize: '18px',
-                          color: '#0a8001',
+                          color: colors.white["whiteshade"],
                         }}
                       >
                         CIBIL Score: {cibilRes?.data?.value}

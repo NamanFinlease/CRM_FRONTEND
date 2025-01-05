@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useClosedLeadsQuery } from "../../Service/LMSQueries";
 import { DataGrid } from "@mui/x-data-grid";
 import { Alert} from '@mui/material';
+import CommonTable from "../CommonTable";
 
 function CloseLeads() {
     const [closedLeads, setClosedLeads] = useState();

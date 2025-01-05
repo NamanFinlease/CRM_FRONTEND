@@ -37,50 +37,50 @@ const Dashboard = ({ isSidebarOpen }) => {
    const Employee = {
     admin: {
       leadNew: {
-        icon: <NewReleasesIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+        icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-new",
         title: 'New Leads',
         no : 10
       },
       leadProcess: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-process",
         title: 'Leads In Process',
         no : 10
       },
       leadHold: {
-        icon: <PauseIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-hold",
         title: 'Leads Held',
         no : 10
       },
       leadRejected: {
-        icon: <CancelIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/rejected-leads",
         title: 'Leads Rejected',
         no : 10
       },
       newApplication: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/new-applications",
         title: 'New Applications',
         no : 10
       },
       applicationProcess: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/application-process",
         title: 'Applications In Process',
         no : 10
       },
       applicationHold: {
-        icon: <PauseIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/applications-held",
         title: 'Applications Held',
         no : 10
       },
       applicationRejected: {
-        icon: <CancelIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/rejected-applications",
         title: 'Applications Rejected',
         no : 10
@@ -89,26 +89,26 @@ const Dashboard = ({ isSidebarOpen }) => {
     screener: {
       leadNew: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-new",
         title: 'New Leads',
         no : data?.leads?.newLeads || 0
       },
       leadProcess: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-process",
         title: 'Leads In Process',
         no : data?.leads?.
         allocatedLeads || 0
       },
       leadHold: {
-        icon: <PauseIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-hold",
         title: 'Leads Held',
         no : data?.leads?.heldLeads || 0
       },
       leadRejected: {
-        icon: <CancelIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/rejected-leads",
         title: 'Leads Rejected',
         no : data?.leads?.
@@ -118,27 +118,27 @@ const Dashboard = ({ isSidebarOpen }) => {
     creditManager: {
       newApplication: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/new-applications",
         title: 'New Applications',
         no : data?.applications?.newApplications || 0
 
       },
       applicationProcess: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/application-process",
         title: 'Applications In Process',
         no : data?.applications?.allocatedApplications || 0
       },
       applicationHold: {
-        icon: <PauseIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/applications-held",
         title: 'Applications Held',
         no : data?.applications?.
         heldApplications || 0
       },
       applicationRejected: {
-        icon: <CancelIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/rejected-applications",
         title: 'Applications Rejected',
         no : data?.applications?.rejectedApplications || 0
@@ -147,26 +147,26 @@ const Dashboard = ({ isSidebarOpen }) => {
     sanctionHead: {
       leadNew: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-new",
         title: 'New Leads',
         no : data?.leads?.newLeads || 0
       },
       leadProcess: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-process",
         title: 'Leads In Process',
         no : data?.leads?.
         allocatedLeads || 0
       },
       leadHold: {
-        icon: <PauseIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-hold",
         title: 'Leads Held',
         no : data?.leads?.heldLeads  || 0
       },
       leadRejected: {
-        icon: <CancelIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/rejected-leads",
         title: 'Leads Rejected',
         no : data?.leads?.
@@ -174,39 +174,39 @@ const Dashboard = ({ isSidebarOpen }) => {
       },
       newApplication: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/new-applications",
         title: 'New Applications',
         no : data?.applications?.newApplications || 0
 
       },
       applicationProcess: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/application-process",
         title: 'Applications In Process',
         no : data?.applications?.allocatedApplications || 0
       },
       applicationHold: {
-        icon: <PauseIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/applications-held",
         title: 'Applications Held',
         no : data?.applications?.
         heldApplications || 0
       },
       applicationRejected: {
-        icon: <CancelIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/rejected-applications",
         title: 'Applications Rejected',
         no : data?.applications?.rejectedApplications || 0
       },
       sanctionPending: {
-        icon: <NewReleasesIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/pending-sanctions",
         title: 'Pending Sanction',
         no : data?.sanction?.newSanctions || 0
       },
       sanctioned: {
-        icon: <NewReleasesIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/sanctioned",
         title: 'Sanctioned',
         no : data?.sanction?.sanctioned || 0
@@ -215,13 +215,13 @@ const Dashboard = ({ isSidebarOpen }) => {
     disbursalManager: {
       leadNew: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/disbursal-new",
         title: 'New ',
         no : data?.disbursal?.newDisbursals || 0
       },
       leadProcess: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/disbursal-process",
         title: 'Processing',
         no : data?.disbursal?.allocatedDisbursals || 0
@@ -232,26 +232,26 @@ const Dashboard = ({ isSidebarOpen }) => {
     disbursalHead: {
       newDisbursal: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/disbursal-new",
         title: 'New Disburse ',
         no : data?.disbursal?.newDisbursals || 0
       },
       disbursalProcess: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/disbursal-process",
         title: 'Disburse Processing',
         no : data?.disbursal?.allocatedDisbursals || 0
       },
       disbursePending: {
         icon: <NewReleasesIcon className='mt-3'
-        sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/disbursal-pending",
         title: 'Disbursal Pending',
         no : data?.disbursal?.pendingDisbursals || 0
       },
       disbursed: {
-        icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/disbursed",
         title: 'Disbursed',
         no : data?.disbursal?.disbursed || 0
@@ -264,25 +264,25 @@ const Dashboard = ({ isSidebarOpen }) => {
       
         leadNew: {
           icon: <NewReleasesIcon className='mt-3'
-          sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+          sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
           path: "/lead-new",
           title: 'Todays Leads',
           no : supData?.leadsGeneratedToday
         },
         leadProcess: {
-          icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+          icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
           path: "/lead-process",
           title: 'Leads Process',
           no : supData?.inProcessTodayCount
         },
         leadHold: {
-          icon: <PauseIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+          icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
           path: "/lead-hold",
           title: 'Leads Sanctioned',
           no : supData?.sanctionedTodayCount
         },
         leadRejected: {
-          icon: <CancelIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+          icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
           path: "/rejected-leads",
           title: 'Leads Rejected',
           no : 10
@@ -293,20 +293,20 @@ const Dashboard = ({ isSidebarOpen }) => {
       
         leadNew: {
           icon: <NewReleasesIcon className='mt-3'
-          sx={{ color: '#e38710', width:'100%', height:'30%' }} />, // Green color
+          sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
           path: "/pending-verification",
           title: 'Pending verification',
           no : supData?.leadsGeneratedToday
         },
         leadProcess: {
-          icon: <PlayArrowIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+          icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
           path: "/close-leads",
           title: 'Closed Leads ',
           no : supData?.inProcessTodayCount
         },
         leadRejected: {
           
-          icon: <CancelIcon className='mt-3' sx={{ color: '#e38710', width:'100%', height:'30%' }} />,
+          icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
           path: "/rejected-leads",
           title: 'Leads Rejected',
           no : 10
@@ -348,8 +348,8 @@ const Dashboard = ({ isSidebarOpen }) => {
         sx={{ 
           cursor: 'pointer', 
           borderRadius: '8px',
-          border:"0px solid #fff", 
-          boxShadow:"0px 0px 5px 1px #e38710",
+          border:`0px solid ${colors.white["whiteshade"]}`, 
+          boxShadow:`0px 0px 5px 1px ${colors.primary["primaryshade"]}`,
           fontSize:"12px",
         }}
       >
@@ -377,14 +377,14 @@ const Dashboard = ({ isSidebarOpen }) => {
           <Box>
             <Button
               sx={{
-                background: "#e38710",
-                border:"3px solid #e38710",
-                color:"#fff",
+                background: colors.primary["primaryshade"],
+                border:`3px solid ${colors.primary["primaryshade"]}`,
+                color:colors.white["whiteshade"],
                 fontSize: "14px",
                 fontWeight: "bold",
                 padding: "10px 20px",
                 "&:hover" : {
-                  background: "linear-gradient(180deg, #ffffff 1%, rgb(255,135,16,0.3) 250%)",
+                  background: `linear-gradient(180deg, ${colors.white["whiteshade"]} 1%, rgb(255,135,16,0.3) 250%)`,
                   color:"#000",
                 }
               }}

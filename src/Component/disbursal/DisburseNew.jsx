@@ -8,6 +8,7 @@ import { useAllDisbursalsQuery, useAllocateDisbursalMutation, useLazyExportSanct
 import Header from '../Header';
 import useAuthStore from '../store/authStore';
 import CustomToolbar from '../CustomToolbar';
+import CommonTable from '../CommonTable';
 
 const DisburseNew = () => {
   const [applications, setApplications] = useState([]);
@@ -23,12 +24,7 @@ const DisburseNew = () => {
   });
   const navigate = useNavigate()
 
-
   const { data: allApplication, isSuccess: applicationSuccess,isError,error, refetch } = useAllDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
-
-
-
-
 
   const handleAllocate = async () => {
     allocateApplication(selectedApplication);

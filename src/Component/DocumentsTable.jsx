@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography, Button, Box } from '@mui/material';
+import { tokens } from '../theme';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography, Button, Box, useTheme } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useLazyGetLeadDocsQuery } from '../Service/Query';
@@ -10,6 +11,9 @@ const DocumentsTable = ({ leadData,uploadedDocs }) => {
 
     const [getLeadDocs,{data,isSuccess,isError,error}] = useLazyGetLeadDocsQuery();
 
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const viewFile = (doc) => {
         let docType = ''
@@ -33,23 +37,31 @@ const DocumentsTable = ({ leadData,uploadedDocs }) => {
 
     },[isSuccess,data])
     return (
-        <TableContainer component={Box} sx={{ marginTop: 6, borderRadius: '8px', border: '1px solid #007bb2', overflow: 'hidden' }}>
+        <TableContainer 
+            component={Box} 
+            sx={{ 
+                marginTop: 6, 
+                borderRadius: '8px', 
+                border: `1px solid ${colors.primary["primaryshade"]}`, 
+                overflow: 'hidden' 
+                }}
+        >
                 <Table>
                     <TableHead>
-                        <TableRow sx={{ backgroundColor: '#007bb2', color: '#ffffff' }}>
-                            <TableCell sx={{ color: '#ffffff', fontWeight: 'bold' }}>S.N</TableCell>
-                            <TableCell sx={{ color: '#ffffff', fontWeight: 'bold' }}>Name</TableCell>
-                            <TableCell sx={{ color: '#ffffff', fontWeight: 'bold' }}>Remark</TableCell>
-                            <TableCell sx={{ color: '#ffffff', fontWeight: 'bold' }}>View</TableCell>
+                        <TableRow sx={{ backgroundColor: colors.primary["primaryshade"], color: colors.white["whiteshade"] }}>
+                            <TableCell sx={{ color: colors.white["whiteshade"], fontWeight: 'bold' }}>S.N</TableCell>
+                            <TableCell sx={{ color: colors.white["whiteshade"], fontWeight: 'bold' }}>Name</TableCell>
+                            <TableCell sx={{ color: colors.white["whiteshade"], fontWeight: 'bold' }}>Remark</TableCell>
+                            <TableCell sx={{ color: colors.white["whiteshade"], fontWeight: 'bold' }}>View</TableCell>
                             {/* <TableCell sx={{ color: '#ffffff', fontWeight: 'bold' }}>Actions</TableCell> */}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {uploadedDocs?.map((doc,index) => (
                             <TableRow key={doc?._id}>
-                                <TableCell sx={{ color: '#454443'}}>{index + 1}</TableCell>
-                                <TableCell sx={{ color: '#454443'}}>{doc?.name}</TableCell>
-                                <TableCell sx={{ color: '#454443'}}>{doc?.remarks}</TableCell>
+                                <TableCell sx={{ color: colors.black["blackshade"]}}>{index + 1}</TableCell>
+                                <TableCell sx={{ color: colors.black["blackshade"]}}>{doc?.name}</TableCell>
+                                <TableCell sx={{ color: colors.black["blackshade"]}}>{doc?.remarks}</TableCell>
                                 <TableCell >
                                     {/* <IconButton sx={{ color: '#454443'}} onClick={() => handleDownload(doc)}>
                                         <VisibilityIcon />
@@ -60,7 +72,7 @@ const DocumentsTable = ({ leadData,uploadedDocs }) => {
                                             onClick={() => viewFile(doc)}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            sx={{ color: '#007bff' }}
+                                            sx={{ color: colors.primary["primaryshade"] }}
                                         >
                                             <VisibilityIcon />
                                         </IconButton>

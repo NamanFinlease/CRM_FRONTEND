@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-
-import { Button, CircularProgress, InputAdornment, TextField } from '@mui/material';
+import { tokens } from '../../theme.js'
+import { Button, CircularProgress, InputAdornment, TextField, useTheme } from '@mui/material';
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { useUpdateCamDetailsMutation } from '../../Service/applicationQueries';
 import Swal from 'sweetalert2';
@@ -14,7 +14,9 @@ const EditCam = ({ camData, setIsEditing }) => {
         recommendedLoanError:null
     })
 
-
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
 
     const [updateCamDetails, {isLoading, isSuccess, isError}] = useUpdateCamDetailsMutation();
@@ -231,7 +233,20 @@ const EditCam = ({ camData, setIsEditing }) => {
     }, [formData.actualNetSalary, formData.obligations]);
     return (
         <>
-            <form onSubmit={handleSave} style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', background: '#808080', padding: '10px' }}>
+            <form 
+                onSubmit={handleSave} 
+                style={{ 
+                    display: 'flex', 
+                    flexWrap: 'wrap', 
+                    gap: '16px', 
+                    background: colors.white["whiteshade"], 
+                    padding: '20px',
+                    border: `1px solid ${colors.primary["primaryshade"]}`,
+                    boxShadow: `0px 0px 10px 0px ${colors.primary["primaryshade"]}`,
+                    borderRadius: '5px',
+                    width:"700px",
+                }}
+            >
                 {/* First Row (4 items) */}
                 <div style={{ flex: '1 1 100%' }}>
                     <TextField
@@ -487,20 +502,20 @@ const EditCam = ({ camData, setIsEditing }) => {
                     />
                 </div>
                 <div style={{ flex: '1 1 46%' }}>
-    <TextField
-        label="Loan Recommended"
-        name="loanRecommended"
-        type="number"
-        fullWidth
-        value={formData.loanRecommended}
-        onChange={handleChange}
-    />
-    {errorMessage.recommendedLoanError && (
-        <p style={{ color: 'red', fontSize: '12px', margin: '4px 0' }}>
-            {errorMessage.recommendedLoanError}
-        </p>
-    )}
-</div>
+                    <TextField
+                        label="Loan Recommended"
+                        name="loanRecommended"
+                        type="number"
+                        fullWidth
+                        value={formData.loanRecommended}
+                        onChange={handleChange}
+                    />
+                    {errorMessage.recommendedLoanError && (
+                        <p style={{ color: 'red', fontSize: '12px', margin: '4px 0' }}>
+                            {errorMessage.recommendedLoanError}
+                        </p>
+                    )}
+                </div>
 
                 <div style={{ flex: '1 1 46%' }}>
                     <TextField
@@ -606,11 +621,13 @@ const EditCam = ({ camData, setIsEditing }) => {
                         // color="primary"
                         disabled={isLoading}
                         sx={{
-                            backgroundColor: isLoading ? "#ccc" : "#1F2A40",
+                            backgroundColor: isLoading ? "#ccc" : colors.primary["primaryshade"],
                             color: isLoading ? "#666" : "white",
                             cursor: isLoading ? "not-allowed" : "pointer",
+                            border: `2px solid ${colors.primary["primaryshade"]}`, 
                             "&:hover": {
-                                backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+                                backgroundColor: isLoading ? "#ccc" : colors.white["whiteshade"],
+                                color: isLoading ? "#666" : colors.primary["primaryshade"],
                             },
                         }}
                     >
@@ -621,7 +638,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         variant="outlined"
                         color="error"
                         onClick={handleCancel}
-                        style={{ marginLeft: '10px' }}
+                        style={{ marginLeft: '10px', border:`2px solid red` }}
                         sx={{
                             ':hover': {
                                 color: 'white',

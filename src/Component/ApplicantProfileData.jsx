@@ -1,10 +1,14 @@
 import React from 'react'
-
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { tokens } from '../theme';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, useTheme } from '@mui/material';
 import { formatDate } from '../utils/helper';
 
 
 const ApplicantProfileData = ({leadData}) => {
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const columns = [
         { label: "First Name", value: leadData?.fName, label2: "Middle Name", value2: leadData?.mName },
@@ -19,28 +23,26 @@ const ApplicantProfileData = ({leadData}) => {
     return (
         <>
             <TableContainer component={Paper} sx={{
-    borderRadius: '8px',
-    backgroundColor: '#fff', // Background color for the container
-    '& .MuiTableCell-root': {
-      color: 'white', // Text color for table cells
-      borderBottom: '1px solid rgba(255, 255, 255, 0.2)', // Optional: Customize cell borders
-    },
-    '& .MuiTableRow-root:nth-of-type(odd)': {
-      backgroundColor: 'rgb(253, 104, 0)', // Odd rows
-    },
-    '& .MuiTableRow-root:nth-of-type(even)': {
-      backgroundColor: 'rgba(253, 104, 0, 0.8)', // Even rows
-    },
-  }}>
+                    borderRadius: '8px',
+                    backgroundColor: '#fff', // Background color for the container
+                    '& .MuiTableCell-root': {
+                    color: colors.black["blackshade"], // Text color for table cells
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.2)', // Optional: Customize cell borders
+                    },
+                    '& .MuiTableRow-root':{
+                        borderBottom: `2px solid ${colors.primary["primaryshade"]}`
+                    }
+                    // '& .MuiTableRow-root:nth-of-type(odd)': {
+                    // backgroundColor: colors.primary["primaryshade"], // Odd rows
+                    // },
+                    // '& .MuiTableRow-root:nth-of-type(even)': {
+                    // backgroundColor: colors.white["whiteshade"], // Even rows
+                    // },
+                }}>
                 <Table aria-label="application details table">
                     <TableBody>
                         {columns.map((row, index) => (
-                            <TableRow key={index} 
-                                sx={{ 
-                                    '&:nth-of-type(odd)': { background: 'rgb(253, 104, 0)' },
-                                    '&:nth-of-type(even)': { background: 'rgb(253,104,0,0.8)',}    
-                                }}
-                            >
+                            <TableRow key={index}>
                                 <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label}</TableCell>
                                 <TableCell align="left">{row.value || ''}</TableCell>
                                 <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label2}</TableCell>

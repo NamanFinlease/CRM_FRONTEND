@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAllocateApplicationMutation, useFetchAllApplicationQuery } from '../../Service/applicationQueries';
 import Header from '../Header';
 import useAuthStore from '../store/authStore';
+import CommonTable from '../CommonTable';
 
 const NewApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -21,12 +22,7 @@ const NewApplications = () => {
   });
   const navigate = useNavigate()
 
-
   const { data: allApplication, isSuccess: applicationSuccess, refetch } = useFetchAllApplicationQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
-
-
-
-
 
   const handleAllocate = async () => {
     // Perform action based on selected leads
@@ -114,75 +110,28 @@ const NewApplications = () => {
 
   return (
     <>
-      <div className='crm-container'>
-        <div
-          style={{
-            padding: '10px 20px',
-            fontWeight: 'bold',
-            background: '#transparent',
-            color: '#e38710',
-            marginLeft:"60px",
-            border:"1px solid #e38710",
-            borderRadius: '5px',
-            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-            cursor: 'pointer',
-          }}
-        >
-          New Applications : {totalApplications || 0} {/* Defaults to 0 if no leads */}
-        </div>
+      {/* {columns &&
+          <CommonTable
+              columns={columns}
+              rows={rows}
+              totalLeads={totalLeads}
+              paginationModel={paginationModel}
+              setPaginationModel={setPaginationModel}
+          />
 
-        {/* Action button for selected leads */}
-        {activeRole === "creditManager" && <button
-          onClick={handleAllocate}
-          style={{
-            marginLeft: '20px',
-            fontWeight:"bold",
-            padding: '10px 20px',
-            backgroundColor: 'transparent',
-            color: '#18de26',
-            border: '1px solid #18de26',
-            borderRadius: '5px',
-            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-            cursor: 'pointer',
-          }}
-        >
-          Allocate
-        </button>}
-      </div>
-
-      <Header />
-
-      {columns && <div style={{ height: 500, width: '90%', display:"flex", justifyContent:"center", margin: "0px 20px", boxShadow:"0px 0px 20px 10px rgba(0,0,0,0.1)" }}>
-        <DataGrid
-          rows={rows}
+      } */}
+      <CommonTable
           columns={columns}
-          rowCount={totalApplications}
-          // loading={isLoading}
-          pageSizeOptions={[5]}
-          paginationModel={paginationModel}
-          paginationMode="server"
-          onPaginationModelChange={handlePageChange}
-          sx={{
-            color: '#000',  // Default text color for rows
-            '& .MuiDataGrid-columnHeaders .css-yrdy0g-MuiDataGrid-columnHeaderRow': {
-              backgroundColor: '#e38710',  // Optional: Header background color
-              color: 'white'  // White text for the headers
-            },
-            '& .MuiDataGrid-footerContainer': {
-              backgroundColor: '#e38710',  // Footer background color
-              color: 'white',  // White text for the footer
-            },
-            '& .MuiDataGrid-row:hover': {
-              backgroundColor: 'white',
-              cursor: 'pointer',
-            },
-            '& .MuiDataGrid-row': {
-              backgroundColor: 'white',
-              // cursor: 'pointer',
-            },
-          }}
-        />
-      </div>}
+          rows={rows}
+          totalRows={totalApplications}
+          paginationModel={{ page: 1, pageSize: 10 }}
+          onPageChange={handlePageChange}
+          // onRowClick={handleRowClick}
+          title="New Applications"
+          // actionButton={true}
+          // actionButtonText="Allocate Leads"
+          // onActionButtonClick={handleActionButtonClick}
+      />
     </>
   );
 };

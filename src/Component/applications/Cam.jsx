@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField, Table, TableBody, TableCell, TableRow, TableContainer, Paper, Grid2 } from '@mui/material';
+import { tokens } from '../../theme.js'
+import { Button, TextField, Table, TableBody, TableCell, TableRow, TableContainer, Paper, Grid2, useTheme } from '@mui/material';
 import { useGetCamDetailsQuery, useUpdateCamDetailsMutation } from '../../Service/applicationQueries';
 import { useParams } from 'react-router-dom';
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
@@ -11,6 +12,10 @@ import { formatDate } from '../../utils/helper';
 const Cam = ({id}) => {
   const { data, isLoading: camGetloading, isError: camGetError, isSuccess: getCamSuccess } = useGetCamDetailsQuery(id, { skip: id === null });
   const {activeRole} = useAuthStore()
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   
   // const updatData = useUpdateCamDetailsMutation();
   const [isEditing, setIsEditing] = useState(false);
@@ -186,7 +191,7 @@ const Cam = ({id}) => {
 
 
               {/* Edit CAM Button */}
-              {activeRole === "creditManager" && <Button variant="contained" onClick={() => setIsEditing(true)} style={{ marginTop: '20px' }}>
+              {activeRole === "creditManager" && <Button variant="contained" onClick={() => setIsEditing(true)} style={{ marginTop: '20px', background: colors.primary["primaryshade"], color:colors.white["whiteshade"] }}>
                 Edit CAM
               </Button>}
             </div>

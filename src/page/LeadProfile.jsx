@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {  Button, Paper, Box, Alert } from '@mui/material';
+import { tokens } from '../theme';
+import {  Button, Paper, Box, Alert, useTheme } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useFetchSingleLeadQuery, } from '../Service/Query';
 import LeadDetails from '../Component/LeadDetails';
@@ -25,6 +26,9 @@ const LeadProfile = () => {
     const { setLead } = useStore()
     const [leadEdit, setLeadEdit] = useState(false);
 
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const { data: leadData, isSuccess: leadSuccess, isError, error } = useFetchSingleLeadQuery(id, { skip: id === null });
 
@@ -62,15 +66,6 @@ const LeadProfile = () => {
                                         padding: '20px',
                                         marginTop: '20px',
                                         borderRadius: '10px',
-                                        // color: '#fd6800',  // Default text color for rows
-                                        // '& .MuiDataGrid-columnHeaders': {
-                                        //     backgroundColor: '#fff',  // Optional: Header background color
-                                        //     color: 'white',  // White text for the headers
-                                        // },
-                                        // '& .MuiDataGrid-footerContainer': {
-                                        //     backgroundColor: '#1F2A40',  // Footer background color
-                                        //     color: 'white',  // White text for the footer
-                                        // },
                                         '& .MuiDataGrid-row:hover': {
                                             backgroundColor: 'white',
                                             cursor: 'pointer',
@@ -92,14 +87,14 @@ const LeadProfile = () => {
                                             variant="outlined"
                                             onClick={() => setLeadEdit(true)}
                                             sx={{
-                                                border:"3px solid #e38710",
-                                                backgroundColor: 'transparent',
-                                                color: '#e38710',
+                                                border:`3px solid ${colors.primary["primaryshade"]}`,
+                                                backgroundColor: colors.white["whiteshade"],
+                                                color: colors.primary["primaryshade"],
                                                 padding: '10px 20px',
                                                 transition: "all 0.3s ease",
                                                 '&:hover': {
-                                                    backgroundColor: '#e38710',
-                                                    color:"white"
+                                                    backgroundColor: colors.primary["primaryshade"],
+                                                    color:colors.white["whiteshade"]
                                                 },
                                             }}
                                         >

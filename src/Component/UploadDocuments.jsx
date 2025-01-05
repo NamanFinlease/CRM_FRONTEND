@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { tokens } from '../theme';
 import {
     Typography,
     Button,
@@ -8,6 +9,7 @@ import {
     TextField,
     CircularProgress,
     Tooltip,
+    useTheme
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
@@ -51,6 +53,10 @@ const UploadDocuments = ({ leadData }) => {
         }));
 
     };
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     // Handle remarks input
     const handleRemarksChange = (index, event) => {
@@ -181,154 +187,159 @@ const UploadDocuments = ({ leadData }) => {
 
 
     return (
-        <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3, p: 3, backgroundColor: '#ffffff', borderRadius: 2 }}>
-            <Typography variant="h6" style={{ fontWeight: '600', color: "#000000", mb: 2 }}>
-                Upload Documents
-            </Typography>
+        <Box sx={{ maxWidth: '1000px', margin: '0 auto', mt: 3, p: 3, background: colors.white["whiteshade"] , borderRadius: 2 }}>
+            <Box sx={{boxShadow:`0px 0px 5px 1px ${colors.primary["primaryshade"]}`, padding:"10px 15px", borderRadius:2, }}>
 
-            <Box display="flex" flexDirection="column" gap={2}>
-                <Box display="flex" alignItems="center" gap={2}>
-                    {['aadhaarFront', 'aadhaarBack', 'panCard', 'salarySlip', 'bankStatement', 'others'].map((key) => (
-                        <Box key={key} display="flex" alignItems="center" gap={1}>
-                            <Checkbox
-                                checked={selectedDocType === key}
-                                onChange={(e) => {
-                                    setSelectedDocType(null);
-                                    setFileInputs([{ file: null, remarks: '' }]);
+                <Typography variant="h6" style={{ fontWeight: '600', color: colors.black["blackshade"], mb: 2 }}>
+                    Upload Documents
+                </Typography>
 
-                                    if (e.target.checked) {
-                                        setSelectedDocType(key);
-                                    }
-                                }}
-                                sx={{ color: 'black' }}
-                            />
-                            <Typography variant="subtitle2" style={{ fontWeight: '600', color: '#000000', fontSize: '14px' }}>
-                                {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
-                            </Typography>
-                        </Box>
-                    ))}
-                </Box>
+                <Box display="flex" flexDirection="column" gap={2}>
+                    <Box display="flex" alignItems="center" gap={2}>
+                        {['aadhaarFront', 'aadhaarBack', 'panCard', 'salarySlip', 'bankStatement', 'others'].map((key) => (
+                            <Box key={key} display="flex" alignItems="center" gap={1}>
+                                <Checkbox
+                                    checked={selectedDocType === key}
+                                    onChange={(e) => {
+                                        setSelectedDocType(null);
+                                        setFileInputs([{ file: null, remarks: '' }]);
 
-                {selectedDocType && (
-                    <>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                            {fileInputs.map((input, index) => (
-                                <Box
-                                    key={index}
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 2,
-                                        p: 2,
-                                        borderRadius: 2,
-                                        backgroundColor: '#f9f9f9',
-                                        boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
+                                        if (e.target.checked) {
+                                            setSelectedDocType(key);
+                                        }
                                     }}
-                                >
-                                    <Button
-                                        variant="outlined"
-                                        component="label"
-                                        // onClick={() => fileInputRef.current.click()}
+                                    sx={{ color: colors.primary["primaryshade"], }}
+                                />
+                                <Typography variant="subtitle2" style={{ fontWeight: '600', color: colors.black["blackshade"], fontSize: '14px' }}>
+                                    {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
+                                </Typography>
+                            </Box>
+                        ))}
+                    </Box>
+
+                    {selectedDocType && (
+                        <>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                                {fileInputs.map((input, index) => (
+                                    <Box
+                                        key={index}
                                         sx={{
-                                            minWidth: 120,
-                                            borderColor: '#007bff',
-                                            color: '#007bff',
-                                            '&:hover': {
-                                                backgroundColor: '#e6f7ff',
-                                                borderColor: '#0056b3',
-                                            },
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 2,
+                                            p: 2,
+                                            borderRadius: 2,
+                                            backgroundColor: '#f9f9f9',
+                                            boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
                                         }}
                                     >
-                                        Choose File
-                                        <input
-                                            type="file"
-                                            // ref={fileInputRef}
-                                            hidden
-                                            onChange={(event) => handleFileChange(index, event)}
-                                        />
-                                    </Button>
-
-                                    {/* Remarks Input */}
-                                    <TextField
-                                        label="Remarks"
-                                        value={input.remarks}
-                                        onChange={(event) => handleRemarksChange(index, event)}
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{
-                                            flex: 1,
-                                            '& .MuiInputBase-input': { color: '#1b1c1b' },
-                                            '& .MuiInputLabel-root': { color: '#1b1c1b' },
-                                            '& .MuiOutlinedInput-root': {
-                                                '& fieldset': { borderColor: '#007bff' },
-                                                '&:hover fieldset': { borderColor: '#0056b3' },
-                                            },
-                                        }}
-                                    />
-
-                                    {/* View Button */}
-                                    {input.file && (
-                                        <IconButton
-                                            color="primary"
-                                            component="a"
-                                            href={URL.createObjectURL(input.file)}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            sx={{ color: '#007bff' }}
+                                        <Button
+                                            variant="outlined"
+                                            component="label"
+                                            // onClick={() => fileInputRef.current.click()}
+                                            sx={{
+                                                minWidth: 120,
+                                                borderColor: colors.primary["primaryshade"],
+                                                color: colors.primary["primaryshade"],
+                                                '&:hover': {
+                                                    backgroundColor: colors.primary["primaryshade"],
+                                                    color: colors.white["whiteshade"],
+                                                },
+                                            }}
                                         >
-                                            <VisibilityIcon />
-                                        </IconButton>
-                                    )}
+                                            Choose File
+                                            <input
+                                                type="file"
+                                                // ref={fileInputRef}
+                                                hidden
+                                                onChange={(event) => handleFileChange(index, event)}
+                                            />
+                                        </Button>
 
-                                    {/* Remove File Button */}
-                                    {index > 0 && <IconButton
-                                        color="secondary"
-                                        onClick={() => handleRemoveFileInput(index)}
-                                        sx={{ color: '#ff4d4f' }}
-                                    >
-                                        <RemoveCircleOutlineIcon />
-                                    </IconButton>}
+                                        {/* Remarks Input */}
+                                        <TextField
+                                            label="Remarks"
+                                            value={input.remarks}
+                                            onChange={(event) => handleRemarksChange(index, event)}
+                                            variant="outlined"
+                                            size="small"
+                                            sx={{
+                                                flex: 1,
+                                                '& .MuiInputBase-input': { color: colors.black["blackshade"] },
+                                                '& .MuiInputLabel-root': { color: colors.black["blackshade"] },
+                                                '& .MuiOutlinedInput-root': {
+                                                    '& fieldset': { borderColor: '#000' },
+                                                    '&:hover fieldset': { borderColor: '#e38710' },
+                                                },
+                                            }}
+                                        />
 
-                                    {/* Add New Input Button */}
-                                    {(
-                                        index === fileInputs.length - 1 &&
-                                        !["aadhaarFront", "aadhaarBack", "panCard"].includes(selectedDocType)) &&
-                                        fileInputs[fileInputs.length - 1].file &&
-                                        (
+                                        {/* View Button */}
+                                        {input.file && (
                                             <IconButton
                                                 color="primary"
-                                                onClick={handleAddFileInput}
-                                                sx={{
-                                                    backgroundColor: '#007bff',
-                                                    color: 'white',
-                                                    '&:hover': {
-                                                        backgroundColor: '#0056b3',
-                                                    },
-                                                }}
+                                                component="a"
+                                                href={URL.createObjectURL(input.file)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                sx={{ color: '#007bff' }}
                                             >
-                                                <AddIcon />
+                                                <VisibilityIcon />
                                             </IconButton>
                                         )}
-                                </Box>
-                            ))}
-                        </Box>
-                                <Button
-                                    onClick={handleSubmit}
-                                    disabled={isLoading}
-                                    // variant="contained"
-                                    sx={{
-                                        backgroundColor: isLoading ? "#ccc" : "#1F2A40",
-                                        color: isLoading ? "#666" : "white",
-                                        cursor: isLoading ? "not-allowed" : "pointer",
-                                        "&:hover": {
-                                            backgroundColor: isLoading ? "#ccc" : "#3F4E64",
-                                        },
-                                    }}
-                                >
-                                    {isLoading ? <CircularProgress size={20} color="inherit" /> : "Submit"}
-                                </Button>
-                    </>
-                )}
+
+                                        {/* Remove File Button */}
+                                        {index > 0 && <IconButton
+                                            color="secondary"
+                                            onClick={() => handleRemoveFileInput(index)}
+                                            sx={{ color: '#ff4d4f' }}
+                                        >
+                                            <RemoveCircleOutlineIcon />
+                                        </IconButton>}
+
+                                        {/* Add New Input Button */}
+                                        {(
+                                            index === fileInputs.length - 1 &&
+                                            !["aadhaarFront", "aadhaarBack", "panCard"].includes(selectedDocType)) &&
+                                            fileInputs[fileInputs.length - 1].file &&
+                                            (
+                                                <IconButton
+                                                    color="primary"
+                                                    onClick={handleAddFileInput}
+                                                    sx={{
+                                                        backgroundColor: '#007bff',
+                                                        color: 'white',
+                                                        '&:hover': {
+                                                            backgroundColor: '#0056b3',
+                                                        },
+                                                    }}
+                                                >
+                                                    <AddIcon />
+                                                </IconButton>
+                                            )}
+                                    </Box>
+                                ))}
+                            </Box>
+                                    <Button
+                                        onClick={handleSubmit}
+                                        disabled={isLoading}
+                                        // variant="contained"
+                                        sx={{
+                                            backgroundColor: isLoading ? "#ccc" : colors.white["whiteshade"],
+                                            color: isLoading ? "#666" : colors.primary["primaryshade"],
+                                            cursor: isLoading ? "not-allowed" : "pointer",
+                                            border: `2px solid ${colors.primary["primaryshade"]}`,
+                                            "&:hover": {
+                                                backgroundColor: isLoading ? "#ccc" : colors.primary["primaryshade"],
+                                                color : isLoading ? "ccc" : colors.white["whiteshade"]
+                                            },
+                                        }}
+                                    >
+                                        {isLoading ? <CircularProgress size={20} color="inherit" /> : "Submit"}
+                                    </Button>
+                        </>
+                    )}
+                </Box>
             </Box>
 
 

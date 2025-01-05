@@ -16,7 +16,8 @@ import {
     InputLabel,
     Select,
     FormControl,
-    CircularProgress
+    CircularProgress,
+    useTheme,
 } from '@mui/material';
 import { useAddBankMutation, useGetBankDetailsQuery, useUpdateBankMutation } from '../../Service/applicationQueries';
 import { useParams } from 'react-router-dom';
@@ -26,6 +27,8 @@ import useAuthStore from '../store/authStore';
 import Swal from 'sweetalert2';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { bankDetailsSchema } from '../../utils/validations';
+import { tokens } from '../../theme';
+import { ColorizeSharp } from '@mui/icons-material';
 
 const BankDetails = ({ id }) => {
     const { applicationProfile } = useStore()
@@ -37,6 +40,10 @@ const BankDetails = ({ id }) => {
     const [addBank, addBankRes] = useAddBankMutation();
     const [updatBank, {data:updateData,isSuccess:updateSuccess,isLoading:updateLoading,isError:isUpdateError,error:updateError}] = useUpdateBankMutation();
 
+    //color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    
     // React Hook Form setup
     const { handleSubmit, control, reset, formState: { errors } } = useForm({
         resolver: yupResolver(bankDetailsSchema)
@@ -200,8 +207,13 @@ const BankDetails = ({ id }) => {
                             <Box display="flex" justifyContent="flex-end" marginTop="20px">
                                 <Button
                                     variant="outlined"
-                                    color="secondary"
-                                    sx={{ marginRight: '10px' }}
+                                    sx={{ 
+                                        marginRight: '10px', 
+                                        color: "red", 
+                                        background: colors.white["whiteshade"],
+                                        border: "2px solid red",
+                                        "&:hover": { background: "red", color: colors.white["whiteshade"] }
+                                    }}
                                     onClick={() => setIsAddingBank(false)}
                                 >
                                     Cancel
@@ -210,11 +222,11 @@ const BankDetails = ({ id }) => {
                                     disabled={addBankRes?.isLoading || updateLoading}
                                     type="submit"
                                     sx={{
-                                        backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : "#1F2A40",
-                                        color: (addBankRes?.isLoading || updateLoading) ? "#666" : "white",
+                                        backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : colors.primary["primaryshade"],
+                                        color: (addBankRes?.isLoading || updateLoading) ? "#666" : colors.white["whiteshade"],
                                         cursor: (addBankRes?.isLoading || updateLoading) ? "not-allowed" : "pointer",
                                         "&:hover": {
-                                            backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : "#3F4E64",
+                                            backgroundColor: (addBankRes?.isLoading || updateLoading) ? "#ccc" : colors.secondary["secondaryshade"],
                                         },
                                     }}
                                 >
@@ -265,11 +277,12 @@ const BankDetails = ({ id }) => {
                                 variant="outlined"
                                 onClick={() => handleOpenForm()}
                                 sx={{
-                                    backgroundColor: 'primary.main',
-                                    color: 'white',
+                                    backgroundColor: colors.primary["primaryshade"],
+                                    color: colors.white["whiteshade"],
+                                    border:0,
                                     padding: '10px 20px',
                                     '&:hover': {
-                                        backgroundColor: 'darkPrimary',
+                                        backgroundColor: colors.secondary["secondaryshade"],
                                     },
                                 }}
                             >

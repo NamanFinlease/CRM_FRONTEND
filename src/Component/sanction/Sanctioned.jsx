@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import CommonTable from '../CommonTable';
 import { useSanctionedQuery } from '../../Service/applicationQueries'
 import { Alert } from '@mui/material';
 import { DataGrid, GridToolbar, GridToolbarExport } from '@mui/x-data-grid'
@@ -69,74 +70,28 @@ const Sanctioned = () => {
     }, [isSuccess, data])
     return (
         <>
-            <div>
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginTop: '20px',
-                        marginLeft: '20px',
-                    }}
-                >
-                    <div
-                        style={{
-                            padding: '10px 20px',
-                            fontWeight: 'bold',
-                            backgroundColor: '#007bff',
-                            color: '#fff',
-                            borderRadius: '5px',
-                            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                            cursor: 'pointer',
-                            marginBottom: "15px"
-                        }}
-                    >
-                        {/* <h1>Sanctioned</h1> */}
-                        Total Sanctioned : {totalApplications || 0}
-                    </div>
+            {/* {columns &&
+                <CommonTable
+                    columns={columns}
+                    rows={rows}
+                    totalLeads={totalLeads}
+                    paginationModel={paginationModel}
+                    setPaginationModel={setPaginationModel}
+                />
 
-                </div>
-
-                {columns &&
-                    <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
-                        <DataGrid
-                            rows={rows}
-                            columns={columns}
-                            rowCount={totalApplications}
-                            loading={isLoading}
-                            // slots={{ toolbar: () => <CustomToolbar /> }}
-                            pageSizeOptions={[5]}
-                            paginationModel={paginationModel}
-                            paginationMode="server"
-                            onPaginationModelChange={(pagination) => handlePageChange(pagination)}
-                            onRowClick={(params) => handleLeadClick(params)}
-                            sx={{
-                                color: '#1F2A40',  // Default text color for rows
-                                '& .MuiDataGrid-columnHeaders': {
-                                    backgroundColor: '#1F2A40',  // Optional: Header background color
-                                    color: 'white'  // White text for the headers
-                                },
-                                '& .MuiDataGrid-footerContainer': {
-                                    backgroundColor: '#1F2A40',  // Footer background color
-                                    color: 'white',  // White text for the footer
-                                },
-                                '& .MuiDataGrid-row:hover': {
-                                    backgroundColor: 'white',
-                                    cursor: 'pointer',
-                                },
-                                '& .MuiDataGrid-row': {
-                                    backgroundColor: 'white',
-                                    // cursor: 'pointer',
-                                },
-                            }}
-                        />
-                    </div>}
-                {isError &&
-                    <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
-                        {error?.data?.message}
-                    </Alert>
-                }
-            </div>
-
+            } */}
+            <CommonTable
+                columns={columns}
+                rows={rows}
+                totalRows={totalApplications}
+                paginationModel={{ page: 1, pageSize: 10 }}
+                onPageChange={handlePageChange}
+                onRowClick={handleLeadClick}
+                title="Total Sanctioned"
+                // actionButton={true}
+                // actionButtonText="Allocate Leads"
+                // onActionButtonClick={handleActionButtonClick}
+            />
         </>
     )
 }

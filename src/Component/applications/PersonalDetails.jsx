@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { tokens } from '../../theme'
 import {
   Typography,
   Paper,
@@ -11,6 +12,7 @@ import {
   Box,
   TableHead,
   Divider,
+  useTheme,
 } from '@mui/material';
 import { useApplicantPersonalDetailsQuery } from '../../Service/applicationQueries';
 import useStore from '../../Store';
@@ -31,6 +33,10 @@ const PersonalDetails = ({ id }) => {
     id,
     { skip: id === null }
   );
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     if (applicantSuccess) {
@@ -59,7 +65,7 @@ const PersonalDetails = ({ id }) => {
           <Table aria-label="personal details table">
             <TableBody>
               {columns?.map((row, index) => (
-                <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#918f8e' } }}>
+                <TableRow key={index} sx={{ borderBottom:`2px solid ${colors.primary["primaryshade"]}` }}>
                   <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label}</TableCell>
                   <TableCell align="left">{row.value || ''}</TableCell>
                   <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label2}</TableCell>

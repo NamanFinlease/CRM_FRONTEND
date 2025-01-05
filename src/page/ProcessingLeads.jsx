@@ -10,10 +10,24 @@ import CommonTable from '../Component/CommonTable';
 const ProcessingLeads = () => {
     const [processingLeads, setProcessingLeads] = useState()
     const [totalLeads, setTotalLeads] = useState()
+    const [id, setId] = useState(null)
+    const navigate = useNavigate()
+    const [page, setPage] = useState(1); // Current page
     const { empInfo, activeRole } = useAuthStore()
     const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 5, });
     const { data, isSuccess, refetch } = useFetchAllocatedLeadsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
     // const { data: LeadData, isSuccess: leadSuccess } = useFetchSingleLeadQuery(id, { skip: id === null })
+    const handleRowClick = (lead) => {
+        setId(lead.id)
+        navigate(`/lead-profile/${lead.id}`)
+    };
+
+    const handlePageChange = (newPaginationModel) => {
+        setPage(newPaginationModel);
+        // Fetch new data based on the new page
+        setPaginationModel(newPaginationModel)
+        refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); // Adjust this according to your data fetching logic
+    };
 
     const columns = [
         { field: 'name', headerName: 'Full Name', width: 200 },
@@ -60,8 +74,7 @@ const ProcessingLeads = () => {
 
     return (
         <>
-            
-            {columns &&
+            {/* {columns &&
                 <CommonTable
                     columns={columns}
                     rows={rows}
@@ -70,8 +83,19 @@ const ProcessingLeads = () => {
                     setPaginationModel={setPaginationModel}
                 />
 
-            }
-
+            } */}
+            <CommonTable
+                columns={columns}
+                rows={rows}
+                totalRows={totalLeads}
+                paginationModel={{ page: 1, pageSize: 10 }}
+                onPageChange={handlePageChange}
+                onRowClick={handleRowClick}
+                title="Leads In Process"
+                // actionButton={true}
+                // actionButtonText="Allocate Leads"
+                // onActionButtonClick={handleActionButtonClick}
+            />
         </>
     )
 }

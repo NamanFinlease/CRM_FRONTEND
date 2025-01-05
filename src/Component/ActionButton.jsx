@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Select, MenuItem, TextField, Box, Alert, Typography, FormControl, InputLabel, CircularProgress } from '@mui/material';
-
+import { Button, Select, MenuItem, TextField, Box, Alert, Typography, FormControl, InputLabel, CircularProgress, useTheme } from '@mui/material';
+import { tokens } from '../theme';
 import { useHoldLeadMutation, useRecommendLeadMutation, useRejectLeadMutation, useUnholdLeadMutation } from '../Service/Query';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
@@ -33,6 +33,10 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
     const navigate = useNavigate()
     const { empInfo, activeRole } = useAuthStore()
     const { applicationProfile } = useStore()
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const [actionType, setActionType] = useState(''); // To track which action is selected: 'hold', 'reject', 'approve'
     const [selectedReason, setSelectedReason] = useState(''); // To track the selected reason for hold or reject
@@ -370,15 +374,14 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                             :
                                             <Button
                                                 // variant="contained"
-                                                color="success"
                                                 onClick={() => handleApprove('')}
                                                 disabled={recommendApplicationLoading || recommendLeadloading}
                                                 sx={{
-                                                    backgroundColor: (recommendApplicationLoading || recommendLeadloading) ? "#ccc" : "#04c93f",
+                                                    backgroundColor: (recommendApplicationLoading || recommendLeadloading) ? "#ccc" : colors.primary["primaryshade"],
                                                     color: (recommendApplicationLoading || recommendLeadloading) ? "#666" : "white",
                                                     cursor: (recommendApplicationLoading || recommendLeadloading) ? "not-allowed" : "pointer",
                                                     "&:hover": {
-                                                        backgroundColor: (recommendApplicationLoading || recommendLeadloading) ? "#ccc" : "#8bf7ab",
+                                                        backgroundColor: (recommendApplicationLoading || recommendLeadloading) ? "#ccc" : colors.secondary["secondaryshade"],
                                                     },
                                                 }}
                                             >
@@ -388,11 +391,11 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                                 }
                                 <Button
                                     variant="contained"
-                                    color="warning"
                                     onClick={() => handleActionClick(isHold ? "unhold" : 'hold')}
                                     sx={{
+                                        background:"#ded704",
                                         '&:hover': {
-                                            backgroundColor: isHold ? '#ffcccb' : '#ffc107', // Set hover colors based on `isHold`
+                                            backgroundColor: isHold ? '#ede909' : '#ede909' // Set hover colors based on `isHold`
                                         },
                                     }}
                                 >
@@ -406,7 +409,7 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                             onClick={() => handleActionClick('reject')}
                             sx={{
                                 '&:hover': {
-                                    backgroundColor: '#f7adab', // Set hover colors based on `isHold`
+                                    backgroundColor: '#a34946', // Set hover colors based on `isHold`
                                 },
                             }}
                         >
