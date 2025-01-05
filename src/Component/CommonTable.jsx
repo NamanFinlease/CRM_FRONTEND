@@ -16,10 +16,6 @@ const CommonTable = ({columns,rows,totalLeads,paginationModel,setPaginationModel
 
     }
 
-    // useEffect(() => {
-    //     refetch({ page: paginationModel.page + 1, limit: paginationModel.pageSize });
-    // }, [paginationModel]);
-
 
 
     return (
