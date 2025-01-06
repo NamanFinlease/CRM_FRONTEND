@@ -8,9 +8,11 @@ import EmailVerification from './OtpVerification';
 import PanCompare from './PanCompare';
 import useAuthStore from '../store/authStore';
 import AadhaarCompare from './AadhaarCompare';
+import useStore from '../../Store';
 
 const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVerified,isAadhaarDetailsSaved, isPanVerified }) => {
   const { id } = useParams()
+  const {lead} = useStore()
   const {setCodeVerifier,setFwdp,activeRole} = useAuthStore()
   const navigate = useNavigate()
   const [otp, setOtp] = useState(false)
@@ -83,7 +85,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
     <>
     {openAadhaarCompare && <AadhaarCompare open={openAadhaarCompare} setOpen={setOpenAadhaarCompare} aadhaarDetails={aadhaarData} lead={lead} />}
     {/* {otp && <EmailVerification open={otp} setOpen={setOtp} />} */}
-      {<PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
+      {panModal && <PanCompare open={panModal} setOpen={setPanModal} panDetails={panRes?.data?.data} />}
       <Box sx={{ maxWidth: 700, margin: '0 auto', mt: 4 }}>
         {/* Single Accordion for Mobile and Email Verification */}
         <Accordion sx={{ borderRadius: '15px', boxShadow: 3 }}>
