@@ -1,5 +1,5 @@
 import { createContext, useState, useMemo } from "react";
-import { createTheme } from "@mui/material/styles";
+import { createTheme, } from "@mui/material/styles";
 
 // color design tokens export
 export const tokens = (mode) => ({
@@ -158,13 +158,13 @@ export const themeSettings = (mode) => {
               light: colors.grey[100],
             },
             background: {
-              default: colors.primary[500],
+              default: colors.primary["primaryshade"],
             },
           }
         : {
             // palette values for light mode
             primary: {
-              main: colors.primary[100],
+              main: colors.primary["primaryshade"],
             },
             secondary: {
               main: colors.greenAccent[500],
@@ -175,7 +175,7 @@ export const themeSettings = (mode) => {
               light: colors.grey[100],
             },
             background: {
-              default: "#fcfcfc",
+              default: colors.white["whiteshade"],
             },
           }),
     },
@@ -229,3 +229,14 @@ export const useMode = () => {
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   return [theme, colorMode];
 };
+// const App = () => {
+//   const [theme, colorMode] = useMode();
+
+//   return (
+//     <ColorModeContext.Provider value={colorMode}>
+//       <ThemeProvider theme={theme}>
+//         {/* Your application components go here */}
+//       </ThemeProvider>
+//     </ColorModeContext.Provider>
+//   );
+// };

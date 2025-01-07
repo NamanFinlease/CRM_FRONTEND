@@ -33,7 +33,6 @@ const Dashboard = ({ isSidebarOpen }) => {
 
     }
   }
-  console.log(employeeDetails)
    // Define Employee roles with icons and paths
    const Employee = {
     admin: {
@@ -60,8 +59,7 @@ const Dashboard = ({ isSidebarOpen }) => {
         icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/rejected-leads",
         title: 'Leads Rejected',
-        no : data?.leads?.
-        rejectedLeads || 0
+        no : data?.leads?.rejectedLeads || 0
       },
       newApplication: {
         icon: <NewReleasesIcon className='mt-3'
@@ -76,18 +74,43 @@ const Dashboard = ({ isSidebarOpen }) => {
         title: 'Applications In Process',
         no : data?.applications?.allocatedApplications || 0
       },
-      applicationHold: {
-        icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
-        path: "/applications-held",
-        title: 'Applications Held',
-        no : data?.applications?.
-        heldApplications || 0
+      sanctionPending: {
+        icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
+        path: "/pending-sanctions",
+        title: 'Pending Sanctions',
+        no : data?.sanction?.newSanctions || 0
       },
-      applicationRejected: {
-        icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
-        path: "/rejected-applications",
-        title: 'Applications Rejected',
-        no : data?.applications?.rejectedApplications || 0
+      sanctioned: {
+        icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
+        path: "/sanctioned",
+        title: 'Sanctioned',
+        no : data?.sanction?.sanctioned || 0
+      },
+      newDisbursal: {
+        icon: <NewReleasesIcon className='mt-3'
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
+        path: "/disbursal-new",
+        title: 'New Disburse ',
+        no : data?.disbursal?.newDisbursals || 0
+      },
+      disbursalProcess: {
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
+        path: "/disbursal-process",
+        title: 'Disburse Processing',
+        no : data?.disbursal?.allocatedDisbursals || 0
+      },
+      disbursePending: {
+        icon: <NewReleasesIcon className='mt-3'
+        sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
+        path: "/disbursal-pending",
+        title: 'Disbursal Pending',
+        no : data?.disbursal?.pendingDisbursals || 0
+      },
+      disbursed: {
+        icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
+        path: "/disbursed",
+        title: 'Disbursed',
+        no : data?.disbursal?.disbursed || 0
       },
     },
     screener: {
@@ -289,7 +312,8 @@ const Dashboard = ({ isSidebarOpen }) => {
           icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
           path: "/rejected-leads",
           title: 'Leads Rejected',
-          no : 10
+          no : data?.leads?.
+          rejectedLeads || 0
         },
       },
 
@@ -313,7 +337,8 @@ const Dashboard = ({ isSidebarOpen }) => {
           icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
           path: "/rejected-leads",
           title: 'Leads Rejected',
-          no : 10
+          no : data?.leads?.
+          rejectedLeads || 0
         },
       }
     
@@ -346,6 +371,7 @@ const Dashboard = ({ isSidebarOpen }) => {
         key={index}
         gridColumn="span 3"   
         display="flex"
+        minWidth="150px"
         alignItems="center"
         justifyContent="center"
         onClick={() => handleNavigation(value.path)} // Navigate on click

@@ -122,14 +122,14 @@ function CloseLeads() {
                         onPaginationModelChange={handlePageChange}
                         onRowClick={(params) => handleLeadClick(params)}
                         sx={{
-                            color: "#1F2A40", // Default text color for rows
+                            color: colors.primary["primaryshade"], // Default text color for rows
                             "& .MuiDataGrid-columnHeaders": {
-                                backgroundColor: "#1F2A40", // Optional: Header background color
-                                color: "white", // White text for the headers
+                                backgroundColor: colors.primary["primaryshade"], // Optional: Header background color
+                                color: colors.white["whiteshade"], // White text for the headers
                             },
                             "& .MuiDataGrid-footerContainer": {
-                                backgroundColor: "#1F2A40", // Footer background color
-                                color: "white", // White text for the footer
+                                backgroundColor: colors.primary["primaryshade"], // Footer background color
+                                color: colors.white["whiteshade"], // White text for the footer
                             },
                             "& .MuiDataGrid-row:hover": {
                                 cursor: "pointer",

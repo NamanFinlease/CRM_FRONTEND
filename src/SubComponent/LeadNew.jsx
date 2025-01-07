@@ -277,7 +277,6 @@ const LeadNew = () => {
         </div>
       )}
       </div> */}
-      <AllocateButton  />
 
       <CommonTable
         columns={columns}

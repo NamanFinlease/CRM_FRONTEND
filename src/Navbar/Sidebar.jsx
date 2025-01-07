@@ -26,6 +26,7 @@ import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 import RuleFolderRoundedIcon from '@mui/icons-material/RuleFolderRounded';
 import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
 import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
+import FolderSpecialRoundedIcon from '@mui/icons-material/FolderSpecialRounded';
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 const { empInfo, activeRole } = useAuthStore();
@@ -86,6 +87,17 @@ const accordionItems = [
       { text: "Rejected", link: "/rejected-disbursals" },
     ],
     roles: ["disbursalManager", "disbursalHead", "admin"],
+  },
+  {
+    id: "preCollection",
+    title: "Pre-Collection",
+    icon: <FolderSpecialRoundedIcon/>,
+    items: [
+      { text: "Active Leads", link: "/activeLeads" },
+      { text: "Verification Pending", link: "/pending-verification" },
+      { text: "Closed Leads", link: "/closed-leads" },
+    ],
+    roles: ["collectionExecutive", "collectionHead", "admin"],
   },
   {
     id: "collection",
