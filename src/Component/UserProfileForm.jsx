@@ -1,4 +1,6 @@
 import React from 'react';
+import { tokens } from '../theme';
+import { useTheme } from '@mui/material';
 import Swal from 'sweetalert2';
 
 const UserProfileForm = () => {
@@ -23,6 +25,10 @@ const UserProfileForm = () => {
       `,
       confirmButtonText: 'Submit',
       focusConfirm: false,
+      confirmButtonColor: colors.primary["primaryshade"],
+      customClass: {
+        confirmButton: 'custom-submit-button', // Apply custom class to the submit button
+      },
       preConfirm: () => {
         const oldPassword = Swal.getPopup().querySelector('#oldPassword').value;
         const newPassword = Swal.getPopup().querySelector('#newPassword').value;
@@ -44,6 +50,70 @@ const UserProfileForm = () => {
       }
     });
   };
+
+  //color theme
+const theme = useTheme();
+const colors = tokens(theme.palette.mode);
+
+// Updated attractive inline CSS styles for the component
+const styles = {
+  profileContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    backgroundColor: '#f7f9fc',
+    padding: '20px',
+  },
+  profileCard: {
+    backgroundColor: colors.white["whiteshade"],
+    borderRadius: '12px',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+    padding: '30px',
+    width: '450px',
+    textAlign: 'center',
+  },
+  profileTitle: {
+    color: colors.primary["primaryshade"],
+    fontSize: '24px',
+    fontWeight: '600',
+    marginBottom: '20px',
+    borderBottom: `3px solid ${colors.primary["primaryshade"]}`,
+    paddingBottom: '10px',
+  },
+  profileGroup: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '10px 0',
+    borderBottom: `1px solid ${colors.secondary["secondaryshade"]}`,
+    marginBottom: '10px',
+  },
+  label: {
+    fontWeight: '500',
+    fontSize: '16px',
+    color: colors.black["blackshade"],
+    flexBasis: '40%',
+    textAlign: 'left',
+  },
+  data: {
+    fontWeight: '600',
+    fontSize: '16px',
+    color: colors.primary["primaryshade"],
+    flexBasis: '60%',
+    textAlign: 'right',
+  },
+  resetPasswordButton: {
+    padding: '5px 10px',
+    backgroundColor: "red",
+    color: colors.white["whiteshade"],
+    border: 'none',
+    borderRadius: '5px',
+    fontSize: '14px',
+    fontWeight: '600',
+    cursor: 'pointer',
+  },
+};
 
   return (
     <div style={styles.profileContainer}>
@@ -91,66 +161,6 @@ const UserProfileForm = () => {
       </div>
     </div>
   );
-};
-
-// Updated attractive inline CSS styles for the component
-const styles = {
-  profileContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    backgroundColor: '#f7f9fc',
-    padding: '20px',
-  },
-  profileCard: {
-    backgroundColor: '#fff',
-    borderRadius: '12px',
-    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-    padding: '30px',
-    width: '450px',
-    textAlign: 'center',
-  },
-  profileTitle: {
-    color: '#007bff',
-    fontSize: '24px',
-    fontWeight: '600',
-    marginBottom: '20px',
-    borderBottom: '3px solid #007bff',
-    paddingBottom: '10px',
-  },
-  profileGroup: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '10px 0',
-    borderBottom: '1px solid #f0f0f0',
-    marginBottom: '10px',
-  },
-  label: {
-    fontWeight: '500',
-    fontSize: '16px',
-    color: '#333',
-    flexBasis: '40%',
-    textAlign: 'left',
-  },
-  data: {
-    fontWeight: '600',
-    fontSize: '16px',
-    color: '#007bff',
-    flexBasis: '60%',
-    textAlign: 'right',
-  },
-  resetPasswordButton: {
-    padding: '5px 10px',
-    backgroundColor: '#28a745',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    fontSize: '14px',
-    fontWeight: '600',
-    cursor: 'pointer',
-  },
 };
 
 export default UserProfileForm;

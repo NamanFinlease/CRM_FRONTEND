@@ -24,7 +24,7 @@ const ApplicantProfileData = ({leadData}) => {
         <>
             <TableContainer component={Paper} sx={{
                     borderRadius: '8px',
-                    backgroundColor: '#fff', // Background color for the container
+                    backgroundColor: colors.white["whiteshade"], // Background color for the container
                     '& .MuiTableCell-root': {
                     color: colors.black["blackshade"], // Text color for table cells
                     borderBottom: '1px solid rgba(255, 255, 255, 0.2)', // Optional: Customize cell borders

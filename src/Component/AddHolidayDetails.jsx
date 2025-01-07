@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
+import { tokens } from '../theme';
+import { useTheme } from '@mui/material';
 
 const AddHolidayDetails = () => {
   const [holidayDate, setHolidayDate] = useState('');
   const [holidayName, setHolidayName] = useState('');
+
+  //color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,12 +20,12 @@ const AddHolidayDetails = () => {
     <div className="container mt-5">
       
       <form onSubmit={handleSubmit} className="p-4 shadow rounded bg-light" style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <h2 className="text-center mb-4" style={{color:'black'}}>Add Holiday Details</h2>
+      <h2 className="text-center mb-4" style={{color:colors.primary["primaryshade"]}}>Add Holiday Details</h2>
         <div className="form-group mb-3">
           <label htmlFor="holidayDate">Holiday Date</label>
           <input
             type="date"
-            className="form-control"
+            className="form-control"  
             id="holidayDate"
             value={holidayDate}
             onChange={(e) => setHolidayDate(e.target.value)}
@@ -39,7 +45,7 @@ const AddHolidayDetails = () => {
           />
         </div>
         <div className="d-flex justify-content-center">
-          <button type="submit" className="btn btn-success w-50">Add Holiday Details</button>
+          <button type="submit" className="btn" style={{ background: colors.primary["primaryshade"], color:colors.white["whiteshade"]}}>Add Holiday Details</button>
         </div>
       </form>
     </div>

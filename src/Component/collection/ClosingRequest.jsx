@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Box, FormControl, InputLabel, Select, MenuItem, TextField, Typography } from '@mui/material';
+import { Button, Box, FormControl, InputLabel, Select, MenuItem, TextField, Typography, useTheme } from '@mui/material';
+import { tokens } from '../../theme';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Controller, useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
@@ -25,6 +26,10 @@ const ClosingRequest = ({ disburse }) => {
 
   const { disbursalDate, netDisbursalAmount } = disburse?.sanction?.application?.cam?.details
   const [disburseLoan, { data, isSuccess, isError, error }] = useUpdateCollectionMutation()
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const defaultValues = {
     amount: "",
@@ -64,9 +69,9 @@ const ClosingRequest = ({ disburse }) => {
         padding: '20px',
         maxWidth: '800px',
         margin: '0 auto',
-        backgroundColor: '#ffffff',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        borderRadius: '8px',
+        backgroundColor: colors.white["whiteshade"],
+        boxShadow: '0 0px 8px rgba(0, 0, 0, 0.1)',
+        borderRadius: '5px',
       }}
     >
       {/* Render DisbursalProfile component before the dropdown header */}
@@ -79,7 +84,7 @@ const ClosingRequest = ({ disburse }) => {
           <Box
             onClick={handleToggleForm}
             sx={{
-              backgroundColor: '#3f51b5', // Background color for header
+              background: colors.primary["primaryshade"], // Background color for header
               borderRadius: '8px',
               padding: '10px',
               textAlign: 'center',
@@ -87,17 +92,17 @@ const ClosingRequest = ({ disburse }) => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              color: '#ffffff', // Text color
+              color: colors.white["whiteshade"], // Text color
               marginTop: '20px',
             }}
           >
-            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#ffffff' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: colors.white["whiteshade"] }}>
               Closing Request
             </Typography>
             <ExpandMoreIcon
               sx={{
                 marginLeft: '8px',
-                color: '#ffffff',
+                color: colors.white["whiteshade"],
                 transform: showForm ? 'rotate(180deg)' : 'rotate(0deg)',
                 transition: 'transform 0.3s',
               }}

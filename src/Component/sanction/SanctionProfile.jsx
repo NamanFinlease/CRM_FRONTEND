@@ -31,10 +31,6 @@ const SanctionProfile = () => {
   const { data, isSuccess, isError, error } = useSanctionProfileQuery(id, { skip: id === null });
   const [sanctionPreview, { data: previewData, isSuccess: previewSuccess, isLoading:previewLoading,reset, isError: isPreviewError, error: previewError }] = useLazySanctionPreviewQuery()
 
-
-
-
-
   useEffect(() => {
     if (isSuccess) {
       setApplicationProfile(data);
@@ -52,6 +48,7 @@ const SanctionProfile = () => {
 
   }, [previewSuccess,previewData,forceRender]);
 console.log('loading',previewLoading)
+  
   return (
     <div className="crm-container" style={{ padding: '10px' }} key={forceRender}>
       {previewSanction ? previewLoading ? <h1> .....Loading data</h1>:
@@ -68,7 +65,7 @@ console.log('loading',previewLoading)
             {data?.isApproved ? 
             <h1>Sanctioned Application</h1>
             :
-            <h1>Pending Application</h1>
+            <h1>Pending Sanctions</h1>
             }
             <BarButtons
               barButtonOptions={barButtonOptions}

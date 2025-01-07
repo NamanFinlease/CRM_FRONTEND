@@ -1,6 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid'
 import React, { useEffect } from 'react'
 import { useFetchAllEmployeeQuery } from '../Service/Query';
+import CommonTable from '../Component/CommonTable';
 
 const columns = [
   { field: 'fName', headerName: 'First Name', width: 150 },
@@ -35,19 +36,43 @@ export default function EmployeeList() {
   useEffect(() => {
   }, [])
   return (
-    <div className='crm-container'>
-      <div style={{ height: 400, width: '100%', marginTop: '20px' }}>
-        <DataGrid
-          rows={rows}
+    // <div className='crm-container'>
+    //   <div style={{ height: 400, width: '100%', marginTop: '20px' }}>
+    //     <DataGrid
+    //       rows={rows}
+    //       columns={columns}
+    //       pageSize={10}
+    //       rowsPerPageOptions={[10]}
+    //       pagination
+    //       paginationMode="server"
+    //     // onPageChange={(newPage) => setPage(newPage)}
+    //     // rowCount={totalLeads}
+    //     />
+    //   </div>
+    // </div>
+    <>
+      {/* {columns &&
+          <CommonTable
+              columns={columns}
+              rows={rows}
+              totalLeads={totalLeads}
+              paginationModel={paginationModel}
+              setPaginationModel={setPaginationModel}
+          />
+
+      } */}
+      <CommonTable
           columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
-          pagination
-          paginationMode="server"
-        // onPageChange={(newPage) => setPage(newPage)}
-        // rowCount={totalLeads}
-        />
-      </div>
-    </div>
+          rows={rows}
+          // totalRows={totalApplications}
+          paginationModel={{ page: 1, pageSize: 10 }}
+          // onPageChange={handlePageChange}
+          // onRowClick={handleRowClick}
+          title="Employees List"
+          // actionButton={true}
+          // actionButtonText="Allocate Leads"
+          // onActionButtonClick={handleActionButtonClick}
+      />
+    </>
   )
 }

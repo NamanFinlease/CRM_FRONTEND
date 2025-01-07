@@ -80,7 +80,7 @@ const RejectedApplication = () => {
                 totalRows={totalRejectedApplcations}
                 paginationModel={{ page: 1, pageSize: 10 }}
                 onPageChange={handlePageChange}
-                // onRowClick={handleRowClick}
+                onRowClick={handleLeadClick}
                 title="Rejected Applications"
                 // actionButton={true}
                 // actionButtonText="Allocate Leads"

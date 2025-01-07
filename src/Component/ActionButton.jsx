@@ -341,11 +341,11 @@ const ActionButton = ({ id, isHold, sanctionPreview, previewLoading, setForceRen
                             color="success"
                             onClick={() => handlePreview()}
                             sx={{
-                                backgroundColor: previewLoading ? "#ccc" : "#04c93f",
+                                backgroundColor: previewLoading ? "#ccc" : colors.primary["primaryshade"],
                                 color: previewLoading ? "#666" : "white",
                                 cursor: previewLoading ? "not-allowed" : "pointer",
                                 "&:hover": {
-                                    backgroundColor: previewLoading ? "#ccc" : "#8bf7ab",
+                                    backgroundColor: previewLoading ? "#ccc" : colors.secondary["secondaryshade"],
                                 },
                             }}
                         >

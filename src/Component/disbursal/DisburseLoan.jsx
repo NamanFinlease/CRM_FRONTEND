@@ -78,7 +78,7 @@ const DisburseLoan = ({ disburse }) => {
         margin: "0 auto",
         backgroundColor: "#ffffff",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        borderRadius: "8px",
+        borderRadius: "5px",
       }}
     >
       {/* Render DisbursalProfile component before the dropdown header */}

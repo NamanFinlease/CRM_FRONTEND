@@ -16,8 +16,16 @@ import {
 import { NavLink, Link } from "react-router-dom";
 import useAuthStore from "../Component/store/authStore";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+// import { KeyboardDoubleArrowLeftIcon, KeyboardDoubleArrowRightIcon, RecordVoiceOverRoundedIcon, WebAssetRoundedIcon, GavelRoundedIcon, PublicRoundedIcon, RuleFolderRoundedIcon, CollectionsBookmarkRoundedIcon, ManageAccountsRoundedIcon } from '@mui/icons-material';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import RecordVoiceOverRoundedIcon from '@mui/icons-material/RecordVoiceOverRounded';
+import WebAssetRoundedIcon from '@mui/icons-material/WebAssetRounded';
+import GavelRoundedIcon from '@mui/icons-material/GavelRounded';
+import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
+import RuleFolderRoundedIcon from '@mui/icons-material/RuleFolderRounded';
+import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
+import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 const { empInfo, activeRole } = useAuthStore();
@@ -27,7 +35,7 @@ const accordionItems = [
   {
     id: "lead",
     title: "Lead",
-    icon: "bi bi-person-bounding-box",
+    icon: <RecordVoiceOverRoundedIcon/>,
     items: [
       { text: "New Lead", link: "/lead-new" },
       { text: "Leads-Inprocess", link: "/lead-process" },
@@ -39,7 +47,7 @@ const accordionItems = [
   {
     id: "application",
     title: "Application",
-    icon: "bi bi-window-fullscreen",
+    icon: <WebAssetRoundedIcon/>,
     items: [
       { text: "New", link: "/new-applications" },
       { text: "Inprocess", link: "/application-process" },
@@ -49,7 +57,7 @@ const accordionItems = [
   {
     id: "sanction",
     title: "Sanction",
-    icon: "bi bi-hammer",
+    icon: <GavelRoundedIcon/>,
     items: [
       { text: "Pending Sanctions", link: "/pending-sanctions" },
       { text: "Sanctioned", link: "/sanctioned" },
@@ -59,7 +67,7 @@ const accordionItems = [
   {
     id: "globalApplication",
     title: "Global Application",
-    icon: "bi bi-file-text",
+    icon: <PublicRoundedIcon/>,
     items: [
       { text: "E-Sign Pending", link: "/eSign-pending" },
       { text: "Hold", link: "/application-hold" },
@@ -70,10 +78,10 @@ const accordionItems = [
   {
     id: "disbursal",
     title: "Disbursal",
-    icon: "bi bi-folder-check",
+    icon: <RuleFolderRoundedIcon/>,
     items: [
       { text: "New", link: "/disbursal-new" },
-      { text: "Processing", link: "/disbursal-process" },
+      { text: "Disbursals In Process", link: "/disbursal-process" },
       { text: "Hold", link: "/disbursal-hold" },
       { text: "Rejected", link: "/rejected-disbursals" },
     ],
@@ -82,7 +90,7 @@ const accordionItems = [
   {
     id: "collection",
     title: "Collection",
-    icon: "bi bi-collection",
+    icon: <CollectionsBookmarkRoundedIcon/>,
     items: [
       { text: "Active Leads", link: "/activeLeads" },
       { text: "Verification Pending", link: "/pending-verification" },
@@ -93,7 +101,7 @@ const accordionItems = [
   {
     id: "accounts",
     title: "Accounts",
-    icon: "bi bi-person-fill-gear",
+    icon: <ManageAccountsRoundedIcon/>,
     items: [
       { text: "Pending Verification", link: "/pending-verification" },
       { text: "Closed Leads", link: "/closed-leads" },
@@ -130,7 +138,7 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
           sx={{
               width: isSidebarOpen ? 250 : 0,
               height: "100vh",
-              color: "#fff",
+              color: colors.white["whiteshade"],
               position: "fixed",
               top: 70,
               left: 0,
@@ -178,7 +186,7 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
                   disableGutters
                   elevation={0}
                   sx={{
-                      margin:"0px 20px",
+                      margin:"5px 20px",
                       color: colors.white["whiteshade"],
                   }}
                 >
@@ -188,9 +196,15 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
                           background: colors.primary["primaryshade"],
                           borderRadius:"5px",
                           boxShadow:"0px 0px 10px 1px rgba(227, 135, 16, 0.6)",
+                          "&:hover": {
+                            background:colors.primary["primaryshade"],
+                          }
                       }}
                   >
-                    <Typography>{item.title}</Typography>
+                    <Box sx={{display:"flex"}}>
+                      {item.icon}
+                      <Typography sx={{marginLeft:"10px"}}>{item.title}</Typography>
+                    </Box>
                   </AccordionSummary>
                   <AccordionDetails
                       sx={{

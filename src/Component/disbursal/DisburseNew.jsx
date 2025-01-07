@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { tokens } from '../../theme';
+import { useTheme } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import { saveAs } from "file-saver"; // For file downloads
@@ -25,6 +27,10 @@ const DisburseNew = () => {
   const navigate = useNavigate()
 
   const { data: allApplication, isSuccess: applicationSuccess,isError,error, refetch } = useAllDisbursalsQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const handleAllocate = async () => {
     allocateApplication(selectedApplication);
@@ -188,11 +194,11 @@ const DisburseNew = () => {
           sx={{
             color: '#1F2A40',  // Default text color for rows
             '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: '#1F2A40',  // Optional: Header background color
-              color: 'white'  // White text for the headers
+              backgroundColor: '#e38710',  // Optional: Header background color
+              color: '#000'  // White text for the headers
             },
             '& .MuiDataGrid-footerContainer': {
-              backgroundColor: '#1F2A40',  // Footer background color
+              backgroundColor: '#e38710',  // Footer background color
               color: 'white',  // White text for the footer
             },
             '& .MuiDataGrid-row:hover': {
@@ -207,6 +213,53 @@ const DisburseNew = () => {
         />
       </div>}
     </>
+
+    // <>
+    //   {/* {columns &&
+    //       <CommonTable
+    //           columns={columns}
+    //           rows={rows}
+    //           totalLeads={totalLeads}
+    //           paginationModel={paginationModel}
+    //           setPaginationModel={setPaginationModel}
+    //       />
+
+    //   } */}
+    //   {/* <Header/> */}
+    //   {activeRole === "disbursalManager" && <button
+    //       onClick={handleAllocate}
+    //       style={{
+    //         marginLeft: '20px',
+    //         padding: '10px 20px',
+    //         background: colors.white["whiteshade"],
+    //         color: colors.green["greenshade"],
+    //         fontWeight:'700',
+    //         border: `2px solid ${colors.green["greenshade"]}`,
+    //         borderRadius: '5px',
+    //         cursor: 'pointer',
+    //         transition: 'background 0.3s, color 0.3s',
+    //         '&:hover':{
+    //           background: colors.green["greenshade"],
+    //           color: colors.white["whiteshade"],
+    //         },
+    //       }}
+    //     >
+    //       Allocate
+    //     </button>}
+    //     {/* <DataGrid slots={{ toolbar: () => <CustomToolbar onExportClick={handleExportClick} />}} /> */}
+    //   <CommonTable
+    //       columns={columns}
+    //       rows={rows}
+    //       totalRows={totalApplications}
+    //       paginationModel={{ page: 1, pageSize: 10 }}
+    //       onPageChange={handlePageChange}
+    //       // onRowClick={handleRowClick}
+    //       title="New Disbursals"
+    //       // actionButton={true}
+    //       // actionButtonText="Allocate Leads"
+    //       // onActionButtonClick={handleActionButtonClick}
+    //   />
+    // </>
   );
 };
 

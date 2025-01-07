@@ -174,7 +174,9 @@ import { useAllocateLeadMutation, useFetchAllLeadsQuery } from '../Service/Query
 import { useNavigate } from 'react-router-dom';
 import Header from '../Component/Header';
 import CommonTable from '../Component/CommonTable';
+
 import useAuthStore from '../Component/store/authStore';
+import AllocateButton from '../Component/AllocateButton';
 
 
 const LeadNew = () => {
@@ -275,6 +277,8 @@ const LeadNew = () => {
         </div>
       )}
       </div> */}
+      <AllocateButton  />
+
       <CommonTable
         columns={columns}
         rows={rows}
@@ -285,7 +289,7 @@ const LeadNew = () => {
         title="New Leads"
         actionButton={true}
         actionButtonText="Allocate Leads"
-        onActionButtonClick={handleActionButtonClick}
+        // onActionButtonClick={handleActionButtonClick}
         />
       </>
   );

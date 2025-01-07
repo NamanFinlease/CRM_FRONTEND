@@ -275,6 +275,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Salary Amount 1"
                         name="salaryAmount1"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         type="number"
                         fullWidth
                         value={formData.salaryAmount1}
@@ -298,7 +303,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Salary Amount 2"
                         name="salaryAmount2"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         value={formData.salaryAmount2}
                         onChange={handleChange}
@@ -319,7 +328,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Salary Amount 3"
                         name="salaryAmount3"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         value={formData.salaryAmount3}
                         onChange={handleChange}
@@ -342,7 +355,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Average Salary"
                         name="averageSalary"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         value={formData.averageSalary}
                         onChange={handleChange}
@@ -352,7 +369,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Actual Net Salary"
                         name="actualNetSalary"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         value={formData.actualNetSalary}
                         onChange={handleChange}
@@ -435,7 +456,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Obligations (Rs)"
                         name="obligations"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         value={formData.obligations}
                         onChange={handleChange}
@@ -451,7 +476,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         disabled // Updated from InputProps to slotProps
                         slotProps={{
                             input: {
-                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-285px' }}>%</InputAdornment>,
                             },
                         }}
                     />
@@ -467,7 +492,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         onChange={handleChange}
                         slotProps={{
                             input: {
-                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-300px' }}>%</InputAdornment>,
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
                             },
                         }}
                     // disabled
@@ -484,7 +509,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         onChange={handleChange}
                         slotProps={{
                             input: {
-                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-285px' }}>%</InputAdornment>,
                             },
                         }}
                     // disabled
@@ -494,7 +519,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Eligible Loan"
                         name="eligibleLoan"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         value={formData.eligibleLoan}
                         onChange={handleChange}
@@ -505,7 +534,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Loan Recommended"
                         name="loanRecommended"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         value={formData.loanRecommended}
                         onChange={handleChange}
@@ -528,7 +561,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         disabled
                         slotProps={{
                             input: {
-                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-285px' }}>%</InputAdornment>,
                             },
                         }}
                     />
@@ -538,7 +571,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Net Disbursal Amount"
                         name="netDisbursalAmount"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         value={formData.netDisbursalAmount}
                         onChange={handleChange}
@@ -577,7 +614,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Eligible Tenure"
                         name="eligibleTenure"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         value={formData.eligibleTenure}
                         onChange={handleChange}
@@ -591,7 +632,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Processing Fee"
                         name="netAdminFeeAmount"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         InputLabelProps={{ shrink: true }}
                         value={formData.netAdminFeeAmount}
@@ -604,7 +649,11 @@ const EditCam = ({ camData, setIsEditing }) => {
                     <TextField
                         label="Repayment Amount"
                         name="repaymentAmount"
-                        type="number"
+                        inputProps={{
+                            type:"text",
+                            pattern:"[0-9]*",
+                            inputMode:"numeric",
+                        }}
                         fullWidth
                         // value={formData.repaymentAmount}
                         value={calculateRepayment(formData.loanRecommended)}

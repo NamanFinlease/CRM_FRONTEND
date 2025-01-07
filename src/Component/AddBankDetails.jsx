@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { tokens } from '../theme';
 import axios from "axios";
 import {
     Box,
@@ -10,6 +11,7 @@ import {
     InputAdornment,
     Alert,
     CircularProgress,
+    useTheme,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -25,6 +27,10 @@ const AddBankDetails = () => {
     const [adminBank, { data, isError, isLoading, isSuccess, error: bankError }] =
         useAdminBankMutation();
     const [error, setError] = useState("");
+
+    //color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     // Validate IFSC on each key press
     const handleIfscChange = (e) => {
@@ -100,7 +106,7 @@ const AddBankDetails = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 padding: "40px",
-                backgroundColor: "#f3f4f6", // Light gray background
+                background: colors.grey["greyshade"], // Light gray background
                 minHeight: "100vh",
             }}
         >
@@ -111,7 +117,7 @@ const AddBankDetails = () => {
                     padding: "24px 32px",
                     borderRadius: "12px",
                     boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.1)",
-                    backgroundColor: "#fff",
+                    backgroundColor: colors.white["whiteshade"],
                     "&:hover": {
                         boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.15)",
                     },
@@ -122,10 +128,10 @@ const AddBankDetails = () => {
                         variant="h5"
                         sx={{
                             fontWeight: "700",
-                            color: "#333", // Dark gray for the header
+                            color: colors.primary["primaryshade"], // Dark gray for the header
                             textAlign: "center",
                             marginBottom: "24px",
-                            borderBottom: "3px solid #42a5f5",
+                            borderBottom: `3px solid ${colors.primary["primaryshade"]}`,
                             paddingBottom: "6px",
                             letterSpacing: "0.5px",
                         }}
@@ -158,7 +164,7 @@ const AddBankDetails = () => {
                                                         backgroundColor: "#9e9e9e", // Matches placeholder color
                                                         borderRadius: "50%",
                                                         padding: "4px",
-                                                        color: "#fff", // Icon color if you want it to stand out on background
+                                                        color: colors.white["whiteshade"], // Icon color if you want it to stand out on background
                                                     }}
                                                 />
                                             </InputAdornment>
@@ -200,7 +206,7 @@ const AddBankDetails = () => {
                                         flex: "1 1 calc(50% - 16px)", // 50% width with space
                                         padding: "8px",
                                         borderRadius: "8px",
-                                        backgroundColor: "#f9f9f9",
+                                        background: colors.white["whiteshade"],
                                         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
                                         "&:hover": {
                                             boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
@@ -210,14 +216,14 @@ const AddBankDetails = () => {
                                     <Typography
                                         sx={{
                                             fontWeight: "500",
-                                            color: "#42a5f5",
+                                            color: colors.primary["primaryshade"],
                                             mb: 1,
                                         }}
                                     >
                                         {field.label}
                                     </Typography>
                                     <TextField
-                                        variant="outlined"
+                                        variant="standard"
                                         placeholder={field.placeholder}
                                         value={field.value}
                                         onChange={field.onChange}
@@ -230,7 +236,7 @@ const AddBankDetails = () => {
                                             "& .MuiOutlinedInput-root": {
                                                 backgroundColor: "#fff",
                                                 "& fieldset": {
-                                                    borderColor: "#42a5f5",
+                                                    borderColor: colors.primary["primaryshade"],
                                                 },
                                                 "&:hover fieldset": {
                                                     borderColor: "#1e88e5",
@@ -253,18 +259,17 @@ const AddBankDetails = () => {
                             <Button
                                 type="submit"
                                 variant="contained"
-                                color="primary"
                                 disabled={isLoading}
                                 sx={{
-                                    fontWeight: "600",
+                                    fontWeight: "500",
                                     textTransform: "none",
                                     padding: "8px 20px",
-                                    borderRadius: "10px",
-                                    backgroundColor: "#42a5f5",
+                                    borderRadius: "5px",
+                                    backgroundColor: colors.primary["primaryshade"],
                                     boxShadow:
                                         "0px 4px 10px rgba(66, 165, 245, 0.3)",
                                     "&:hover": {
-                                        backgroundColor: "#1e88e5",
+                                        backgroundColor: colors.secondary["secondaryshade"],
                                     },
                                 }}
                             >

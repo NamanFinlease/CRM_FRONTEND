@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, Typography, TextField, Alert } from "@mui/material";
+import { Button, Box, Typography, TextField, Alert, useTheme } from "@mui/material";
 import useStore from "../../Store";
 import { formatDate } from "../../utils/helper";
 import useAuthStore from "../store/authStore";
@@ -7,6 +7,7 @@ import { SignalCellularNullRounded } from "@mui/icons-material";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useRecommendLoanMutation } from "../../Service/applicationQueries";
+import { tokens } from '../../theme';
 
 const DisbursalLoanInfo = ({ disburse }) => {
     const { applicationProfile } = useStore();
@@ -14,6 +15,10 @@ const DisbursalLoanInfo = ({ disburse }) => {
     const [remarks, setRemarks] = useState(null);
     const [openRemark, setOpenRemark] = useState(false);
     const navigate = useNavigate();
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     console.log("profile", applicationProfile);
 
@@ -86,12 +91,11 @@ const DisbursalLoanInfo = ({ disburse }) => {
                     maxWidth: "1200px",
                     margin: "10px",
                     padding: "20px",
-                    border: "1px solid #ddd",
-                    borderRadius: "8px",
-                    backgroundColor: "#f9f9f9",
+                    borderRadius: "5px",
+                    backgroundColor: colors.white["whiteshade"],
                     fontSize: "12px",
                     lineHeight: "1.5",
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    boxShadow: "0 0px 10px rgba(0, 0, 0, 0.1)",
                 }}
             >
                 <Box
@@ -130,9 +134,9 @@ const DisbursalLoanInfo = ({ disburse }) => {
                         sx={{
                             marginTop: 3,
                             padding: 4,
-                            backgroundColor: "#f9f9f9", // Light background for the entire form
+                            backgroundColor: colors.white["whiteshade"], // Light background for the entire form
                             borderRadius: 2,
-                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+                            boxShadow: "0 0px 10px rgba(0, 0, 0, 0.1)",
                         }}
                     >
                         <Typography variant="h6" gutterBottom>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, TextField, Typography, Button, MenuItem, FormControl, InputLabel, Select, OutlinedInput } from '@mui/material';
+import { Box, TextField, Typography, Button, MenuItem, FormControl, InputLabel, Select, OutlinedInput, useTheme } from '@mui/material';
+import { tokens } from '../theme';
 import { Controller, useForm } from 'react-hook-form';
 import { useAddEmployeeMutation } from '../Service/Query';
 import Swal from 'sweetalert2';
@@ -13,9 +14,6 @@ const roleOptions = [
     { value: "collectionExecutive", label: "Collection Executive" },
     { value: "accountExecutive", label: "Account Executive" },
 ];
-
-
-
 
 const AddEmployee = () => {
     const [addEmployee, { data, isSuccess, isError, error: addEmployeeError }] = useAddEmployeeMutation();
@@ -38,6 +36,9 @@ const AddEmployee = () => {
         defaultValues: defaultValue
     })
 
+    //color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const onSubmit = (data) => {
         addEmployee(data)
@@ -54,8 +55,8 @@ const AddEmployee = () => {
 
     return (
         <>
-            <Box sx={{ padding: '40px', backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
-                <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+            <Box sx={{ padding: '20px', background: colors.white["whiteshade"], minHeight: '80vh' }}>
+                <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: colors.primary["primaryshade"] }}>
                     Add Employee
                 </Typography>
 
@@ -64,10 +65,11 @@ const AddEmployee = () => {
                     noValidate
                     onSubmit={handleSubmit(onSubmit)}
                     sx={{
-                        backgroundColor: '#9c9b98',
+                        background: colors.white["whiteshade"],
+                        border:`1px solid ${colors.primary["primaryshade"]}`,
                         padding: '30px',
                         borderRadius: '10px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                        boxShadow: '0 0px 18px rgba(0,0,0,0.1)',
                         display: 'flex',
                         flexWrap: 'wrap',
                         gap: '20px',
@@ -138,7 +140,7 @@ const AddEmployee = () => {
                                     fullWidth
                                     label="Email"
                                     variant="outlined"
-                                    InputLabelProps={{shrink:true}}
+                                    // InputLabelProps={{shrink:true}}
                                     error={!!fieldState.error}
                                     helperText={fieldState.error ? fieldState.error.message : ''}
                                 />
@@ -159,7 +161,7 @@ const AddEmployee = () => {
                                         label="Password"
                                         type='password'
                                         variant="outlined"
-                                        InputLabelProps={{shrink:true}}
+                                        // InputLabelProps={{shrink:true}}
                                         error={!!fieldState.error}
                                         helperText={fieldState.error ? fieldState.error.message : ''}
                                     />
@@ -275,7 +277,15 @@ const AddEmployee = () => {
                             )}
                         />
                     </Box> */}
-                    <Button type="submit" variant="contained" sx={{ mt: 3, backgroundColor: '#007bff', color: '#fff' }}>
+                    <Button 
+                        type="submit" 
+                        variant="contained" 
+                        sx={{ 
+                            mt: 3, 
+                            background:colors.primary["primaryshade"], 
+                            color: colors.white["whiteshade"],
+                            "&:hover": { background: colors.secondary["secondaryshade"] }
+                        }}>
                         Save Employee
                     </Button>
                 </Box>

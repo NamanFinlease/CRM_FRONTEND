@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { tokens } from '../../theme';
 import {
     Button,
     Box,
@@ -7,6 +8,7 @@ import {
     Radio,
     FormLabel,
     TextField,
+    useTheme,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -35,6 +37,10 @@ const RepaymentForm = ({ disburse }) => {
         date: null,
         utr: "",
     };
+
+    // Color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const { handleSubmit, control, reset } = useForm({
         defaultValues,
@@ -74,9 +80,9 @@ const RepaymentForm = ({ disburse }) => {
             onSubmit={handleSubmit(onSubmit)}
             sx={{
                 padding: "20px",
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                backgroundColor: "#949494",
+                borderRadius: "5px",
+                border : `2px solid ${colors.primary["primaryshade"]}`,
+                backgroundColor: colors.white["whiteshade"],
                 fontSize: "12px",
                 lineHeight: "1.5",
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -91,7 +97,7 @@ const RepaymentForm = ({ disburse }) => {
                 row
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
-            >
+                >
                 {requestStatus.map((status) => (
                     <FormControlLabel
                         value={status.value}
@@ -194,10 +200,14 @@ const RepaymentForm = ({ disburse }) => {
                     <Button
                         type="submit"
                         variant="contained"
-                        color="primary"
                         sx={{
                             marginTop: "20px",
                             width: "100%",
+                            color: colors.white["whiteshade"],
+                            background: colors.primary["primaryshade"],
+                            "&:hover": {
+                                background: colors.secondary["secondaryshade"],
+                            }
                         }}
                     >
                         Submit

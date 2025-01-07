@@ -8,9 +8,10 @@ import {
     TableRow,
     TableCell,
     Alert,
+    useTheme,
 } from "@mui/material";
 import { useVerifyPendingLeadMutation } from "../../Service/LMSQueries";
-
+import { tokens } from '../../theme';
 import { Select, MenuItem, Button } from "@mui/material";
 import Swal from "sweetalert2";
 
@@ -46,6 +47,9 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
         }
     };
 
+    //color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     return (
         <tr>
@@ -82,8 +86,16 @@ const PaymentRow = ({ payment, onUpdateStatus }) => {
                     <td>
                         <Button
                             variant="contained"
-                            color="primary"
                             size="small"
+                            sx={{
+                                background:colors.white["whiteshade"], 
+                                color:colors.primary["primaryshade"], 
+                                border:`2px solid ${colors.primary["primaryshade"]}`,
+                                "&:hover": {
+                                    background: colors.primary["primaryshade"],
+                                    color: colors.white["whiteshade"]
+                                }
+                            }}
                             onClick={handleSubmit}
                             disabled={!selectedStatus}
                         >
@@ -103,6 +115,10 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
 
     const [verifyPendingLead, isLoading, isSuccess, isError] =
         useVerifyPendingLeadMutation();
+
+    //color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     console.log(collectionData);
 
@@ -142,7 +158,7 @@ const Payment = ({ collectionData, leadId, activeRole }) => {
     };
 
     return (
-        <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
+        <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px", border:`1px solid ${colors.primary["primaryshade"]}` }}>
             <Typography variant="h5" gutterBottom>
                 Payment Verification for Lead ID: {leadId}
             </Typography>

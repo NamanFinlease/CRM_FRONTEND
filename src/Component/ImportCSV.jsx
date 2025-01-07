@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
+import { tokens } from '../theme';
+import { useTheme } from '@mui/material';
 import { useBulkUploadMutation } from '../Service/Query';
 
 const ImportCSV = () => {
 
   const [bulkUpload,{data,isSuccess,isError,error}] = useBulkUploadMutation()
   const [file, setFile] = useState(null);
+
+  //color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -44,7 +50,7 @@ const ImportCSV = () => {
         <button 
           type="submit" 
           className="btn btn-primary w-100"
-          style={{ backgroundColor: '#007BFF', border: 'none' }}
+          style={{ backgroundColor: colors.primary["primaryshade"], border: 'none' }}
         >
           Import CSV
         </button>

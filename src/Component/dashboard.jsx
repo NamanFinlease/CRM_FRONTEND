@@ -33,6 +33,7 @@ const Dashboard = ({ isSidebarOpen }) => {
 
     }
   }
+  console.log(employeeDetails)
    // Define Employee roles with icons and paths
    const Employee = {
     admin: {
@@ -40,50 +41,53 @@ const Dashboard = ({ isSidebarOpen }) => {
         icon: <NewReleasesIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-new",
         title: 'New Leads',
-        no : 10
+        no : data?.leads?.newLeads || 0
       },
       leadProcess: {
         icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-process",
         title: 'Leads In Process',
-        no : 10
+        no : data?.leads?.
+        allocatedLeads || 0
       },
       leadHold: {
         icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/lead-hold",
         title: 'Leads Held',
-        no : 10
+        no : data?.leads?.heldLeads || 0
       },
       leadRejected: {
         icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/rejected-leads",
         title: 'Leads Rejected',
-        no : 10
+        no : data?.leads?.
+        rejectedLeads || 0
       },
       newApplication: {
         icon: <NewReleasesIcon className='mt-3'
         sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/new-applications",
         title: 'New Applications',
-        no : 10
+        no : data?.applications?.newApplications || 0
       },
       applicationProcess: {
         icon: <PlayArrowIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/application-process",
         title: 'Applications In Process',
-        no : 10
+        no : data?.applications?.allocatedApplications || 0
       },
       applicationHold: {
         icon: <PauseIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/applications-held",
         title: 'Applications Held',
-        no : 10
+        no : data?.applications?.
+        heldApplications || 0
       },
       applicationRejected: {
         icon: <CancelIcon className='mt-3' sx={{ color: colors.primary["primaryshade"], width:'100%', height:'30%' }} />,
         path: "/rejected-applications",
         title: 'Applications Rejected',
-        no : 10
+        no : data?.applications?.rejectedApplications || 0
       },
     },
     screener: {
@@ -354,13 +358,10 @@ const Dashboard = ({ isSidebarOpen }) => {
         }}
       >
         <GlobalBox
-        
           title={value.title} // Display key as title
           subtitle={key} // Or a more appropriate subtitle
           icon={value.icon} // Set dynamic icon
-          increase={value
-            .no
-          }
+          increase={value.no}
         />
       </Box>
     ));
@@ -373,7 +374,7 @@ const Dashboard = ({ isSidebarOpen }) => {
       <Box m="20px">
         {/* HEADER */}
         <Box display="flex" marginLeft="100px" justifyContent="space-between" alignItems="center">
-          <Header width="60%" title="WELCOME" subtitle="to your dashboard" />
+          <Header width="60%" title="WELCOME" subtitle="to your Dashboard" /*subtitle={`${employeeDetails.fName} ${employeeDetails.lName}`} */ />
           <Box>
             <Button
               sx={{

@@ -176,7 +176,7 @@ const CommonTable = ({
         </div>
       )} */}
 
-      <div style={{ height: 600, width: '100%', padding: '40px 20px 0px 20px' }}>
+      <div style={{ height: 600, width: '100%', padding: '40px 20px 0px 20px', }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -188,7 +188,7 @@ const CommonTable = ({
           onRowClick={handleRowClick}
           sx={{
             color: colors.primary['primaryshade'], // Default text color for rows
-            '& .MuiDataGrid-columnHeaders .css-yrdy0g-MuiDataGrid-columnHeaderRow': {
+            '& .MuiDataGrid-columnHeaders .css-yseucu-MuiDataGrid-columnHeaderRow': {
               backgroundColor: colors.primary['primaryshade'], // Optional: Header background color
               color: colors.white['whiteshade'], // White text for the headers
             },

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { tokens } from '../../theme';
 import useAuthStore from "../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { useClosedLeadsQuery } from "../../Service/LMSQueries";
 import { DataGrid } from "@mui/x-data-grid";
-import { Alert} from '@mui/material';
+import { Alert, useTheme} from '@mui/material';
 import CommonTable from "../CommonTable";
 
 function CloseLeads() {
@@ -15,6 +16,10 @@ function CloseLeads() {
         page: 0,
         pageSize: 10,
     });
+
+    //color theme
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const { data, isSuccess, isError, error, refetch } = useClosedLeadsQuery({
         page: paginationModel.page + 1,
@@ -144,6 +149,32 @@ function CloseLeads() {
                 </Alert>
             )}
         </>
+        
+        
+    //     <>
+    //     {/* {columns &&
+    //         <CommonTable
+    //             columns={columns}
+    //             rows={rows}
+    //             totalLeads={totalLeads}
+    //             paginationModel={paginationModel}
+    //             setPaginationModel={setPaginationModel}
+    //         />
+
+    //     } */}
+    //     <CommonTable
+    //         columns={columns}
+    //         rows={rows}
+    //         totalRows={totalClosedLeads}
+    //         paginationModel={{ page: 1, pageSize: 10 }}
+    //         onPageChange={handlePageChange}
+    //         // onRowClick={handleLeadClick}
+    //         title="Closed Leads"
+    //         // actionButton={true}
+    //         // actionButtonText="Allocate Leads"
+    //         // onActionButtonClick={handleActionButtonClick}
+    //     />
+    // </>
     );
 }
 

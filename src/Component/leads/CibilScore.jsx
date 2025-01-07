@@ -1,26 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { tokens } from '../../theme'
+import { tokens } from '../../theme';
+import { styled } from '@mui/system';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Button, Box, Paper, Tooltip, useTheme } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PreviewIcon from '@mui/icons-material/Preview';
 import Swal from 'sweetalert2';
 import { useLazyFetchCibilScoreQuery, useLazyGetLeadDocsQuery } from '../../Service/Query';
 import { useParams } from 'react-router-dom';
-
-const accordionStyles = {
-  borderRadius: '5px',
-  background: '#fff',
-  boxShadow: '0px 0px 10px #d1d5db, -5px -5px 10px #ffffff',
-  marginBottom: '20px',
-};
-
-const paperStyles = {
-  padding: '20px',
-  borderRadius: '5px',
-  border:"1px solid #fd6800",
-  backgroundColor: '#fff',
-  boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
-};
 
 const CibilScore = ({ id }) => {
 
@@ -34,6 +20,21 @@ const CibilScore = ({ id }) => {
   // Color theme
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const accordionStyles = {
+    borderRadius: '5px',
+    background: colors.white["whiteshade"],
+    boxShadow: '0px 0px 10px #d1d5db, -5px -5px 10px #ffffff',
+    marginBottom: '20px',
+  };
+ 
+  const paperStyles = {
+    padding: '20px',
+    borderRadius: '5px',
+    border:`1px solid ${colors.primary["primaryshade"]}`,
+    backgroundColor: colors.white["whiteshade"],
+    boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
+  };
 
   // Placeholder function for fetching CIBIL score
   const submitCibil = async () => {
@@ -165,7 +166,7 @@ const CibilScore = ({ id }) => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         bgcolor: '#0a8001', // Dark green background for the button
-                        color: '#fff', // Icon color
+                        color: colors.white["whiteshade"], // Icon color
                         border: 'none',
                         borderRadius: 1,
                         ml: 2,
