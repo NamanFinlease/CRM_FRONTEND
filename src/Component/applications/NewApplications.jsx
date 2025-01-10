@@ -128,8 +128,8 @@ const NewApplications = () => {
           onPageChange={handlePageChange}
           // onRowClick={handleRowClick}
           title="New Applications"
-          // actionButton={true}
-          // actionButtonText="Allocate Leads"
+          actionButton={true}
+          actionButtonText="Allocate Leads"
           // onActionButtonClick={handleActionButtonClick}
       />
     </>

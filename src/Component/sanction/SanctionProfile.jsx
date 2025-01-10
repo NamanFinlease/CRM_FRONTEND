@@ -14,6 +14,7 @@ import UploadDocuments from '../UploadDocuments';
 import Cam from '../applications/Cam'
 import LoanSanctionPreview from './LoanSanctionPreview'
 import ApplicantProfileData from '../applicantProfileData';
+import VerifyContactDetails from '../leads/DetailsVerification';
 
 
 const barButtonOptions = ['Application', 'Documents', 'Personal', 'Banking', 'Verification', 'Cam']
@@ -110,8 +111,16 @@ console.log('loading',previewLoading)
             {data && Object.keys(data).length > 0 &&
               <>
                 {currentPage === "personal" && <PersonalDetails id={data?.application?.applicant} />}
-                {currentPage === "banking" &&
-                  <BankDetails id={data?.application?.applicant} />}
+                {currentPage === "banking" && <BankDetails id={data?.application?.applicant} />}
+                {currentPage === "verification" &&
+                  <VerifyContactDetails
+                    isMobileVerified={data?.application?.lead?.isMobileVerified}
+                    isEmailVerified={data?.application?.lead?.isEmailVerified}
+                    isAadhaarVerified={data?.application?.lead?.isAadhaarVerified}
+                    isAadhaarDetailsSaved={data?.applicationData?.lead?.isAadhaarDetailsSaved}
+                    isPanVerified={data?.application?.lead?.isPanVerified}
+                  />
+                }
 
                 {currentPage === "documents" && <UploadDocuments leadData={data?.application?.lead} setUploadedDocs={setUploadedDocs} uploadedDocs={uploadedDocs} />}
 

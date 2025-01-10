@@ -1294,6 +1294,10 @@ function App() {
                                         path="/mis-report"
                                         element={<MISReport />}
                                     />
+                                    <Route
+                                        path="/repayment-form"
+                                        element={<RepaymentForm />}
+                                    />
                                     {/* </Route> */}
                                 </Routes>
                             </div>

@@ -85,6 +85,8 @@ const accordionItems = [
       { text: "Disbursals In Process", link: "/disbursal-process" },
       { text: "Hold", link: "/disbursal-hold" },
       { text: "Rejected", link: "/rejected-disbursals" },
+      { text: "Pending Disbursals", link: "/disbursal-pending" },
+      { text: "Disbursed", link: "/disbursed" },
     ],
     roles: ["disbursalManager", "disbursalHead", "admin"],
   },
@@ -161,7 +163,7 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
               boxShadow: isSidebarOpen
                   ? "0px 10px 20px rgba(227, 135, 16, 0.6)"
                   : "none",
-              zIndex: 0,
+              zIndex: 1001,
               background: `linear-gradient(90deg, ${colors.white["whiteshade"]}  1%, ${colors.primary["primaryshadeopacity"]} 250%), ${colors.white["whiteshade"]}`,
               borderRadius : "5px",
               borderRight: `3px solid ${colors.primary["primaryshade"]}`,

@@ -174,16 +174,15 @@ import { useAllocateLeadMutation, useFetchAllLeadsQuery } from '../Service/Query
 import { useNavigate } from 'react-router-dom';
 import Header from '../Component/Header';
 import CommonTable from '../Component/CommonTable';
-
 import useAuthStore from '../Component/store/authStore';
-import AllocateButton from '../Component/AllocateButton';
 
 
 const LeadNew = () => {
   const [leads, setLeads] = useState([]); // Stores lead details
   const [totalLeads, setTotalLeads] = useState(0); // Stores the total lead count
-  const [page, setPage] = useState(1); // Current page
-
+  const [page, setPage] = useState(1); // Current page 
+  const [selectedLeads, setSelectedLeads] = useState(null); // Stores selected leads
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
@@ -191,18 +190,52 @@ const LeadNew = () => {
   const { empInfo, activeRole } = useAuthStore();
   const navigate = useNavigate();
   const { data: allLeads, refetch } = useFetchAllLeadsQuery({
-    page: paginationModel.page,
+    page: paginationModel.page + 1,
     limit: paginationModel.pageSize,
   });
   const [allocateLead, { data: updatedLeads, isSuccess }] = useAllocateLeadMutation();
   
   useEffect(() => {
+    if (allLeads) {
+      setLeads(allLeads.leads);
+      setTotalLeads(allLeads.totalLeads);
+    }
+  }, [allLeads]);
+
+  useEffect(() => {
         refetch()
         setTotalLeads(allLeads?.totalLeads)
       }, [page, allLeads, updatedLeads])
 
+  useEffect(() => {
+    setLeads(allLeads);
+  }, [page]);    
+
+  const handleCheckboxChange = (id) => {
+    setSelectedLeads(selectedLeads === id ? null : id);
+  }
+
+  const handleAllocate = async () => {
+    // Perform action based on selected leads
+    allocateLead(selectedLeads);
+    
+  };
 
   const columns = [
+    {
+      field: 'select',
+      headerName: '',
+      width: 50,
+      renderCell: (params) => (
+        activeRole === "screener" &&
+        <input
+          type="checkbox"
+          checked={selectedLeads === params.row.id}
+
+          onChange={() => handleCheckboxChange(params.row.id)}
+        />
+      ),
+    },
     { field: 'name', headerName: 'Full Name', width: 200 },
     { field: 'mobile', headerName: 'Mobile', width: 150 },
     { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
@@ -234,7 +267,7 @@ const LeadNew = () => {
   };
 
   const handlePageChange = (newPaginationModel) => {
-    setPage(newPaginationModel);
+    // setPage(newPaginationModel);
     // Fetch new data based on the new page
     setPaginationModel(newPaginationModel)
     refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); // Adjust this according to your data fetching logic
@@ -248,48 +281,18 @@ const LeadNew = () => {
 
   return (
     <>
-      {/* <div>
-      {actionButton && (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'right',
-            alignItems: 'center',
-            margin: '20px 20px',
-          }}
-        >
-          <button
-            onClick={handleActionButtonClick}
-            style={{
-              marginLeft: '20px',
-              fontWeight: 'bold',
-              padding: '10px 20px',
-              backgroundColor: 'transparent',
-              color: colors.green["greenshade"],
-              border: `1px solid ${colors.green["greenshade"]}`,
-              borderRadius: '5px',
-              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer',
-            }}
-          >
-            {actionButtonText}
-          </button>
-        </div>
-      )}
-      </div> */}
-
       <CommonTable
         columns={columns}
         rows={rows}
         totalRows={totalLeads}
-        paginationModel={{ page: 1, pageSize: 10 }}
+        paginationModel={paginationModel}
         onPageChange={handlePageChange}
         onRowClick={handleRowClick}
         title="New Leads"
         actionButton={true}
-        actionButtonText="Allocate Leads"
+        onAllocateButtonClick={handleAllocate}
         // onActionButtonClick={handleActionButtonClick}
-        />
+      />
       </>
   );
 };

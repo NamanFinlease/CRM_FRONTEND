@@ -104,7 +104,7 @@ const CibilScore = ({ id }) => {
     <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3 }}>
         <Accordion style={accordionStyles}>
           <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: colors.black["blackshade"] }} />}>
-            <Typography variant="h6" style={{ fontWeight: '600', color: colors.primary["primaryshade"], fontSize:'16px' }}>Fetch CIBIL Score</Typography>
+            <Typography variant="h6" style={{ fontWeight: '600', color: colors.primary["primaryshade"], fontSize:'16px' }}>Fetch Credit Report </Typography>
           </AccordionSummary>
           <AccordionDetails >
             <Paper elevation={3} style={paperStyles}>
@@ -125,7 +125,7 @@ const CibilScore = ({ id }) => {
                       }
                   }}
                 >
-                  {cibilRes?.isLoading ? 'Fetching...' : 'Fetch CIBIL Score'}
+                  {cibilRes?.isLoading ? 'Fetching...' : 'Fetch Credit Score'}
                 </Button>
 
                 <Box textAlign="right" display="flex" alignItems="center">
@@ -163,7 +163,7 @@ const CibilScore = ({ id }) => {
                             color: colors.white["whiteshade"],
                           }}
                         >
-                          CIBIL Score: {cibilRes?.data?.value}
+                          Credit Score: {cibilRes?.data?.value}
                         </Typography>
                       </Box>
 
@@ -189,7 +189,7 @@ const CibilScore = ({ id }) => {
                           },
                         }}
                       >
-                        <Tooltip title="Cibil Report">
+                        <Tooltip title="Credit Report">
 
                           <PreviewIcon
                             sx={{

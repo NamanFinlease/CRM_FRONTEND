@@ -16,6 +16,7 @@ import { disburseSchema } from '../../utils/validations';
 import useStore from '../../Store';
 import { useUpdateCollectionMutation } from '../../Service/LMSQueries';
 import RepaymentForm from './RepaymentForm';
+import VisitRequest from './VisitRequest';
 
 const ClosingRequest = ({ disburse }) => {
   const { id } = useParams()
@@ -76,6 +77,7 @@ const ClosingRequest = ({ disburse }) => {
     >
       {/* Render DisbursalProfile component before the dropdown header */}
       <LoanInfo disburse={disburse?.sanction?.application} />
+      <VisitRequest disburse={disburse?.sanction?.application} />
 
       {/* Clickable Header for Disbursal Bank with Background */}
 

@@ -217,14 +217,7 @@ const Residence = ({ residence }) => {
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
                     <Button 
                       variant="outlined" 
-                      sx={{
-                        border:"2px solid red",
-                        color: "red",
-                        "&:hover": {
-                          backgroundColor: "red",
-                          color: "white",
-                        }
-                      }} 
+                       
                       onClick={handleResidenceEditToggle}>
                       Cancel
                     </Button>
@@ -244,7 +237,7 @@ const Residence = ({ residence }) => {
                   <Table aria-label="personal details table">
                     <TableBody>
                       {columns?.map((row, index) => (
-                        <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#918f8e' } }}>
+                        <TableRow key={index}>
                           <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label}</TableCell>
                           <TableCell align="left">{row.value || ''}</TableCell>
                           <TableCell align="left" sx={{ fontWeight: 500 }}>{row.label2}</TableCell>

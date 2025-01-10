@@ -16,10 +16,9 @@ import Cam from '../applications/Cam';
 import DisburseInfo from '../disbursal/DisburseLoan';
 import ClosingRequest from './ClosingRequest';
 import Payment from '../accounts/Payment';
-
-
-
-
+import LoanInfo from './loanInfo';
+import RepaymentForm from './RepaymentForm';
+import DataTable from '../DynamicTable';
 
 const CollectionProfile = () => {
     const { id } = useParams();
@@ -43,6 +42,7 @@ const CollectionProfile = () => {
         'Verification',
         'Cam',
         'Disbursal',
+        'Pre-collection',
         'Collection',
         ...(activeRole === "accountExecutive" ? ["Accounts"]:[])
     ]
@@ -109,6 +109,7 @@ const CollectionProfile = () => {
                         {currentPage === "cam" && <Cam id={application?._id} />}
                         {currentPage === "disbursal" && <DisburseInfo disburse={collectionData?.disbursal?.sanction} />}
                         {currentPage === "collection" && <ClosingRequest disburse={collectionData?.disbursal} />}
+                        {currentPage === "pre-collection" && <LoanInfo disburse={collectionData?.disbursal} />}
                         {currentPage === "accounts" && (
                     <>
                         {collectionData ? (

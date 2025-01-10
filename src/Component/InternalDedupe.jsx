@@ -75,10 +75,7 @@ const InternalDedupe = ({id}) => {
         return mergedLeads;
       };
       
-      
-      
-      
-
+    
     useEffect(() => {
         if (isSuccess && data) {
             const {relatedLeads,relatedApplications} = data
@@ -129,16 +126,13 @@ const InternalDedupe = ({id}) => {
                     <Typography>Internal Dedupe</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Box sx={{ height: 500, width: '100%',background: colors.white["whiteshade"], overflowY:"scroll" }}>
+                    <Box sx={{ height: 500, width: '100%',background: colors.white["whiteshade"], }}>
                         <CommonTable    
                             columns={columns}
                             rows={rows}
                             rowCount={data?.relatedLeads.length}
-                            paginationModel={{ page: 1, pageSize: 10 }}
+                            paginationModel={paginationModel}
                             onPageChange={handlePageChange}
-                            sx={{
-                                height:"300px !important",
-                            }}
                         />
                     </Box>
                 </AccordionDetails>

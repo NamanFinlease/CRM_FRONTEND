@@ -89,92 +89,27 @@ function CloseLeads() {
         }
     }, [isSuccess, data]);
 
-    return (
-        <>
-            <div className="crm-container">
-                <div
-                    style={{
-                        padding: "10px 20px",
-                        fontWeight: "bold",
-                        backgroundColor: "#007bff",
-                        color: "#fff",
-                        borderRadius: "5px",
-                        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                        cursor: "pointer",
-                        marginBottom: "15px",
-                    }}
-                >
-                    Closed Leads : {totalClosedLeads || 0}{" "}
-                    {/* Defaults to 0 if no leads */}
-                </div>
-            </div>
+    return (   
+    <>
+        <CommonTable
+            columns={columns}
+            rows={subrows}
+            totalRows={totalClosedLeads}
+            paginationModel={paginationModel}
+            onPageChange={handlePageChange}
+            // onRowClick={handleLeadClick}
+            title="Closed Leads"
+            // actionButton={true}
+            // actionButtonText="Allocate Leads"
+            // onActionButtonClick={handleActionButtonClick}
+        />
 
-            {columns && (
-                <div style={{ height: 400, width: "100%", padding:"0px 20px" }}>
-                    <DataGrid
-                        rows={subrows}
-                        columns={columns}
-                        rowCount={totalClosedLeads}
-                        // loading={isLoading}
-                        pageSizeOptions={[5]}
-                        paginationModel={paginationModel}
-                        paginationMode="server"
-                        onPaginationModelChange={handlePageChange}
-                        onRowClick={(params) => handleLeadClick(params)}
-                        sx={{
-                            color: colors.primary["primaryshade"], // Default text color for rows
-                            "& .MuiDataGrid-columnHeaders": {
-                                backgroundColor: colors.primary["primaryshade"], // Optional: Header background color
-                                color: colors.white["whiteshade"], // White text for the headers
-                            },
-                            "& .MuiDataGrid-footerContainer": {
-                                backgroundColor: colors.primary["primaryshade"], // Footer background color
-                                color: colors.white["whiteshade"], // White text for the footer
-                            },
-                            "& .MuiDataGrid-row:hover": {
-                                cursor: "pointer",
-                            },
-                            "& .MuiDataGrid-row": {
-                                color: "black",
-                                // cursor: 'pointer',
-                            },
-                        }}
-                    />
-                </div>
-            )}
-
-            {isError && (
-                <Alert severity="error" style={{ marginTop: "10px" }}>
-                    {error?.message}
-                </Alert>
-            )}
-        </>
-        
-        
-    //     <>
-    //     {/* {columns &&
-    //         <CommonTable
-    //             columns={columns}
-    //             rows={rows}
-    //             totalLeads={totalLeads}
-    //             paginationModel={paginationModel}
-    //             setPaginationModel={setPaginationModel}
-    //         />
-
-    //     } */}
-    //     <CommonTable
-    //         columns={columns}
-    //         rows={rows}
-    //         totalRows={totalClosedLeads}
-    //         paginationModel={{ page: 1, pageSize: 10 }}
-    //         onPageChange={handlePageChange}
-    //         // onRowClick={handleLeadClick}
-    //         title="Closed Leads"
-    //         // actionButton={true}
-    //         // actionButtonText="Allocate Leads"
-    //         // onActionButtonClick={handleActionButtonClick}
-    //     />
-    // </>
+        {isError && (
+            <Alert severity="error" style={{ marginTop: "10px" }}>
+                {error?.message}
+            </Alert>
+        )}
+    </>
     );
 }
 

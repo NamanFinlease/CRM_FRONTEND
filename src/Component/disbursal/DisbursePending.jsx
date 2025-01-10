@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Alert } from '@mui/material';
 import useAuthStore from '../store/authStore';
 import { usePendingDisbursalQuery } from '../../Service/applicationQueries';
+import CommonTable from '../CommonTable';
 
 
 
@@ -79,68 +80,114 @@ const DisbursePending = () => {
   }, [isSuccess, data])
 
     return (
+        // <>
+        //     <div className="crm-container">
+        //         <div
+        //             style={{
+        //                 padding: '10px 20px',
+        //                 fontWeight: 'bold',
+        //                 backgroundColor: '#007bff',
+        //                 color: '#fff',
+        //                 borderRadius: '5px',
+        //                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+        //                 cursor: 'pointer',
+        //                 marginBottom:"15px"
+        //             }}
+        //         >
+        //             Pending Disbursals : {totalDisbursals || 0} {/* Defaults to 0 if no leads */}
+        //         </div>
+        //     </div>
+
+        //     {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
+        //         <DataGrid
+        //             rows={rows}
+        //             columns={columns}
+        //             rowCount={totalDisbursals}
+        //             // loading={isLoading}
+        //             pageSizeOptions={[5]}
+        //             paginationModel={paginationModel}
+        //             paginationMode="server"
+        //             onPaginationModelChange={handlePageChange}
+        //             onRowClick={(params) => handleLeadClick(params)}
+        //             // sx={{
+        //             //     '& .MuiDataGrid-row:hover': {
+        //             //         cursor: 'pointer',
+        //             //     },
+        //             // }}
+        //             sx={{
+        //                 color: '#1F2A40',  // Default text color for rows
+        //                 '& .MuiDataGrid-columnHeaders': {
+        //                     backgroundColor: '#1F2A40',  // Optional: Header background color
+        //                     color: 'white'  // White text for the headers
+        //                 },
+        //                 '& .MuiDataGrid-footerContainer': {
+        //                     backgroundColor: '#1F2A40',  // Footer background color
+        //                     color: 'white',  // White text for the footer
+        //                 },
+        //                 '& .MuiDataGrid-row:hover': {
+        //                     cursor: 'pointer',
+        //                 },
+        //                 '& .MuiDataGrid-row': {
+        //                     color: "black"
+        //                     // cursor: 'pointer',
+        //                 },
+        //             }}
+        //         />
+        //     </div>}
+
+        //     {(isError) &&
+        //   <Alert severity="error" style={{ marginTop: "10px" }}>
+        //     {error?.data?.message}
+        //   </Alert>
+        // }
+
+        // </>
+
+
         <>
-            <div className="crm-container">
-                <div
-                    style={{
-                        padding: '10px 20px',
-                        fontWeight: 'bold',
-                        backgroundColor: '#007bff',
-                        color: '#fff',
-                        borderRadius: '5px',
-                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                        cursor: 'pointer',
-                        marginBottom:"15px"
-                    }}
-                >
-                    Pending Disbursals : {totalDisbursals || 0} {/* Defaults to 0 if no leads */}
-                </div>
-            </div>
+      {/* <div>
+      {actionButton && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'right',
+            alignItems: 'center',
+            margin: '20px 20px',
+          }}
+        >
+          <button
+            onClick={handleActionButtonClick}
+            style={{
+              marginLeft: '20px',
+              fontWeight: 'bold',
+              padding: '10px 20px',
+              backgroundColor: 'transparent',
+              color: colors.green["greenshade"],
+              border: `1px solid ${colors.green["greenshade"]}`,
+              borderRadius: '5px',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+              cursor: 'pointer',
+            }}
+          >
+            {actionButtonText}
+          </button>
+        </div>
+      )}
+      </div> */}
 
-            {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    rowCount={totalDisbursals}
-                    // loading={isLoading}
-                    pageSizeOptions={[5]}
-                    paginationModel={paginationModel}
-                    paginationMode="server"
-                    onPaginationModelChange={handlePageChange}
-                    onRowClick={(params) => handleLeadClick(params)}
-                    // sx={{
-                    //     '& .MuiDataGrid-row:hover': {
-                    //         cursor: 'pointer',
-                    //     },
-                    // }}
-                    sx={{
-                        color: '#1F2A40',  // Default text color for rows
-                        '& .MuiDataGrid-columnHeaders': {
-                            backgroundColor: '#1F2A40',  // Optional: Header background color
-                            color: 'white'  // White text for the headers
-                        },
-                        '& .MuiDataGrid-footerContainer': {
-                            backgroundColor: '#1F2A40',  // Footer background color
-                            color: 'white',  // White text for the footer
-                        },
-                        '& .MuiDataGrid-row:hover': {
-                            cursor: 'pointer',
-                        },
-                        '& .MuiDataGrid-row': {
-                            color: "black"
-                            // cursor: 'pointer',
-                        },
-                    }}
-                />
-            </div>}
-
-            {(isError) &&
-          <Alert severity="error" style={{ marginTop: "10px" }}>
-            {error?.data?.message}
-          </Alert>
-        }
-
-        </>
+      <CommonTable
+        columns={columns}
+        rows={rows}
+        totalRows={totalDisbursals}
+        paginationModel={paginationModel}
+        onPageChange={handlePageChange}
+        onRowClick={handleLeadClick}
+        title="Pending Disbursals"
+        // actionButton={true}
+        // actionButtonText="Allocate Leads"
+        // onActionButtonClick={handleActionButtonClick}
+        />
+      </>
     )
 }
 

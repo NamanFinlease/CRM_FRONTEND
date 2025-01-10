@@ -492,7 +492,7 @@ const EditCam = ({ camData, setIsEditing }) => {
                         onChange={handleChange}
                         slotProps={{
                             input: {
-                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-295px' }}>%</InputAdornment>,
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-275px' }}>%</InputAdornment>,
                             },
                         }}
                     // disabled

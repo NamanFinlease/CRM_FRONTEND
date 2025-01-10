@@ -41,6 +41,7 @@
 /* Form group styling */
 .form-group {
     margin-bottom: 15px;
+    width: 100%;
 }
 
 .form-group label {
@@ -49,20 +50,14 @@
     font-weight: bold;
 }
 .search-button{
-   margin-right: 52px;
-   margin-left: 350px;
-
-
+    width:100%;
 }
-.search-button:hover {
-    background-color:#333; /* Change background color on hover */
- }
 
 .form-group input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #e38710;
+    border-radius: 5px;
 }
 
 /* Button styling */
@@ -70,9 +65,8 @@ button {
     padding: 10px 15px;
     border: none;
     border-radius: 40px;
-    background-color: #007bff;
     color: #fff;
-    font-size: 16px;
+    font-size: 17px;
     cursor: pointer;
     
 }

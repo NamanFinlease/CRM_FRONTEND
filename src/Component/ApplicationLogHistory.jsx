@@ -76,54 +76,14 @@ const ApplicationLogHistory = ({ id }) => {
                     <Typography>Application Log</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Box sx={{ height: 300, width: '100%', overflowY:"scroll" }}>
-                        {/* <DataGrid
-                            rows={rows}
-                            columns={columns}
-                            // pageSizeOptions={[5]}
-                            // paginationModel={paginationModel}
-                            paginationMode="server"
-                            onPaginationModelChange={setPaginationModel}
-                            // sx={{
-                            //     '& .MuiDataGrid-row:hover': {
-                            //         cursor: 'pointer',
-                            //     },
-                            // }}
-                           
-                            sx={{
-                                color: '#1F2A40',  // Default text color for rows
-                                '& .css-1a50cv0-MuiPaper-root': {
-                                    backgroundColor: '#1F2A40 !important',
-                                    color: 'white !important',
-                                  },
-                                    '& .MuiDataGrid-columnHeaders': {
-                                      backgroundColor: '#fff',  // Optional: Header background color
-                                      color: 'white'  // White text for the headers
-                                    },
-                                    '& .MuiDataGrid-footerContainer': {
-                                      backgroundColor: '#1F2A40',  // Footer background color
-                                      color: 'white',  // White text for the footer
-                                    },
-                                '& .MuiDataGrid-row:hover': {
-                                    backgroundColor: 'white',
-                                    cursor: 'pointer',
-                                },
-                                '& .MuiDataGrid-row': {
-                                    backgroundColor: 'white',
-                                    // cursor: 'pointer',
-                                },
-                            }}
-                        /> */}
-
+                    <Box sx={{ height: 500, width: '100%', }}>
+                        
                         <CommonTable    
                             columns={columns}
                             rows={rows}
                             // rowCount={data?.relatedLeads.length}
-                            paginationModel={{ page: 1, pageSize: 10 }}
+                            paginationModel={ paginationModel}
                             onPageChange={handlePageChange}
-                            sx={{
-                                height:"300px !important",
-                            }}
                         />
                     </Box>
                 </AccordionDetails>

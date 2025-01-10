@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Box, Typography, TextField, Alert } from '@mui/material';
+import { Button, Box, Typography, TextField, Alert, useTheme, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { tokens } from '../../theme';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../Store';
 import useAuthStore from '../store/authStore';
 import { useRecommendLoanMutation } from '../../Service/applicationQueries';
 import { formatDate } from '../../utils/helper';
+import CommonTable from '../CommonTable';
+import { useAllocateLeadMutation, useFetchAllLeadsQuery } from '../../Service/Query';
 
 const LoanInfo = ({ disburse }) => {
   const { applicationProfile } = useStore()
@@ -13,6 +17,15 @@ const LoanInfo = ({ disburse }) => {
   const [remarks, setRemarks] = useState(null);
   const [openRemark, setOpenRemark] = useState(false)
   const navigate = useNavigate()
+
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const { data: allLeads, refetch } = useFetchAllLeadsQuery({
+    page: paginationModel.page + 1,
+    limit: paginationModel.pageSize,
+  });
 
   console.log('profile',applicationProfile)
 
@@ -32,8 +45,9 @@ const LoanInfo = ({ disburse }) => {
     setOpenRemark(false)
   };
 
-
-
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const info = [
     { label: "Loan No.", value: applicationProfile?.loanNo },
@@ -54,6 +68,28 @@ const LoanInfo = ({ disburse }) => {
     // ] : [])
   ];
 
+  const columns = [
+    { field: 'name', headerName: 'Collection ID', width: 120 },
+    { field: 'mobile', headerName: 'Collection By', width: 180 },
+    { field: 'aadhaar', headerName: 'Date Initiated', width: 150 },
+    { field: 'pan', headerName: 'Followup Type', width: 150 },
+    { field: 'city', headerName: 'Status', width: 150 },
+    { field: 'state', headerName: 'Remarks', width: 150 },
+  ];
+
+  // const rows = allLeads?.leads?.map((lead) => ({
+  //   id: lead?._id,
+  //   name: `${lead?.fName} ${lead?.mName} ${lead?.lName}`,
+  //   mobile: lead?.mobile,
+  //   aadhaar: lead?.aadhaar,
+  //   pan: lead?.pan,
+  //   city: lead?.city,
+  //   state: lead?.state,
+  //   loanAmount: lead?.loanAmount,
+  //   salary: lead?.salary,
+  //   source: lead?.source,
+  // })) || [];
+
 
   return (
     <>
@@ -63,8 +99,8 @@ const LoanInfo = ({ disburse }) => {
           margin: '10px',
           padding: '20px',
           border: '1px solid #ddd',
-          borderRadius: '8px',
-          backgroundColor: '#f9f9f9',
+          borderRadius: '5px',
+          background: colors.white["whiteshade"],
           fontSize: '12px',
           lineHeight: '1.5',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -90,6 +126,41 @@ const LoanInfo = ({ disburse }) => {
           ))}
         </Box>
       </Box>
+
+      <Box sx={{ maxWidth: '1200px', margin: '0 auto', mt: 3, borderRadius: '5px', background:"#fff" }}>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon sx={{color:colors.black["blackshade"]}} />}
+                    aria-controls="internal-dedupe-content"
+                    id="internal-dedupe-header"
+                    sx={{
+                        backgroundColor: colors.white["whiteshade"],
+                        color: colors.primary["primaryshade"],
+                        fontWeight: '600',
+                        fontSize:'16px !important',
+                        borderRadius: '5px',
+                        boxShadow: '0px 0px 10px #d1d5db, -5px -5px 10px #ffffff'
+                    }}
+                >
+                    <Typography>Follow Ups</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Box sx={{ height: 500, width: '100%',background: colors.white["whiteshade"],}}>
+                    <CommonTable
+                        columns={columns}
+                        // rows={rows}
+                        // totalRows={totalLeads}
+                        paginationModel={paginationModel}
+                        // onPageChange={handlePageChange}
+                        // onRowClick={handleRowClick}  
+                        // actionButton={true}
+                        // onAllocateButtonClick={handleAllocate}
+                        // onActionButtonClick={handleActionButtonClick}
+                      />
+                    </Box>
+                </AccordionDetails>
+            </Accordion>
+        </Box>
       {/* {openRemark &&
         <>
           <Box

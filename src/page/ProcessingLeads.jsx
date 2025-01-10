@@ -88,7 +88,7 @@ const ProcessingLeads = () => {
                 columns={columns}
                 rows={rows}
                 totalRows={totalLeads}
-                paginationModel={{ page: 1, pageSize: 10 }}
+                paginationModel={paginationModel}
                 onPageChange={handlePageChange}
                 onRowClick={handleRowClick}
                 title="Leads In Process"

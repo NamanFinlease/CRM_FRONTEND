@@ -38,9 +38,9 @@ const DisburseNew = () => {
   };
 
   const handleExportClick = () => {
-        console.log("Export click");
-        // Replace with your actual API call
-        exportSanctioned();
+    console.log("Export click");
+    // Replace with your actual API call
+    exportSanctioned();
 };
 
   const handleCheckboxChange = (id) => {
@@ -100,7 +100,7 @@ const DisburseNew = () => {
 
   }));
 
-  console.log('rows',rows)
+  // console.log('rows',rows)
 
   useEffect(()=>{
     if(isExportSuccess && exportData){
@@ -146,120 +146,19 @@ const DisburseNew = () => {
 
   return (
     <>
-      <div className='crm-container'>
-        <div
-          style={{
-            padding: '10px 20px',
-            fontWeight: 'bold',
-            backgroundColor: '#007bff',
-            color: '#fff',
-            borderRadius: '5px',
-            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-            cursor: 'pointer',
-          }}
-        >
-          New Disbursals : {totalApplications || 0} {/* Defaults to 0 if no leads */}
-        </div>
-
-        {/* Action button for selected leads */}
-        {activeRole === "disbursalManager" && <button
-          onClick={handleAllocate}
-          style={{
-            marginLeft: '20px',
-            padding: '10px 20px',
-            backgroundColor: '#28a745',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
-        >
-          Allocate
-        </button>}
-      </div>
-
-      <Header />
-
-      {columns && <div style={{ height: 400, width: '100%', padding:"0px 20px" }}>
-        <DataGrid
-          rows={rows}
+      <CommonTable
           columns={columns}
-          rowCount={totalApplications}
-          slots={{ toolbar: () => <CustomToolbar onExportClick={handleExportClick} /> }}
-          // loading={isLoading}
-          pageSizeOptions={[5]}
+          rows={rows}
+          totalRows={totalApplications}
           paginationModel={paginationModel}
-          paginationMode="server"
-          onPaginationModelChange={handlePageChange}
-          sx={{
-            color: '#1F2A40',  // Default text color for rows
-            '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: '#e38710',  // Optional: Header background color
-              color: '#000'  // White text for the headers
-            },
-            '& .MuiDataGrid-footerContainer': {
-              backgroundColor: '#e38710',  // Footer background color
-              color: 'white',  // White text for the footer
-            },
-            '& .MuiDataGrid-row:hover': {
-              backgroundColor: 'white',
-              cursor: 'pointer',
-            },
-            '& .MuiDataGrid-row': {
-              backgroundColor: 'white',
-              // cursor: 'pointer',
-            },
-          }}
-        />
-      </div>}
+          onPageChange={handlePageChange}
+          // onRowClick={handleRowClick}
+          title="New Disbursals"
+          actionButton={true}
+          onAllocateButtonClick={handleAllocate}
+          onExportButtonClick={handleExportClick}
+      />
     </>
-
-    // <>
-    //   {/* {columns &&
-    //       <CommonTable
-    //           columns={columns}
-    //           rows={rows}
-    //           totalLeads={totalLeads}
-    //           paginationModel={paginationModel}
-    //           setPaginationModel={setPaginationModel}
-    //       />
-
-    //   } */}
-    //   {/* <Header/> */}
-    //   {activeRole === "disbursalManager" && <button
-    //       onClick={handleAllocate}
-    //       style={{
-    //         marginLeft: '20px',
-    //         padding: '10px 20px',
-    //         background: colors.white["whiteshade"],
-    //         color: colors.green["greenshade"],
-    //         fontWeight:'700',
-    //         border: `2px solid ${colors.green["greenshade"]}`,
-    //         borderRadius: '5px',
-    //         cursor: 'pointer',
-    //         transition: 'background 0.3s, color 0.3s',
-    //         '&:hover':{
-    //           background: colors.green["greenshade"],
-    //           color: colors.white["whiteshade"],
-    //         },
-    //       }}
-    //     >
-    //       Allocate
-    //     </button>}
-    //     {/* <DataGrid slots={{ toolbar: () => <CustomToolbar onExportClick={handleExportClick} />}} /> */}
-    //   <CommonTable
-    //       columns={columns}
-    //       rows={rows}
-    //       totalRows={totalApplications}
-    //       paginationModel={{ page: 1, pageSize: 10 }}
-    //       onPageChange={handlePageChange}
-    //       // onRowClick={handleRowClick}
-    //       title="New Disbursals"
-    //       // actionButton={true}
-    //       // actionButtonText="Allocate Leads"
-    //       // onActionButtonClick={handleActionButtonClick}
-    //   />
-    // </>
   );
 };
 

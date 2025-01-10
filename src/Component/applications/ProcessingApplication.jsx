@@ -88,7 +88,7 @@ const ProcessingApplication = () => {
                 columns={columns}
                 rows={rows}
                 totalRows={totalApplications}
-                paginationModel={{ page: 1, pageSize: 10 }}
+                paginationModel={paginationModel}
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Applications In Process"

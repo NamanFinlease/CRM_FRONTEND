@@ -10,7 +10,9 @@ import {
   Typography,
   Alert,
   CircularProgress,
+  useTheme,
 } from "@mui/material";
+import { tokens } from '../../theme';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DisbursalLoanInfo from "./DisbursalLoanInfo"; // Ensure the path is correct
 import useAuthStore from "../store/authStore";
@@ -32,6 +34,10 @@ const DisburseLoan = ({ disburse }) => {
   const { activeRole } = useAuthStore();
   const { applicationProfile } = useStore();
   const navigate = useNavigate();
+
+  // Color theme
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const { disbursalDate, netDisbursalAmount } =
     disburse?.application?.cam?.details;
@@ -76,7 +82,7 @@ const DisburseLoan = ({ disburse }) => {
         padding: "20px",
         maxWidth: "800px",
         margin: "0 auto",
-        backgroundColor: "#ffffff",
+        background: colors.white["whiteshade"] ,
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         borderRadius: "5px",
       }}
@@ -93,7 +99,7 @@ const DisburseLoan = ({ disburse }) => {
             <Box
               onClick={handleToggleForm}
               sx={{
-                backgroundColor: "#3f51b5", // Background color for header
+                backgroundColor: colors.primary["primaryshade"], // Background color for header
                 borderRadius: "8px",
                 padding: "10px",
                 textAlign: "center",
@@ -101,20 +107,20 @@ const DisburseLoan = ({ disburse }) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                color: "#ffffff", // Text color
+                color: colors.black["blackshade"], // Text color
                 marginTop: "20px",
               }}
             >
               <Typography
-                variant="h5"
-                sx={{ fontWeight: "bold", color: "#ffffff" }}
+                variant="h6"
+                sx={{ fontWeight: "bold", color: colors.white["whiteshade"] }}
               >
                 Disbursal Bank
               </Typography>
               <ExpandMoreIcon
                 sx={{
                   marginLeft: "8px",
-                  color: "#ffffff",
+                  color: colors.white["whiteshade"],
                   transform: showForm
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
@@ -131,12 +137,10 @@ const DisburseLoan = ({ disburse }) => {
                 onSubmit={handleSubmit(onSubmit)}
                 sx={{
                   padding: "20px",
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  backgroundColor: "#606160",
+                  borderRadius: "5px",
                   fontSize: "12px",
                   lineHeight: "1.5",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  boxShadow: "0 0px 15px rgba(0, 0, 0, 0.1)",
                   marginTop: "10px",
                 }}
               >
@@ -156,19 +160,14 @@ const DisburseLoan = ({ disburse }) => {
                         variant="outlined"
                         error={!!fieldState.error}
                       >
-                        <InputLabel
-                          sx={{ color: "#fcfcfc" }}
-                        >
+                        <InputLabel>
                           Payable Account
                         </InputLabel>
                         <Select
                           {...field}
                           label="Payable Account *"
                           sx={{
-                            backgroundColor:
-                              "#9fa19f",
-                            borderRadius: "8px",
-                            color: "#fcfcfc",
+                            borderRadius: "5px",
                           }}
                         >
                           <MenuItem value="">
@@ -225,47 +224,45 @@ const DisburseLoan = ({ disburse }) => {
                         }
                         inputProps={{
                           placeholder: "Enter Amount",
-                          style: { color: "#fcfcfc" },
                         }}
                         sx={{
-                          backgroundColor: "#9fa19f",
-                          borderRadius: "8px",
-                          color: "#5a5a5a",
-                          "& .MuiInputBase-input::placeholder":
-                          {
-                            color: "#fcfcfc", // Placeholder color
-                          },
-                          "& .MuiInputLabel-root": {
-                            color: "#fcfcfc", // Label color
-                          },
-                          "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor: "#ccc", // Border color
-                          },
-                          "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor:
-                              "#3f51b5", // Border color on hover
-                          },
-                          "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor:
-                              "#3f51b5", // Border color on focus
-                          },
-                          "&.Mui-disabled": {
-                            backgroundColor:
-                              "#e0e0e0", // Background color when disabled
-                            color: "#fcfcfc", // Label color when disabled
-                            "& .MuiInputBase-input":
-                            {
-                              color: "#fcfcfc", // Text color when disabled
-                            },
-                            "& .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor:
-                                "#bdbdbd", // Border color when disabled
-                            },
-                          },
+                          color:colors.black["blackshade"],
+                          borderRadius: "5px",
+                          // "& .MuiInputBase-input::placeholder":
+                          // {
+                          //   color: "#fcfcfc", // Placeholder color
+                          // },
+                          // "& .MuiInputLabel-root": {
+                          //   color: "#fcfcfc", // Label color
+                          // },
+                          // "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                          // {
+                          //   borderColor: "#ccc", // Border color
+                          // },
+                          // "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                          // {
+                          //   borderColor:
+                          //     "#3f51b5", // Border color on hover
+                          // },
+                          // "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                          // {
+                          //   borderColor:
+                          //     "#3f51b5", // Border color on focus
+                          // },
+                          // "&.Mui-disabled": {
+                          //   backgroundColor:
+                          //     "#e0e0e0", // Background color when disabled
+                          //   color: "#fcfcfc", // Label color when disabled
+                          //   "& .MuiInputBase-input":
+                          //   {
+                          //     color: "#fcfcfc", // Text color when disabled
+                          //   },
+                          //   "& .MuiOutlinedInput-notchedOutline":
+                          //   {
+                          //     borderColor:
+                          //       "#bdbdbd", // Border color when disabled
+                          //   },
+                          // },
                         }}
                       />
                     )}
@@ -278,9 +275,7 @@ const DisburseLoan = ({ disburse }) => {
                         fullWidth
                         variant="outlined"
                       >
-                        <InputLabel
-                          sx={{ color: "#fcfcfc" }}
-                        >
+                        <InputLabel>
                           Payment Mode
                         </InputLabel>
                         <Select
@@ -288,10 +283,7 @@ const DisburseLoan = ({ disburse }) => {
                           label="Payment Mode"
                           required
                           sx={{
-                            backgroundColor:
-                              "#9fa19f",
-                            borderRadius: "8px",
-                            color: "#fcfcfc",
+                            borderRadius: "5px",
                           }}
                         >
                           <MenuItem value="">
@@ -324,9 +316,7 @@ const DisburseLoan = ({ disburse }) => {
                         fullWidth
                         variant="outlined"
                       >
-                        <InputLabel
-                          sx={{ color: "#fcfcfc" }}
-                        >
+                        <InputLabel>
                           Channel
                         </InputLabel>
                         <Select
@@ -334,10 +324,7 @@ const DisburseLoan = ({ disburse }) => {
                           label="Channel"
                           required
                           sx={{
-                            backgroundColor:
-                              "#9fa19f",
-                            borderRadius: "8px",
-                            color: "#fcfcfc",
+                            borderRadius: "5px",
                           }}
                         >
                           <MenuItem value="">
@@ -404,37 +391,36 @@ const DisburseLoan = ({ disburse }) => {
                             />
                           )}
                           sx={{
-                            backgroundColor:
-                              "#9fa19f",
-                            borderRadius: "8px",
-                            "& .MuiOutlinedInput-input":
-                            {
-                              color: "#fcfcfc", // Input text color
-                            },
-                            "& .MuiInputBase-input::placeholder":
-                            {
-                              color: "#fcfcfc", // Placeholder color
-                              opacity: 1, // Ensures placeholder color is not transparent
-                            },
-                            "& .MuiInputLabel-root":
-                            {
-                              color: "#fcfcfc", // Label color
-                            },
-                            "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor:
-                                "#ccc", // Border color
-                            },
-                            "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor:
-                                "#3f51b5", // Border color on hover
-                            },
-                            "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor:
-                                "#3f51b5", // Border color on focus
-                            },
+                            color:colors.black["blackshade"],
+                            borderRadius: "5px",
+                            // "& .MuiOutlinedInput-input":
+                            // {
+                            //   color: "#fcfcfc", // Input text color
+                            // },
+                            // "& .MuiInputBase-input::placeholder":
+                            // {
+                            //   color: "#fcfcfc", // Placeholder color
+                            //   opacity: 1, // Ensures placeholder color is not transparent
+                            // },
+                            // "& .MuiInputLabel-root":
+                            // {
+                            //   color: "#fcfcfc", // Label color
+                            // },
+                            // "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                            // {
+                            //   borderColor:
+                            //     "#ccc", // Border color
+                            // },
+                            // "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                            // {
+                            //   borderColor:
+                            //     "#3f51b5", // Border color on hover
+                            // },
+                            // "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                            // {
+                            //   borderColor:
+                            //     "#3f51b5", // Border color on focus
+                            // },
                           }}
                         />
                       )}
@@ -459,30 +445,29 @@ const DisburseLoan = ({ disburse }) => {
                             : ""
                         }
                         sx={{
-                          backgroundColor: "#9fa19f",
-                          borderRadius: "8px",
-                          color: "#fcfcfc",
-                          "& .MuiInputBase-input::placeholder":
-                          {
-                            color: "#fcfcfc", // Placeholder color
-                          },
-                          "& .MuiInputLabel-root": {
-                            color: "#fcfcfc", // Label color
-                          },
-                          "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor: "#ccc", // Border color
-                          },
-                          "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor:
-                              "#3f51b5", // Border color on hover
-                          },
-                          "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor:
-                              "#3f51b5", // Border color on focus
-                          },
+                          borderRadius: "5px",
+                          color: colors.black["blackshade"],
+                          // "& .MuiInputBase-input::placeholder":
+                          // {
+                          //   color: "#fcfcfc", // Placeholder color
+                          // },
+                          // "& .MuiInputLabel-root": {
+                          //   color: "#fcfcfc", // Label color
+                          // },
+                          // "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                          // {
+                          //   borderColor: "#ccc", // Border color
+                          // },
+                          // "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                          // {
+                          //   borderColor:
+                          //     "#3f51b5", // Border color on hover
+                          // },
+                          // "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                          // {
+                          //   borderColor:
+                          //     "#3f51b5", // Border color on focus
+                          // },
                         }}
                         inputProps={{
                           placeholder:
@@ -501,11 +486,11 @@ const DisburseLoan = ({ disburse }) => {
                   sx={{
                     marginTop:"10px",
                     width:"100%",
-                    backgroundColor: isLoading ? "#ccc" : "#1F2A40",
-                    color: isLoading ? "#666" : "white",
+                    backgroundColor: isLoading ? "#ccc" : colors.primary["primaryshade"],
+                    color: isLoading ? "#666" : colors.white["whiteshade"],
                     cursor: isLoading ? "not-allowed" : "pointer",
                     "&:hover": {
-                        backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+                        backgroundColor: isLoading ? "#ccc" : colors.secondary["secondaryshade"]
                     },
                 }}
                 >

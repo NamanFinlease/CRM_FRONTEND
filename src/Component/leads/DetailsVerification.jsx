@@ -386,7 +386,7 @@ const VerifyContactDetails = ({
     <Box
       sx={{
         boxShadow:"0px 0px 5px 5px rgba(0,0,0,0.1)",
-        width:700,
+        width:"100%",
         borderRadius:"5px",
         padding:"20px",
       }}

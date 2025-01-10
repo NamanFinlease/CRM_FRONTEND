@@ -103,7 +103,7 @@ const ActiveLeads = () => {
                 columns={columns}
                 rows={rows}
                 totalRows={totalActiveLeads}
-                paginationModel={{ page: 1, pageSize: 10 }}
+                paginationModel={paginationModel}
                 onPageChange={handlePageChange}
                 onRowClick={handleLeadClick}
                 title="Active Leads"
