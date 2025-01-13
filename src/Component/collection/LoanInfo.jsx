@@ -131,8 +131,8 @@ const LoanInfo = ({ disburse }) => {
             <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{color:colors.black["blackshade"]}} />}
-                    aria-controls="internal-dedupe-content"
-                    id="internal-dedupe-header"
+                    aria-controls="followup-content"
+                    id="followup-content-header"
                     sx={{
                         backgroundColor: colors.white["whiteshade"],
                         color: colors.primary["primaryshade"],

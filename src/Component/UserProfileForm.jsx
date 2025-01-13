@@ -104,7 +104,7 @@ const styles = {
     textAlign: 'right',
   },
   resetPasswordButton: {
-    padding: '5px 10px',
+    padding: '10px 10px',
     backgroundColor: "red",
     color: colors.white["whiteshade"],
     border: 'none',

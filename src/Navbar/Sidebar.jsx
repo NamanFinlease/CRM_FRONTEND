@@ -16,7 +16,7 @@ import {
 import { NavLink, Link } from "react-router-dom";
 import useAuthStore from "../Component/store/authStore";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import { KeyboardDoubleArrowLeftIcon, KeyboardDoubleArrowRightIcon, RecordVoiceOverRoundedIcon, WebAssetRoundedIcon, GavelRoundedIcon, PublicRoundedIcon, RuleFolderRoundedIcon, CollectionsBookmarkRoundedIcon, ManageAccountsRoundedIcon } from '@mui/icons-material';
+// import { KeyboardDoubleArrowLeftIcon, KeyboardDoubleArrowRightIcon, RecordVoiceOverRoundedIcon, WebAssetRoundedIcon, GavelRoundedIcon, PublicRoundedIcon, RuleFolderRoundedIcon, CollectionsBookmarkRoundedIcon, ManageAccountsRoundedIcon, FolderSpecialRoundedIcon } from '@mui/icons-material';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import RecordVoiceOverRoundedIcon from '@mui/icons-material/RecordVoiceOverRounded';
@@ -56,16 +56,6 @@ const accordionItems = [
     roles: ["creditManager", "sanctionHead", "admin"],
   },
   {
-    id: "sanction",
-    title: "Sanction",
-    icon: <GavelRoundedIcon/>,
-    items: [
-      { text: "Pending Sanctions", link: "/pending-sanctions" },
-      { text: "Sanctioned", link: "/sanctioned" },
-    ],
-    roles: ["sanctionHead", "admin"],
-  },
-  {
     id: "globalApplication",
     title: "Global Application",
     icon: <PublicRoundedIcon/>,
@@ -75,6 +65,16 @@ const accordionItems = [
       { text: "Rejected Applications", link: "/rejected-applications" },
     ],
     roles: ["creditManager", "sanctionHead", "admin"],
+  },
+  {
+    id: "sanction",
+    title: "Sanction",
+    icon: <GavelRoundedIcon/>,
+    items: [
+      { text: "Pending Sanctions", link: "/pending-sanctions" },
+      { text: "Sanctioned", link: "/sanctioned" },
+    ],
+    roles: ["sanctionHead", "admin"],
   },
   {
     id: "disbursal",
@@ -150,7 +150,7 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
     <div sx={{background: colors.white["whiteshade"]}}>
       <Box
           sx={{
-              width: isSidebarOpen ? 250 : 0,
+              width: isSidebarOpen ? 265 : 0,
               height: "100vh",
               color: colors.white["whiteshade"],
               position: "fixed",
@@ -211,11 +211,13 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
                           borderRadius:"5px",
                           boxShadow:"0px 0px 10px 1px rgba(227, 135, 16, 0.6)",
                           "&:hover": {
-                            background:colors.primary["primaryshade"],
+                            background:colors.white["whiteshade"],
+                            color:colors.primary["primaryshade"],
+                            transform:"scale(1.02)",
                           }
                       }}
                   >
-                    <Box sx={{display:"flex"}}>
+                    <Box sx={{display:"flex", alignItems:"center"}}>
                       {item.icon}
                       <Typography sx={{marginLeft:"10px"}}>{item.title}</Typography>
                     </Box>
@@ -232,25 +234,25 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
                               to={subItem.link} 
                               key={subItem.text}
                               sx={{
-                                  color: colors.primary["primaryshade"],
-                                  textDecoration: "none",
-                                  padding: "10px 15px",
-                                  "&.active":{
-                                      fontWeight: "bold",
-                                      borderLeft:`4px solid ${colors.primary["primaryshade"]}`,
-                                      borderTopLeftRadius:"10px",
-                                      borderBottomLeftRadius:"10px",
-                                      "&::after":{
-                                          content : '""',
-                                          position : "absolute",
-                                          right:"20px",
-                                          top:"20px",
-                                          width:"10px",
-                                          height:"10px",
-                                          borderRadius:"50%",
-                                          backgroundColor: colors.primary["primaryshade"],
-                                          animation:"blink 1s infinite",
-                                      },
+                                color: colors.primary["primaryshade"],
+                                textDecoration: "none",
+                                padding: "10px 15px",
+                                "&.active":{
+                                    fontWeight: "bold",
+                                    borderLeft:`4px solid ${colors.primary["primaryshade"]}`,
+                                    borderTopLeftRadius:"10px",
+                                    borderBottomLeftRadius:"10px",
+                                    "&::after":{
+                                        content : '""',
+                                        position : "absolute",
+                                        right:"20px",
+                                        top:"20px",
+                                        width:"10px",
+                                        height:"10px",
+                                        borderRadius:"50%",
+                                        backgroundColor: colors.primary["primaryshade"],
+                                        animation:"blink 1s infinite",
+                                    },
                                   },
                                   '@keyframes blink':{
                                       "0%":{backgroundColor:colors.white["whiteshade"]},
@@ -258,7 +260,7 @@ const handleAccordionToggle = (panel) => (event, isExpanded) => {
                                   }
                               }}
                           >
-                          <ListItemText sx={{color:colors.primary["primaryshade"]}} primary={subItem.text} />
+                          <ListItemText sx={{color:colors.primary["primaryshade"],}} primary={subItem.text} />
                         </ListItem>
                       ))}
                     </List>

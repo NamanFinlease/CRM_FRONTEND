@@ -273,12 +273,6 @@ const LeadNew = () => {
     refetch({ page: newPaginationModel.page +1, limit: newPaginationModel.pageSize}); // Adjust this according to your data fetching logic
   };
 
-  const handleActionButtonClick = () => {
-    // if (onActionButtonClick) {
-    //   onActionButtonClick();
-    // }
-  };
-
   return (
     <>
       <CommonTable

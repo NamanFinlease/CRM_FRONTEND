@@ -47,16 +47,15 @@ const CommonTable = ({
   };
   
   return (  
-    <div>
+    <div sx={{display:"inline-block", height:"100%"}}>
       {title && (
         <div
           style={{
-            position:"relative",
-            top:"20px",
-            left:"100px",
+            display:"inline-block",
             padding: '10px 20px',
+            margin:"20px 10px 10px 60px",
             fontWeight: 'bold',
-            backgroundColor: 'transparent',
+            background: colors.white["whiteshade"],
             color: colors.primary['primaryshade'],
             border: `1px solid ${colors.primary['primaryshade']}`,
             borderRadius: '5px',
@@ -68,58 +67,66 @@ const CommonTable = ({
           {title} : {totalRows || 0}
         </div>
       )}
-
+    
       {actionButton && (
+      <>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'right',
-            margin: '0px 20px 0px 20px',
+            display: 'inline-block',
           }}
         >
           {(activeRole === "disbursalManager" || activeRole === "disbursalHead" || activeRole === "admin") && <button
             onClick={() => handleActionButtonClick('exportCSV')}
             style={{
-                position : "absolute",
-                right : "150px",
-                top:"90px",
                 fontWeight: 'bold',
                 padding: '10px 20px',
-                backgroundColor: 'transparent',
+                background: colors.white["whiteshade"],
                 color: colors.green["greenshade"],
                 border: `1px solid ${colors.green["greenshade"]}`,
                 borderRadius: '5px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                 cursor: 'pointer',
+                display:"inline-block",
+                margin:'10px',
+                height:47,
+                width:160,
+                ':hover':{
+                  background: colors.green["greenshade"],
+                  color: colors.white["whiteshade"],
+                }
             }}
           >
             <FileDownloadIcon style={{ marginRight: '5px' }}/>
             Export CSV
           </button>}
-
-
+        </div>
+        <div
+          style={{
+            display: 'inline-block',
+          }}
+        >
           {(activeRole === "screener" || activeRole === "creditManager" || activeRole === "disbursalManager") && <button
             onClick={() => handleActionButtonClick('allocate')}
             style={{
-                position : "absolute",
-                right : "20px",
-                top:"90px",
                 fontWeight: 'bold',
                 padding: '10px 20px',
-                backgroundColor: 'transparent',
+                background: colors.white["whiteshade"],
                 color: colors.green["greenshade"],
                 border: `1px solid ${colors.green["greenshade"]}`,
                 borderRadius: '5px',
                 boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                 cursor: 'pointer',
+                display:"inline-block",
+                margin:'10px',
             }}
           >
             Allocate
           </button>}
         </div>
+      </>
       )}
 
-      <div style={{ height: 500, width: '100%', padding: '40px 20px 0px 20px', }}>
+      <div style={{ height: 500, width: '100%', padding: '20px', }}>
         <DataGrid
           rows={rows}
           columns={columns}

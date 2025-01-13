@@ -208,7 +208,7 @@ const UploadDocuments = ({ leadData }) => {
                                             setSelectedDocType(key);
                                         }
                                     }}
-                                    sx={{ color: colors.primary["primaryshade"], }}
+                                    sx={{ color: colors.primary["primaryshade"],'&.Mui-checked':{color:colors.primary["primaryshade"]} }}
                                 />
                                 <Typography variant="subtitle2" style={{ fontWeight: '600', color: colors.black["blackshade"], fontSize: '14px' }}>
                                     {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
@@ -229,7 +229,7 @@ const UploadDocuments = ({ leadData }) => {
                                             gap: 2,
                                             p: 2,
                                             borderRadius: 2,
-                                            backgroundColor: '#f9f9f9',
+                                            backgroundColor: colors.white["whiteshade"],
                                             boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.2)',
                                         }}
                                     >
@@ -269,7 +269,7 @@ const UploadDocuments = ({ leadData }) => {
                                                 '& .MuiInputLabel-root': { color: colors.black["blackshade"] },
                                                 '& .MuiOutlinedInput-root': {
                                                     '& fieldset': { borderColor: '#000' },
-                                                    '&:hover fieldset': { borderColor: '#e38710' },
+                                                    '&:hover fieldset': { borderColor: colors.primary["primaryshade"] },
                                                 },
                                             }}
                                         />
@@ -280,7 +280,7 @@ const UploadDocuments = ({ leadData }) => {
                                                 color="primary"
                                                 component="a"
                                                 href={URL.createObjectURL(input.file)}
-                                                target="_blank"
+                                                target="_self"
                                                 rel="noopener noreferrer"
                                                 sx={{ color: '#007bff' }}
                                             >
@@ -307,8 +307,8 @@ const UploadDocuments = ({ leadData }) => {
                                                     color="primary"
                                                     onClick={handleAddFileInput}
                                                     sx={{
-                                                        backgroundColor: '#007bff',
-                                                        color: 'white',
+                                                        background: colors.primary["primaryshade"],
+                                                        color: colors.white["whiteshade"],
                                                         '&:hover': {
                                                             backgroundColor: '#0056b3',
                                                         },

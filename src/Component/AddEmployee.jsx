@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, TextField, Typography, Button, MenuItem, FormControl, InputLabel, Select, OutlinedInput, useTheme } from '@mui/material';
+import { Box, TextField, Typography, Button, MenuItem, FormControl, InputLabel, Select, OutlinedInput, useTheme, Chip } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { tokens } from '../theme';
 import { Controller, useForm } from 'react-hook-form';
 import { useAddEmployeeMutation } from '../Service/Query';
@@ -239,17 +240,41 @@ const AddEmployee = () => {
                                     onChange={(e) => {
                                         const selectedValues = e.target.value;
                                         field.onChange(selectedValues);
+                                        // const updatedRoles = removeRoleFromSelected(selected, value);
+                                        // field.onChange(updatedRoles); // Update form state with the new list
                                     }}
                                     input={<OutlinedInput id="emp-role" label="Employee Role" />}
-                                    renderValue={(selected) =>
-                                        selected.map((value) => {
+                                    renderValue={(selected) => (
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                        {selected.map((value) => {
                                             const selectedRole = roles.find(role => role.value === value);
-                                            return selectedRole ? selectedRole.label : value;
-                                        }).join(', ')
-                                    }
+                                        //     return selectedRole ? selectedRole.label : value;
+                                        // }).join(', ')
+                                            return (
+                                                <Chip
+                                                    key={value}
+                                                    label={selectedRole.label}
+                                                    onDelete={() => {
+                                                        const newSelectedRoles = selected.filter(role => role !== value);
+                                                        // setSelectedRoles(newSelectedRoles);
+                                                        field.onChange(newSelectedRoles);
+                                                        
+                                                        // const updatedRoles = removeRoleFromSelected(selected, value);
+                                                        // field.onChange(updatedRoles); // Update form state with the new list
+                                                    }}
+                                                    deleteIcon={
+                                                        <CancelIcon 
+                                                            onMouseDown={(e) => e.stopPropagation()}
+                                                        />
+                                                    }
+                                                />
+                                            );
+                                        })};
+                                        </Box>
+                                    )}
                                 >
-                                    {roles.map((role, i) => (
-                                        <MenuItem key={i} value={role.value}>
+                                    {roles.map((role) => (
+                                        <MenuItem key={role.value} value={role.value}>
                                             {role.label}
                                         </MenuItem>
                                     ))}
@@ -284,9 +309,9 @@ const AddEmployee = () => {
                             mt: 3, 
                             background:colors.primary["primaryshade"], 
                             color: colors.white["whiteshade"],
-                            "&:hover": { background: colors.secondary["secondaryshade"] }
+                            ":hover": { background: colors.secondary["secondaryshade"] }
                         }}>
-                        Save Employee
+                        Add Employee
                     </Button>
                 </Box>
             </Box>

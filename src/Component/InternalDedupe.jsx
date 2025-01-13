@@ -108,7 +108,7 @@ const InternalDedupe = ({id}) => {
     }));
 
     return (
-        <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3, borderRadius: '5px', background:"#fff" }}>
+        <Box sx={{ maxWidth: '700px', margin: '0 auto', mt: 3, borderRadius: '5px', background:colors.black["blackshade"] }}>
             <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{color:colors.black["blackshade"]}} />}
@@ -126,7 +126,7 @@ const InternalDedupe = ({id}) => {
                     <Typography>Internal Dedupe</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Box sx={{ height: 500, width: '100%',background: colors.white["whiteshade"], }}>
+                    <Box sx={{ height: 500, background: colors.white["whiteshade"], }}>
                         <CommonTable    
                             columns={columns}
                             rows={rows}

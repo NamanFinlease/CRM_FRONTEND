@@ -20,7 +20,7 @@ const BarButtons = ({barButtonOptions,currentPage,setCurrentPage}) => {
                 //   color={status.toLowerCase() === currentPage.toLowerCase() ? "primary" : "success"}
                   onClick={() => handleBarButtons(status.toLowerCase())}
                   sx={{
-                    margin: "0px 5px",
+                    margin: "10px 5px",
                     padding:"10px 10px",
                     backgroundColor: status.toLowerCase() === currentPage.toLowerCase() ? colors.primary["primaryshade"] : colors.white["whiteshade"], // Active: Indigo, Inactive: Green
                     border: status.toLowerCase() === currentPage.toLowerCase() ? `2px solid ${colors.primary["primaryshade"]}` : `2px solid ${colors.primary["primaryshade"]}`, // Active: Indigo, Inactive: Green

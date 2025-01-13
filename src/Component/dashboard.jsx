@@ -371,7 +371,7 @@ const Dashboard = ({ isSidebarOpen }) => {
         key={index}
         gridColumn="span 3"   
         display="flex"
-        minWidth="150px"
+        minWidth="170px"
         alignItems="center"
         justifyContent="center"
         onClick={() => handleNavigation(value.path)} // Navigate on click
@@ -412,7 +412,7 @@ const Dashboard = ({ isSidebarOpen }) => {
                 padding: "10px 20px",
                 "&:hover" : {
                   background: `linear-gradient(180deg, ${colors.white["whiteshade"]} 1%, rgb(255,135,16,0.3) 250%)`,
-                  color:"#000",
+                  color:colors.black["blackshade"],
                 }
               }}
             >

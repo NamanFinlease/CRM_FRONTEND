@@ -25,7 +25,7 @@ const CibilScore = ({ id }) => {
     borderRadius: '5px',
     background: colors.white["whiteshade"],
     boxShadow: '0px 0px 10px #d1d5db, -5px -5px 10px #ffffff',
-    marginBottom: '20px',
+    margin: '0px 10px 20px 10px',
     '&:hover': {
       boxShadow: '0px 0px 15px #a1a5ab, -5px -5px 15px #ffffff', // Adjust the shadow for hover effect
       transform: 'scale(1.01)', // Slightly scale up the accordion on hover

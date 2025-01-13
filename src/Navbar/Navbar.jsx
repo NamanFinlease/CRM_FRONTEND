@@ -159,7 +159,6 @@ const Navbar = () => {
                         variant="outlined"
                         sx={{ m: 0, minWidth: 150,}}
                     >
-                        {/* <InputLabel id="demo-simple-select-standard-label">Age</InputLabel> */}
                         <Select
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
@@ -170,9 +169,8 @@ const Navbar = () => {
                                 borderRadius:"5px", 
                                 color:`${colors.white["whiteshade"]}`, 
                                 height:"40px",
-                                boxShadow:"0px 0px 5px 1px rgb(0,0,0,0.2)"
+                                boxShadow:"0px 0px 5px 1px rgb(0,0,0,0.2)",
                             }}
-                        // label="Age"
                         >
                             {empInfo.empRole &&
                                 empInfo.empRole.map((role, i) => (
@@ -185,7 +183,19 @@ const Navbar = () => {
                                             '&:hover':{
                                                 background:`${colors.primary["primaryshade"]}`,
                                                 color:`${colors.white["whiteshade"]}`
-                                            }
+                                            },
+                                            '&:active':{
+                                                color:colors.secondary["secondaryshade"],
+                                                background:colors.white["whiteshade"]
+                                            },
+                                            "&.Mui-selected": {
+                                                background: `${colors.secondary["secondaryshade"]}`,
+                                                color: `${colors.white["whiteshade"]}`,
+                                            },
+                                            "&.Mui-selected:hover": {
+                                                background: `${colors.primary["primaryshade"]}`,
+                                                color: `${colors.white["whiteshade"]}`,
+                                            },
                                         }}
                                     >
                                         {splitCamelCase(role)}

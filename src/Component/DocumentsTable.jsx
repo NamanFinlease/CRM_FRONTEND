@@ -30,7 +30,7 @@ const DocumentsTable = ({ leadData,uploadedDocs }) => {
     useEffect(() => {
         if(isSuccess && data){
             const fileUrl = data?.url;
-        window.open(fileUrl, '_blank', 'noopener,noreferrer');
+        window.open(fileUrl, '_blank', 'noopener noreferrer');
 
 
         }
@@ -41,7 +41,7 @@ const DocumentsTable = ({ leadData,uploadedDocs }) => {
             component={Box} 
             sx={{ 
                 marginTop: 6, 
-                borderRadius: '8px', 
+                borderRadius: '5px', 
                 border: `1px solid ${colors.primary["primaryshade"]}`, 
                 overflow: 'hidden' 
                 }}
