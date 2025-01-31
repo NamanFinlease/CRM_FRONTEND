@@ -15,7 +15,7 @@ const Disbursed = () => {
     const navigate = useNavigate()
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 5,
+        pageSize: 100,
     });
 
     const { data, isSuccess,isError,error, refetch } = useDisbursedQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })

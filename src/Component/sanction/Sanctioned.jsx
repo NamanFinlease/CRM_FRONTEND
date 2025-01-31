@@ -16,7 +16,7 @@ const Sanctioned = () => {
     const [page, setPage] = useState(1);
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 10,
+        pageSize: 50,
     });
 
 

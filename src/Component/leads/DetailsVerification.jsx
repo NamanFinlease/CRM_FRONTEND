@@ -66,7 +66,7 @@ const VerifyContactDetails = ({ isMobileVerified, isEmailVerified, isAadhaarVeri
     }
   }, [emailOtp, emailOtpSuccess])
   useEffect(() => {
-    if (aadhaarRes?.isSuccess && aadhaarRes?.data && aadhaarRes?.isFetching) {
+    if (aadhaarRes?.isSuccess && aadhaarRes?.data && !aadhaarRes?.isFetching) {
       navigate(`/lead-process`)
     }
     if (aadhaarDetails && aadhaarDetailsSuccess && !isAadhaarDetailFetching) {

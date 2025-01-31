@@ -19,7 +19,7 @@ const DisburseNew = () => {
   const [exportSanctioned, { data: exportData,isLoading:isEXportLoading, isSuccess:isExportSuccess,isError:isExportErro,error:exportError }] = useLazyExportSanctionedQuery();
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 10,
+    pageSize: 50,
   });
   const navigate = useNavigate()
 

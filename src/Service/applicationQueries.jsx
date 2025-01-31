@@ -250,15 +250,15 @@ export const applicationApi = createApi({
       // providesTags:["getApplication"]
     }),
     sanctioned: builder.query({
-      query: ({page,limit}) => `/sanction/approved/?role=${role()}`,
+      query: ({page,limit}) => `/sanction/approved/?page=${page}&limit=${limit}&role=${role()}`,
       // providesTags:["getApplication"]
     }),
     allDisbursals: builder.query({
-      query: ({page,limit}) => `/disbursals/?role=${role()}`,
+      query: ({page,limit}) => `/disbursals/?page=${page}&limit=${limit}&role=${role()}`,
       // providesTags:["getApplication"]
     }),
     allocatedDisbursals: builder.query({
-      query: ({page,limit}) => `/disbursals/allocated/?role=${role()}`,
+      query: ({page,limit}) => `/disbursals/allocated/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["getDisbursals"]
     }),
     disbursalProfile: builder.query({
@@ -266,11 +266,11 @@ export const applicationApi = createApi({
       // providesTags:["getApplication"]
     }),
     pendingDisbursal: builder.query({
-      query: (id) => `/disbursals/pending/?role=${role()}`,
+      query: ({page,limit}) => `/disbursals/pending/?page=${page}&limit=${limit}&role=${role()}`,
       providesTags:["getPendinDisbursals"]
     }),
     disbursed: builder.query({
-      query: (id) => `/disbursals/disbursed/?role=${role()}`,
+      query: ({page,limit}) => `/disbursals/disbursed/?role=${role()}`,
       // providesTags:["getApplication"]
     }),
     fetchDisbursalHold: builder.query({
