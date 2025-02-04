@@ -53,7 +53,12 @@ const DisburseLoan = ({ disburse }) => {
   });
 
   const onSubmit = (data) => {
-    disburseLoan({ id, data });
+    console.log('data',data.amount)
+    const userConfirmed = window.confirm(`Are you sure for disburse amount of \u20B9${data?.amount}?`);
+  
+    if (userConfirmed) {
+      disburseLoan({ id, data });
+    } 
   };
 
   const handleToggleForm = () => {

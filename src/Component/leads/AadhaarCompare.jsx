@@ -22,15 +22,18 @@ import { useVerifyAadhaarMutation } from "../../Service/Query";
 import { useNavigate } from "react-router-dom";
 import { compareDates, formatDate } from "../../utils/helper";
 
-const AadhaarCompare = ({ open, setOpen, aadhaarDetails,lead }) => {
+const AadhaarCompare = ({ open, setOpen, aadhaarDetails }) => {
   const navigate = useNavigate()
+  const { lead } = useStore();
   const [verifyAadhaar, { data, isSuccess, isError, error }] = useVerifyAadhaarMutation()
 
   // Handle close modal
   const handleClose = () => setOpen(false);
 
+
   // Utility function to compare values and return "Matched" or "Unmatched"
   const compareValues = (label, value1, value2) => {
+
 
     if (label === "DOB" && value1 && value2) {
       return compareDates(value1, value2) ? "Matched" : "Unmatched";
@@ -65,16 +68,28 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails,lead }) => {
   }
 
   // Fields to be compared
-  const comparisonFields = [
-    { label: "Name", leadValue: `${lead?.fName} ${lead?.mName} ${lead?.lName}`, aadhaarValue: aadhaarDetails?.name },
-    { label: "DOB", leadValue: lead?.dob && formatDate(lead?.dob) , aadhaarValue: aadhaarDetails?.dob },
-  ];
+  const getComparisonFields = (lead, aadhaarDetails) => {
+    const { house, po, dist, state, country, street, pc } = aadhaarDetails?.address
+
+    const formatAddress = (...parts) => parts.filter(Boolean).join(", "); // Join only non-empty values with commas
+    const aadhaarAddress = formatAddress(house, po, dist, street, state, country, pc);
+    const leadAddress = formatAddress(lead?.city, lead?.state, lead?.pinCode)
+
+    const comparisonFields = [
+      { label: "Name", leadValue: `${lead?.fName.trim()} ${lead?.mName.trim()} ${lead?.lName.trim()}`, aadhaarValue: aadhaarDetails?.name.trim() },
+      { label: "DOB", leadValue: lead?.dob && formatDate(lead?.dob), aadhaarValue: aadhaarDetails?.dob },
+      { label: "Gender", leadValue: lead?.gender, aadhaarValue: aadhaarDetails?.gender },
+      { label: "Masked Aadhaar ", leadValue: `xxxxxxxx${lead?.aadhaar.slice(-4)}`, aadhaarValue: aadhaarDetails?.maskedAdharNumber },
+      { label: "Address ", leadValue: leadAddress, aadhaarValue: aadhaarAddress },
+    ];
+    return comparisonFields
+  }
 
   // Function to render table rows dynamically
   useEffect(() => {
     if (isSuccess)
       setOpen(false)
-      navigate(`/lead-profile/${lead._id}`)
+    navigate(`/lead-profile/${lead._id}`)
   }, [isSuccess])
 
 
@@ -154,7 +169,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails,lead }) => {
     <Dialog open={open} maxWidth="md" fullWidth>
       <DialogTitle>
         <Typography variant="h6" align="center" sx={{ fontWeight: "bold", mb: 2 }}>
-          Compare User Details
+          Compare Lead and Aadhaar details
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -218,7 +233,7 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails,lead }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {comparisonFields?.map(({ label, leadValue, aadhaarValue }) => {
+                {getComparisonFields(lead, aadhaarDetails)?.map(({ label, leadValue, aadhaarValue }) => {
                   const result = compareValues(label, leadValue, aadhaarValue);
                   const textColor = getTextColor(result);
 
@@ -328,3 +343,5 @@ const AadhaarCompare = ({ open, setOpen, aadhaarDetails,lead }) => {
 };
 
 export default AadhaarCompare;
+
+

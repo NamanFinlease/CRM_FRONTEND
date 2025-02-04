@@ -15,7 +15,7 @@ const DisbursePending = () => {
     const navigate = useNavigate()
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 5,
+        pageSize: 50,
     });
 
     const { data, isSuccess,isError,error, refetch } = usePendingDisbursalQuery({ page: paginationModel.page + 1, limit: paginationModel.pageSize })
@@ -34,6 +34,7 @@ const DisbursePending = () => {
     const columns = [
         { field: 'name', headerName: 'Full Name', width: 200 },
         { field: 'mobile', headerName: 'Mobile', width: 150 },
+        { field: 'loanNo', headerName: 'Loan Number', width: 150 },
         { field: 'aadhaar', headerName: 'Aadhaar No.', width: 150 },
         { field: 'pan', headerName: 'Pan No.', width: 150 },
         { field: 'city', headerName: 'City', width: 150 },
@@ -52,6 +53,7 @@ const DisbursePending = () => {
         id: disbursal?._id,
         name: ` ${disbursal?.sanction?.application?.lead?.fName}  ${disbursal?.sanction?.application?.lead?.mName} ${disbursal?.sanction?.application?.lead?.lName}`,
         mobile: disbursal?.sanction?.application?.lead?.mobile,
+        loanNo: disbursal?.loanNo,
         aadhaar: disbursal?.sanction?.application?.lead?.aadhaar,
         pan: disbursal?.sanction?.application?.lead?.pan,
         city: disbursal?.sanction?.application?.lead?.city,
