@@ -12,6 +12,7 @@ import {
     Modal,
     Button,
     Alert,
+    CircularProgress,
 } from "@mui/material";
 import { useApproveApplicationMutation } from "../../Service/applicationQueries";
 import Swal from "sweetalert2";
@@ -45,7 +46,7 @@ const LoanSanctionPreview = ({
 
     const navigate = useNavigate();
 
-    const [approveApplication, { data, isSuccess, isError, error }] =
+    const [approveApplication, { data, isSuccess, isLoading, isError, error }] =
         useApproveApplicationMutation();
 
     const handleClose = () => {
@@ -97,7 +98,7 @@ const LoanSanctionPreview = ({
                         {/* Header Section */}
                         <Box textAlign="center" mb={3}>
                             <img
-                                src="https://ramleela.s3.ap-south-1.amazonaws.com/Hedder-100.jpg"
+                                src="https://ramleela.s3.ap-south-1.amazonaws.com/Letter+Head+A4+copy-100.jpg"
                                 alt="Sanctionletter-header"
                                 width="760"
                                 height="123"
@@ -140,8 +141,8 @@ const LoanSanctionPreview = ({
                         {/* Company Info */}
                         <Typography variant="body2" fontWeight="bold" mb={2}>
                             Speedoloan, a brand name under Agrim Fincap Private
-                            Limited, 203, Vikas Deep, Laxmi Nagar, New Delhi -
-                            110092.
+                            Limited, 276, First Floor, Gagan Vihar, Shahdara,
+                            Delhi - 110051.
                         </Typography>
 
                         <Typography variant="body1" mb={2}>
@@ -287,18 +288,58 @@ const LoanSanctionPreview = ({
                             <Button
                                 variant="contained"
                                 color="secondary"
-                                sx={{ mr: 2, px: 3 }}
                                 onClick={handleClose}
+                                disabled={isLoading}
+                                sx={{
+                                    mx: 3,
+                                    backgroundColor: isLoading
+                                        ? "#7e9696 !important"
+                                        : "#67e0dc",
+                                    color: isLoading ? "#666" : "white",
+                                    cursor: isLoading
+                                        ? "not-allowed"
+                                        : "pointer",
+                                    pointerEvents: isLoading ? "none" : "auto",
+                                    opacity: isLoading ? 0.7 : 1, // Ensures visibility
+                                    "&:hover": {
+                                        backgroundColor: isLoading
+                                            ? "#7e9696 !important"
+                                            : "#67e0dc",
+                                    },
+                                }}
                             >
                                 Cancel
                             </Button>
                             <Button
                                 variant="contained"
                                 color="primary"
-                                sx={{ px: 3 }}
                                 onClick={handleApprove}
+                                disabled={isLoading}
+                                sx={{
+                                    backgroundColor: isLoading
+                                        ? "#9de39e !important"
+                                        : "#099c0c",
+                                    color: isLoading ? "#666" : "white",
+                                    cursor: isLoading
+                                        ? "not-allowed"
+                                        : "pointer",
+                                    pointerEvents: isLoading ? "none" : "auto",
+                                    opacity: isLoading ? 0.7 : 1, // Ensures visibility
+                                    "&:hover": {
+                                        backgroundColor: isLoading
+                                            ? "#9de39e !important"
+                                            : "#62f064",
+                                    },
+                                }}
                             >
-                                Approve
+                                {isLoading ? (
+                                    <CircularProgress
+                                        size={20}
+                                        color="inherit"
+                                    />
+                                ) : (
+                                    "Approve"
+                                )}
                             </Button>
                         </Box>
                     </Container>

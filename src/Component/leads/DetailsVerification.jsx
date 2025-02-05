@@ -134,13 +134,14 @@ const VerifyContactDetails = ({
                 />
             )}
             {/* {otp && <EmailVerification open={otp} setOpen={setOtp} />} */}
-            {
+
+            {panModal && (
                 <PanCompare
                     open={panModal}
                     setOpen={setPanModal}
                     panDetails={panRes?.data?.data}
                 />
-            }
+            )}
             <Box sx={{ maxWidth: 700, margin: "0 auto", mt: 4 }}>
                 {/* Single Accordion for Mobile and Email Verification */}
                 <Accordion sx={{ borderRadius: "15px", boxShadow: 3 }}>
