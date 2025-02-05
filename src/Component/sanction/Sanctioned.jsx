@@ -41,7 +41,11 @@ const Sanctioned = () => {
         { field: "pan", headerName: "Pan No.", width: 150 },
         { field: "city", headerName: "City", width: 150 },
         { field: "state", headerName: "State", width: 150 },
-        { field: "loanAmount", headerName: "Loan Amount", width: 150 },
+        {
+            field: "loanRecommended",
+            headerName: "Sanctioned Amount",
+            width: 150,
+        },
         { field: "salary", headerName: "Salary", width: 150 },
         ...(activeRole === "sanctionHead" || activeRole === "admin"
             ? [
@@ -63,8 +67,8 @@ const Sanctioned = () => {
         pan: sanction?.application?.lead?.pan,
         city: sanction?.application?.lead?.city,
         state: sanction?.application?.lead?.state,
-        loanAmount: sanction?.application?.lead?.loanAmount,
-        salary: sanction?.application?.lead?.salary,
+        loanRecommended: sanction?.camDetails?.loanRecommended,
+        salary: sanction?.camDetails?.actualNetSalary,
         ...((activeRole === "sanctionHead" || activeRole === "admin") && {
             recommendedBy: `${sanction?.application?.recommendedBy?.fName}${
                 sanction?.application?.recommendedBy?.mName
@@ -76,8 +80,8 @@ const Sanctioned = () => {
     }));
 
     useEffect(() => {
-        if (isSuccess && data?.sanction && data.sanction.length > 0) {
-            setApplications(data.sanction);
+        if (isSuccess && data?.sanctions && data.sanctions.length > 0) {
+            setApplications(data.sanctions);
             setTotalApplications(data.totalSanctions);
         }
     }, [isSuccess, data]);
