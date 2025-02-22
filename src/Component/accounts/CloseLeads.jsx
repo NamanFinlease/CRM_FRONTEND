@@ -30,10 +30,14 @@ function CloseLeads() {
         { field: "pan", headerName: "Pan No.", width: 150 },
         { field: "city", headerName: "City", width: 150 },
         { field: "state", headerName: "State", width: 150 },
-        { field: "loanAmount", headerName: "Loan Amount", width: 150 },
+        {
+            field: "loanRecommended",
+            headerName: "Sanctioned Amount",
+            width: 150,
+        },
         { field: "salary", headerName: "Salary", width: 150 },
         { field: "source", headerName: "Source", width: 150 },
-        ...(activeRole === "collectionHead" || activeRole === "admin"
+        ...(activeRole === "collectionExecutive" || activeRole === "admin"
             ? [
                   {
                       field: "disbursalHead",
@@ -43,30 +47,26 @@ function CloseLeads() {
               ]
             : []),
     ];
-    let subrows;
-    const rows = closedLeads?.map((closedLead) => {
-        subrows = closedLead?.data.map((lead) => ({
-            id: lead?.loanNo || 0,
-            name: ` ${lead?.disbursal?.sanction?.application?.lead?.fName}  ${lead?.disbursal?.sanction?.application?.lead?.mName} ${lead?.disbursal?.sanction?.application?.lead?.lName}`,
-            mobile: lead?.disbursal?.sanction?.application?.lead?.mobile,
-            aadhaar: lead?.disbursal?.sanction?.application?.lead?.aadhaar,
-            pan: lead?.disbursal?.sanction?.application?.lead?.pan,
-            city: lead?.disbursal?.sanction?.application?.lead?.city,
-            state: lead?.disbursal?.sanction?.application?.lead?.state,
-            loanAmount:
-                lead?.disbursal?.sanction?.application?.lead?.loanAmount,
-            salary: lead?.disbursal?.sanction?.application?.lead?.salary,
-            source: lead?.disbursal?.sanction?.application?.lead?.source,
-            ...((activeRole === "accountExecutive" ||
-                activeRole === "admin") && {
-                disbursalHead: `${lead?.disbursal?.disbursedBy?.fName}${
-                    lead?.disbursal?.disbursedBy?.mName
-                        ? ` ${lead?.disbursal?.disbursedBy?.mName}`
-                        : ``
-                } ${lead?.disbursal?.disbursedBy?.lName}`,
-            }),
-        }));
-    });
+    const rows = closedLeads?.map((closedLead, index) => ({
+        id: closedLead?.loanNo || index,
+        // leadNo: closedLead?.leadNo,
+        name: ` ${closedLead?.lead?.fName}  ${closedLead?.lead?.mName} ${closedLead?.lead?.lName}`,
+        mobile: closedLead?.lead?.mobile,
+        aadhaar: closedLead?.lead?.aadhaar,
+        pan: closedLead?.lead?.pan,
+        loanNo: closedLead?.loanNo,
+        city: closedLead?.lead?.city,
+        state: closedLead?.lead?.state,
+        loanAmount: closedLead?.camDetails?.loanRecommended,
+        salary: closedLead?.camDetails?.actualNetSalary,
+        source: closedLead?.lead?.source,
+        ...((activeRole === "accountExecutive" || activeRole === "admin") && {
+            disbursalHead: `${closedLead?.disbursedBy?.fName}${
+                closedLead?.disbursedBy?.lName &&
+                ` ${closedLead?.disbursedBy?.lName}`
+            }`,
+        }),
+    }));
 
     useEffect(() => {
         refetch({
@@ -105,7 +105,7 @@ function CloseLeads() {
             {columns && (
                 <div style={{ height: 400, width: "100%" }}>
                     <DataGrid
-                        rows={subrows}
+                        rows={rows}
                         columns={columns}
                         rowCount={totalClosedLeads}
                         // loading={isLoading}

@@ -80,8 +80,8 @@ const Sanctioned = () => {
     }));
 
     useEffect(() => {
-        if (isSuccess && data?.sanctions && data.sanctions.length > 0) {
-            setApplications(data.sanctions);
+        if (isSuccess && data?.sanction && data.sanction.length > 0) {
+            setApplications(data.sanction);
             setTotalApplications(data.totalSanctions);
         }
     }, [isSuccess, data]);
