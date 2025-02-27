@@ -54,6 +54,7 @@ import PendingVerification from "./Component/accounts/PendingVerification";
 import CloseLeads from "./Component/accounts/CloseLeads";
 import CollectionProfile from "./Component/collection/CollectionProfile";
 import PaymentVerification from "./Component/accounts/PaymentVerification";
+import LandingPageLeads from "./Component/leads/LandingPageLeads";
 
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -143,6 +144,9 @@ function App() {
                                         path="/rejected-leads"
                                         element={<RejectedLeads />}
                                     />
+                                    <Route 
+                                    path="/landingpage-lead"
+                                    element={ <LandingPageLeads />}/>
                                     <Route
                                         path="/new-applications"
                                         element={<NewApplications />}

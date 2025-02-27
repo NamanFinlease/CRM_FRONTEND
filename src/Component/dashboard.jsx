@@ -116,6 +116,13 @@ const Dashboard = ({ isSidebarOpen }) => {
         no : data?.leads?.
         rejectedLeads || 0
       },
+      landingPageLead : {
+        icon: <NewReleasesIcon className='mt-3'
+        sx={{ color: '#4caf50', width:'100%', height:'30%' }} />, // Green color
+        path: "/landingpage-lead",
+        title: 'Landing Page Leads',
+        no : data?.leads?.newLeads || 0
+      }
     },
     creditManager: {
       newApplication: {

@@ -166,6 +166,12 @@ export const leadsApi = createApi({
       query: (id) => `/leads/${id}/?role=${role()}`,
       providesTags: ["leadProfile"],
     }),
+    fetchAllMarketingLead: builder.query({
+      query: () =>
+        // `/leads/landingPageData?page=${page}&limit=${limit}&role=${role()}`,
+        `/leads/landingPageData?role=${role()}`,
+      
+    }),
     getLeadDocs: builder.query({
       query: ({ id, docId, docType }) =>
         `/leads/docs/${id}/?docType=${docType}&docId=${docId}&role=${role()}`,
@@ -234,6 +240,7 @@ export const {
   useFetchAllEmployeeQuery,
   useFetchAllocatedLeadsQuery,
   useFetchAllLeadsQuery,
+  useFetchAllMarketingLeadQuery,
   useFetchSingleLeadQuery,
   useUploadDocumentsMutation,
   useUpdateLeadMutation,
