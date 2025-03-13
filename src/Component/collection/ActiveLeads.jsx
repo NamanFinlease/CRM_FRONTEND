@@ -49,24 +49,26 @@ const ActiveLeads = () => {
     ];
 
     const rows = activeLeads?.map((activeLead) => {
-        const { lead } = activeLead?.data?.disbursal?.sanction?.application;
+        const lead = activeLead?.data?.disbursal?.sanction?.application?.lead;
         return {
-            id: activeLead?.data?.loanNo,
+            id: activeLead?.data?.disbursal?.loanNo,
             name: ` ${lead?.fName}  ${lead?.mName} ${lead?.lName}`,
             mobile: lead?.mobile,
             aadhaar: lead?.aadhaar,
             pan: lead?.pan,
             city: lead?.city,
             state: lead?.state,
-            loanAmount: lead?.loanAmount,
-            salary: lead?.salary,
+            loanAmount: activeLead?.camDetails?.loanRecommended,
+            salary: activeLead?.camDetails?.actualNetSalary,
             source: lead?.source,
             ...((activeRole === "collectionHead" || activeRole === "admin") && {
-                disbursalHead: `${activeLead?.data?.disbursal?.disbursedBy?.fName}${
-                    activeLead?.data?.disbursal?.disbursedBy?.mName
-                        ? ` ${activeLead?.data?.disbursal?.disbursedBy?.mName}`
+                disbursalHead: `${
+                    activeLead?.data?.disbursal?.disbursedBy?.fName
+                }${
+                    activeLead?.data?.disbursal?.disbursedBy?.lName
+                        ? ` ${activeLead?.data?.disbursal?.disbursedBy?.lName}`
                         : ``
-                } ${activeLead?.data?.disbursal?.disbursedBy?.lName}`,
+                }`,
             }),
         };
     });
@@ -79,7 +81,6 @@ const ActiveLeads = () => {
     }, [paginationModel]);
 
     useEffect(() => {
-        console.log("data", data);
         if (data) {
             setActiveLeads(data.activeLeads);
             setTotalActiveLeads(data?.totalActiveLeads);
