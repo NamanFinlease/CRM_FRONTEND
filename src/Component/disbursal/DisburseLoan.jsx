@@ -35,7 +35,7 @@ const DisburseLoan = ({ disburse }) => {
 
   const { disbursalDate, netDisbursalAmount } =
     disburse?.application?.cam?.details;
-  const [disburseLoan, { data, isSuccess,isLoading, isError, error }] =
+  const [disburseLoan, { data, isSuccess, isLoading, isError, error }] =
     useDisburseLoanMutation();
 
   const defaultValues = {
@@ -47,18 +47,28 @@ const DisburseLoan = ({ disburse }) => {
     remarks: "",
   };
 
-  const { handleSubmit, control,reset, setValue } = useForm({
+  const { handleSubmit, control, reset, setValue } = useForm({
     resolver: yupResolver(disburseSchema),
     defaultValues: defaultValues,
   });
 
-  const onSubmit = (data) => {
-    console.log('data',data.amount)
-    const userConfirmed = window.confirm(`Are you sure for disburse amount of \u20B9${data?.amount}?`);
-  
-    if (userConfirmed) {
+  const onSubmit = async (data) => {
+    const firstName = applicationProfile?.sanction?.application?.lead?.fName;
+    const lastName = applicationProfile?.sanction?.application?.lead?.lName;
+    const result = await Swal.fire({
+      title: `Are you sure?`,
+      html: `You are about to disburse an amount of <span style="color: green; font-weight: bold;">₹${data?.amount}</span> to <span style="font-weight: bold;">${firstName} ${lastName}</span>.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, confirm it!",
+      cancelButtonText: "No, cancel",
+      confirmButtonColor: "#3085d6", 
+      cancelButtonColor: "#d33",
+    });
+
+    if (result.isConfirmed) {
       disburseLoan({ id, data });
-    } 
+    }
   };
 
   const handleToggleForm = () => {
@@ -70,7 +80,7 @@ const DisburseLoan = ({ disburse }) => {
         text: "Loan Disbursed!",
         icon: "success",
       });
-      reset()
+      reset();
       navigate("/disbursal-pending");
     }
   }, [isSuccess, data]);
@@ -120,9 +130,7 @@ const DisburseLoan = ({ disburse }) => {
                 sx={{
                   marginLeft: "8px",
                   color: "#ffffff",
-                  transform: showForm
-                    ? "rotate(180deg)"
-                    : "rotate(0deg)",
+                  transform: showForm ? "rotate(180deg)" : "rotate(0deg)",
                   transition: "transform 0.3s",
                 }}
               />
@@ -161,17 +169,14 @@ const DisburseLoan = ({ disburse }) => {
                         variant="outlined"
                         error={!!fieldState.error}
                       >
-                        <InputLabel
-                          sx={{ color: "#fcfcfc" }}
-                        >
+                        <InputLabel sx={{ color: "#fcfcfc" }}>
                           Payable Account
                         </InputLabel>
                         <Select
                           {...field}
                           label="Payable Account *"
                           sx={{
-                            backgroundColor:
-                              "#9fa19f",
+                            backgroundColor: "#9fa19f",
                             borderRadius: "8px",
                             color: "#fcfcfc",
                           }}
@@ -180,29 +185,15 @@ const DisburseLoan = ({ disburse }) => {
                             <em>Select Account</em>
                           </MenuItem>
                           {applicationProfile?.disbursalBanks &&
-                            applicationProfile?.disbursalBanks.map(
-                              (bank) => (
-                                <MenuItem
-                                  key={
-                                    bank._id
-                                  }
-                                  value={
-                                    bank?.accountNo
-                                  }
-                                >
-                                  {
-                                    bank?.accountNo
-                                  }
-                                </MenuItem>
-                              )
-                            )}
+                            applicationProfile?.disbursalBanks.map((bank) => (
+                              <MenuItem key={bank._id} value={bank?.accountNo}>
+                                {bank?.accountNo}
+                              </MenuItem>
+                            ))}
                         </Select>
                         {fieldState.error && (
                           <Typography color="error">
-                            {
-                              fieldState.error
-                                .message
-                            }
+                            {fieldState.error.message}
                           </Typography>
                         )}
                       </FormControl>
@@ -223,10 +214,7 @@ const DisburseLoan = ({ disburse }) => {
                         disabled
                         error={!!fieldState?.error}
                         helperText={
-                          fieldState?.error
-                            ? fieldState?.error
-                              ?.message
-                            : ""
+                          fieldState?.error ? fieldState?.error?.message : ""
                         }
                         inputProps={{
                           placeholder: "Enter Amount",
@@ -236,39 +224,32 @@ const DisburseLoan = ({ disburse }) => {
                           backgroundColor: "#9fa19f",
                           borderRadius: "8px",
                           color: "#5a5a5a",
-                          "& .MuiInputBase-input::placeholder":
-                          {
+                          "& .MuiInputBase-input::placeholder": {
                             color: "#fcfcfc", // Placeholder color
                           },
                           "& .MuiInputLabel-root": {
                             color: "#fcfcfc", // Label color
                           },
                           "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor: "#ccc", // Border color
-                          },
-                          "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor:
-                              "#3f51b5", // Border color on hover
-                          },
-                          "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor:
-                              "#3f51b5", // Border color on focus
-                          },
-                          "&.Mui-disabled": {
-                            backgroundColor:
-                              "#e0e0e0", // Background color when disabled
-                            color: "#fcfcfc", // Label color when disabled
-                            "& .MuiInputBase-input":
                             {
+                              borderColor: "#ccc", // Border color
+                            },
+                          "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                            {
+                              borderColor: "#3f51b5", // Border color on hover
+                            },
+                          "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
+                            {
+                              borderColor: "#3f51b5", // Border color on focus
+                            },
+                          "&.Mui-disabled": {
+                            backgroundColor: "#e0e0e0", // Background color when disabled
+                            color: "#fcfcfc", // Label color when disabled
+                            "& .MuiInputBase-input": {
                               color: "#fcfcfc", // Text color when disabled
                             },
-                            "& .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor:
-                                "#bdbdbd", // Border color when disabled
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#bdbdbd", // Border color when disabled
                             },
                           },
                         }}
@@ -279,13 +260,8 @@ const DisburseLoan = ({ disburse }) => {
                     name="paymentMode"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <FormControl
-                        fullWidth
-                        variant="outlined"
-                      >
-                        <InputLabel
-                          sx={{ color: "#fcfcfc" }}
-                        >
+                      <FormControl fullWidth variant="outlined">
+                        <InputLabel sx={{ color: "#fcfcfc" }}>
                           Payment Mode
                         </InputLabel>
                         <Select
@@ -293,8 +269,7 @@ const DisburseLoan = ({ disburse }) => {
                           label="Payment Mode"
                           required
                           sx={{
-                            backgroundColor:
-                              "#9fa19f",
+                            backgroundColor: "#9fa19f",
                             borderRadius: "8px",
                             color: "#fcfcfc",
                           }}
@@ -302,19 +277,12 @@ const DisburseLoan = ({ disburse }) => {
                           <MenuItem value="">
                             <em>Select</em>
                           </MenuItem>
-                          <MenuItem value="online">
-                            Online
-                          </MenuItem>
-                          <MenuItem value="offline">
-                            Offline
-                          </MenuItem>
+                          <MenuItem value="online">Online</MenuItem>
+                          <MenuItem value="offline">Offline</MenuItem>
                         </Select>
                         {fieldState.error && (
                           <Typography color="error">
-                            {
-                              fieldState.error
-                                .message
-                            }
+                            {fieldState.error.message}
                           </Typography>
                         )}
                       </FormControl>
@@ -325,13 +293,8 @@ const DisburseLoan = ({ disburse }) => {
                     name="channel"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <FormControl
-                        fullWidth
-                        variant="outlined"
-                      >
-                        <InputLabel
-                          sx={{ color: "#fcfcfc" }}
-                        >
+                      <FormControl fullWidth variant="outlined">
+                        <InputLabel sx={{ color: "#fcfcfc" }}>
                           Channel
                         </InputLabel>
                         <Select
@@ -339,8 +302,7 @@ const DisburseLoan = ({ disburse }) => {
                           label="Channel"
                           required
                           sx={{
-                            backgroundColor:
-                              "#9fa19f",
+                            backgroundColor: "#9fa19f",
                             borderRadius: "8px",
                             color: "#fcfcfc",
                           }}
@@ -348,27 +310,19 @@ const DisburseLoan = ({ disburse }) => {
                           <MenuItem value="">
                             <em>Select</em>
                           </MenuItem>
-                          <MenuItem value="imps">
-                            IMPS
-                          </MenuItem>
-                          <MenuItem value="neft">
-                            NEFT
-                          </MenuItem>
+                          <MenuItem value="imps">IMPS</MenuItem>
+                          <MenuItem value="neft">NEFT</MenuItem>
                         </Select>
                         {fieldState.error && (
                           <Typography color="error">
-                            {
-                              fieldState.error.message
-                            }
+                            {fieldState.error.message}
                           </Typography>
                         )}
                       </FormControl>
                     )}
                   />
 
-                  <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                  >
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Controller
                       name="disbursalDate"
                       control={control}
@@ -379,16 +333,11 @@ const DisburseLoan = ({ disburse }) => {
                           label="Disbursal Date"
                           value={
                             field.value
-                              ? dayjs(
-                                field.value,
-                                "YYYY-MM-DD"
-                              )
+                              ? dayjs(field.value, "YYYY-MM-DD")
                               : null
                           }
                           onChange={(newValue) => {
-                            field.onChange(
-                              newValue
-                            );
+                            field.onChange(newValue);
                           }}
                           renderInput={(params) => (
                             <TextField
@@ -396,50 +345,39 @@ const DisburseLoan = ({ disburse }) => {
                               variant="outlined"
                               fullWidth
                               required
-                              error={
-                                !!fieldState?.error
-                              }
+                              error={!!fieldState?.error}
                               helperText={
                                 fieldState?.error
-                                  ? fieldState
-                                    ?.error
-                                    ?.message
+                                  ? fieldState?.error?.message
                                   : ""
                               }
                             />
                           )}
                           sx={{
-                            backgroundColor:
-                              "#9fa19f",
+                            backgroundColor: "#9fa19f",
                             borderRadius: "8px",
-                            "& .MuiOutlinedInput-input":
-                            {
+                            "& .MuiOutlinedInput-input": {
                               color: "#fcfcfc", // Input text color
                             },
-                            "& .MuiInputBase-input::placeholder":
-                            {
+                            "& .MuiInputBase-input::placeholder": {
                               color: "#fcfcfc", // Placeholder color
                               opacity: 1, // Ensures placeholder color is not transparent
                             },
-                            "& .MuiInputLabel-root":
-                            {
+                            "& .MuiInputLabel-root": {
                               color: "#fcfcfc", // Label color
                             },
                             "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor:
-                                "#ccc", // Border color
-                            },
+                              {
+                                borderColor: "#ccc", // Border color
+                              },
                             "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor:
-                                "#3f51b5", // Border color on hover
-                            },
+                              {
+                                borderColor: "#3f51b5", // Border color on hover
+                              },
                             "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor:
-                                "#3f51b5", // Border color on focus
-                            },
+                              {
+                                borderColor: "#3f51b5", // Border color on focus
+                              },
                           }}
                         />
                       )}
@@ -458,40 +396,33 @@ const DisburseLoan = ({ disburse }) => {
                         fullWidth
                         error={!!fieldState?.error}
                         helperText={
-                          fieldState?.error
-                            ? fieldState?.error
-                              ?.message
-                            : ""
+                          fieldState?.error ? fieldState?.error?.message : ""
                         }
                         sx={{
                           backgroundColor: "#9fa19f",
                           borderRadius: "8px",
                           color: "#fcfcfc",
-                          "& .MuiInputBase-input::placeholder":
-                          {
+                          "& .MuiInputBase-input::placeholder": {
                             color: "#fcfcfc", // Placeholder color
                           },
                           "& .MuiInputLabel-root": {
                             color: "#fcfcfc", // Label color
                           },
                           "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor: "#ccc", // Border color
-                          },
+                            {
+                              borderColor: "#ccc", // Border color
+                            },
                           "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor:
-                              "#3f51b5", // Border color on hover
-                          },
+                            {
+                              borderColor: "#3f51b5", // Border color on hover
+                            },
                           "&.Mui-focused .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor:
-                              "#3f51b5", // Border color on focus
-                          },
+                            {
+                              borderColor: "#3f51b5", // Border color on focus
+                            },
                         }}
                         inputProps={{
-                          placeholder:
-                            "Enter remarks here", // Placeholder text
+                          placeholder: "Enter remarks here", // Placeholder text
                           style: { color: "#fcfcfc" }, // Text color
                         }}
                       />
@@ -504,25 +435,29 @@ const DisburseLoan = ({ disburse }) => {
                   variant="contained"
                   color="primary"
                   sx={{
-                    marginTop:"10px",
-                    width:"100%",
+                    marginTop: "10px",
+                    width: "100%",
                     backgroundColor: isLoading ? "#ccc" : "#1F2A40",
                     color: isLoading ? "#666" : "white",
                     cursor: isLoading ? "not-allowed" : "pointer",
                     "&:hover": {
-                        backgroundColor: isLoading ? "#ccc" : "#3F4E64",
+                      backgroundColor: isLoading ? "#ccc" : "#3F4E64",
                     },
-                }}
+                  }}
                 >
-                  {isLoading ? <CircularProgress size={20} color="inherit" /> : "Disburse"}
+                  {isLoading ? (
+                    <CircularProgress size={20} color="inherit" />
+                  ) : (
+                    "Disburse"
+                  )}
                 </Button>
               </Box>
             )}
-            {isError &&
-              <Alert severity="error" sx={{ borderRadius: '8px', mt: 2 }}>
+            {isError && (
+              <Alert severity="error" sx={{ borderRadius: "8px", mt: 2 }}>
                 {error?.data?.message}
               </Alert>
-            }
+            )}
             {/* Submit button */}
           </>
         )}
@@ -533,9 +468,9 @@ const DisburseLoan = ({ disburse }) => {
           <ActionButton
             id={applicationProfile?._id}
             isHold={applicationProfile?.onHold}
-          // setPreviewSanction={setPreviewSanction}
-          // sanctionPreview={sanctionPreview}
-          // setForceRender={setForceRender}
+            // setPreviewSanction={setPreviewSanction}
+            // sanctionPreview={sanctionPreview}
+            // setForceRender={setForceRender}
           />
         )}
     </Box>
